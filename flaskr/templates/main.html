@@ -4,7 +4,7 @@
 <head>
     <head>
         <!-- TODO(Checkpoint Requirement 3): Change the title and content of your wiki.-->
-        <title>{% block page_name%} Project 1: Wiki Viewer{% endblock %}</title>
+        <title>{% block page_name%} Project 1: Wiki Viewer {% endblock %}</title>
     </head>
 </head>
 
@@ -13,10 +13,14 @@
     <div>     
         <!-- TODO(Checkpoint Requirement 3): Change the title and content of your wiki.-->
         {% block content %}  
-        <h1>Project 1: Wiki Viewer</h1>
+        <!-- Should eventually be replaced with the nav bar -->
+        <p><a href=/about>ABOUT</a></p>
+        
+        <h1>Welcome to the pokemon Wiki!</h1>
         <p>This is a minimal implementation of a wiki that allows users to login and upload pages.</p>
         <p>Authors: Javier Garcia, Edgar Ochoa Sotelo, Mark Toro</p>
         {% endblock %}
+        
     </div>
 </body>
 
