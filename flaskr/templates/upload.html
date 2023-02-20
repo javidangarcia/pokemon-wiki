@@ -1,0 +1,29 @@
+{% extends "main.html" %}
+
+{% block page_num %}
+Upload a Pokemon!
+{% endblock %}
+
+{% block content %}
+<div>
+    <form method="post" action="/upload">
+        <tr>
+            <td>Name<input type="text"></td>
+            <td>Hit Points<input type="number"></td>
+            <td>Attack<input type="number"></td>
+            <td>Defense<input type="number"></td>
+            <td>Speed<input type="number"></td>
+            <td>Special Attack<input type="number"></td>
+            <td>Special Defense<input type="number"></td>
+        </tr>
+        <tr>
+            <td>File to upload:</td>
+            <td><input type="file" name="File"></td>
+
+        </tr>
+        <tr>
+            <td><input type="submit" value="Upload your pokemon!"></td>
+        </tr>
+    </form>
+</div>
+{% endblock %}

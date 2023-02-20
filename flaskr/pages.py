@@ -27,3 +27,7 @@ def make_endpoints(app):
     @app.route("/signup")
     def signup():
         return render_template("signup.html")
+
+    @app.route("/upload")
+    def upload():
+        return render_template("upload.html")
