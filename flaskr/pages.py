@@ -15,3 +15,15 @@ def make_endpoints(app):
     @app.route("/about")
     def about():
         return render_template('about.html')
+
+    @app.route("/pages")
+    def pages():
+        return render_template('pages.html')
+
+    @app.route("/login")
+    def login():
+        return render_template("login.html")
+
+    @app.route("/signup")
+    def signup():
+        return render_template("signup.html")
