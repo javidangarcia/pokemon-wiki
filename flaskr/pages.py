@@ -37,5 +37,5 @@ def make_endpoints(app):
     def upload_file():
         file_to_upload = request.files['file']
         backend = Backend()
-        backend.upload(file_to_upload, "wiki-content-techx")
+        backend.upload(file_to_upload)
         return render_template("main.html")
