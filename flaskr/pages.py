@@ -1,4 +1,5 @@
-from flask import render_template
+from flask import render_template,request
+from .backend import Backend
 
 
 def make_endpoints(app):
@@ -31,3 +32,10 @@ def make_endpoints(app):
     @app.route("/upload")
     def upload():
         return render_template("upload.html")
+    
+    @app.route("/upload",methods=["POST"])
+    def upload_file():
+        file_to_upload = request.files['file']
+        backend = Backend()
+        backend.upload(file_to_upload, "wiki-content-techx")
+        return render_template("main.html")
