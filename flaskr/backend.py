@@ -24,13 +24,11 @@ class Backend:
         bucket = self.client.get_bucket('users-passwords-techx')
 
     def get_image(self):
-        bucket = self.client.get_bucket('authors-techx')
-        # Just testing some things not the official or correct implementation whatsoever
-        blobs = bucket.list_blobs()
-        links = []
-        for blob in blobs:
-            links.append(blob.public_url)
-        return links
+        bucket = self.client.get_bucket('wiki-content-techx')
+        blob = bucket.get_blob('authors/javier.png')
+        with blob.open('rb') as f:
+            return f.read()
+
 
 
 
