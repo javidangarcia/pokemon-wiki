@@ -1,19 +1,19 @@
 from flask import render_template,request
 from .backend import Backend
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField
+from wtforms import StringField, SubmitField, PasswordField, validators
 
 
 def make_endpoints(app):
 
     class LoginForm(FlaskForm):
-        username = StringField('Username')
-        password = PasswordField('Password')
+        username = StringField('Username', [validators.InputRequired()], render_kw={"placeholder":"Username"})
+        password = PasswordField('Password', [validators.InputRequired()], render_kw={"placeholder":"Password"})
         submit = SubmitField('Login')
 
     class SignupForm(FlaskForm):
-        username = StringField('Username')
-        password = PasswordField('Password')
+        username = StringField([validators.InputRequired()], render_kw={"placeholder":"Username"})
+        password = PasswordField('Password', [validators.InputRequired()], render_kw={"placeholder":"Password"})
         submit = SubmitField('Signup')
 
     # Flask uses the "app.route" decorator to call methods when users
