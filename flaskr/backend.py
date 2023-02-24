@@ -1,5 +1,6 @@
 # TODO(Project 1): Implement Backend according to the requirements.
 from google.cloud import storage
+import base64
 
 class Backend:
     
@@ -23,12 +24,14 @@ class Backend:
     def sign_in(self):
         bucket = self.client.get_bucket('users-passwords-techx')
 
-    def get_image(self):
+    def get_image(self, blob_name):
         bucket = self.client.get_bucket('wiki-content-techx')
-        blob = bucket.get_blob('authors/javier.png')
+        blob = bucket.get_blob(blob_name)
         with blob.open('rb') as f:
-            return f.read()
+            content = f.read()
+        image = base64.b64encode(content).decode("utf-8")
+        return image
 
 
-
-
+backend = Backend()
+backend.get_image('authors/edgar.png')

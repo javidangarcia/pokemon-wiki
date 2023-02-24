@@ -13,7 +13,9 @@ About the Pokemon Wiki
 <h3>Your Authors</h3>
 
 <!-- TODO(Project 1): Add team members and pictures to about page. -->
-
+{% for image in images %}
+    <img src="data:{{ content_type }};base64,{{ image }}">
+{% endfor %}
 
 {% endblock %}
 

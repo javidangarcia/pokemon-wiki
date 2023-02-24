@@ -15,7 +15,9 @@ def make_endpoints(app):
     # TODO(Project 1): Implement additional routes according to the project requirements.
     @app.route("/about")
     def about():
-        return render_template('about.html')
+        backend = Backend()
+        images = [backend.get_image('authors/javier.png'), backend.get_image('authors/edgar.png'), backend.get_image('authors/mark.png')]
+        return render_template('about.html', content_type='image/png', images=images)
 
     @app.route("/pages")
     def pages():
