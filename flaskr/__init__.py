@@ -1,9 +1,6 @@
 from flaskr import pages
 
 from flask import Flask
-from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
-from flask import render_template
 
 import logging
 logging.basicConfig(level=logging.DEBUG)
@@ -32,28 +29,5 @@ def create_app(test_config=None):
     # TODO(Project 1): Make additional modifications here for logging in, backends
     # and additional endpoints.
     
-    class LoginForm(FlaskForm):
-        username = StringField('Username')
-        password = StringField('Password')
-        submit = SubmitField('Login')
-    
-    class SignupForm(FlaskForm):
-        username = StringField('Username')
-        password = StringField('Password')
-        submit = SubmitField('Signup')
-
-    @app.route('/login', methods=['GET', 'POST'])
-    def signin():
-        form = LoginForm()
-        # User validation
-
-        return render_template('login.html', form=form)
-
-    @app.route('/signup', methods=['GET', 'POST'])
-    def singup():
-        form = SignupForm()
-        # User validation
-
-        return render_template('signup.html', form=form)
     pages.make_endpoints(app)
     return app

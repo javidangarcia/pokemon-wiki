@@ -15,7 +15,7 @@ class Backend:
 
     def upload(self, file):
         bucket = self.client.get_bucket('wiki-content-techx')
-        blob = bucket.blob('pokemon/' + file.filename)
+        blob = bucket.blob('poke_imgs/' + file.filename)
         blob.upload_from_file(file)
         
     def sign_up(self):
