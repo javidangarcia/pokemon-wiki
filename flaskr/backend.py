@@ -1,6 +1,9 @@
 # TODO(Project 1): Implement Backend according to the requirements.
 from google.cloud import storage
 import base64
+from flask import json
+
+AUTHENTICATED_URL = "https://storage.cloud.google.com/wiki-content-techx/poke_imgs/"
 
 class Backend:
     
@@ -13,10 +16,21 @@ class Backend:
     def get_all_page_names(self):
         pass
 
-    def upload(self, file, json):
+    def upload(self, file, pokemon_dict ):
         bucket = self.client.get_bucket('wiki-content-techx')
-        blob = bucket.blob('poke_imgs/' + file.filename)
-        blob.upload_from_file(file)
+    
+        # image upload
+        img_blob = bucket.blob('poke_imgs/' + file.filename)
+        img_blob.upload_from_file(file)
+
+        # add image url to pokemon dictionary and turn into json object
+        img_url = AUTHENTICATED_URL + file.filename
+        pokemon_dict["img_url"] = img_url
+        json_obj = json.dumps( pokemon_dict )
+        
+        # json object upload
+        json_blob = bucket.blob('pokemon/' + pokemon_dict["name"])
+        json_blob.upload_from_string(data=json_obj, content_type="application/json")
         
     def sign_up(self):
         bucket = self.client.get_bucket('users-passwords-techx')
