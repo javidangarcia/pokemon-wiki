@@ -1,6 +1,6 @@
-# TODO(Project 1): Implement Backend according to the requirements.
 from google.cloud import storage
 import base64
+import hashlib
 
 class Backend:
     
@@ -18,11 +18,36 @@ class Backend:
         blob = bucket.blob('poke_imgs/' + file.filename)
         blob.upload_from_file(file)
         
-    def sign_up(self):
+    def sign_up(self, username, password):
         bucket = self.client.get_bucket('users-passwords-techx')
+        blob = bucket.blob(username)
+
+        # salting the password with username and a secret word
+        salt = f"{username}{jmepokemon}{password}"
+        # generating hashed password after the salting
+        hashed_password = hashlib.blake2b(salt.encode()).hexdigest()
+
+        # writing hashed password to the new user blob we created
+        with blob.open('w') as f:
+            f.write(hashed_password)
         
-    def sign_in(self):
+    def sign_in(self, username, password):
+        # salting the password with username and a secret word
+        salt = f"{username}{jmepokemon}{password}"
+        # generating hashed password after the salting
+        hashed_password = hashlib.blake2b(salt.encode()).hexdigest()
+
         bucket = self.client.get_bucket('users-passwords-techx')
+        blob = bucket.get_blob(username)
+
+        # reading hashed password from the username
+        with blob.open('r') as f:
+            content = f.read()
+
+        # checking whether the hashed password matches the password given
+        if content == hashed_password:
+            return True
+        else: return False
 
     def get_image(self, blob_name):
         bucket = self.client.get_bucket('wiki-content-techx')
@@ -33,5 +58,8 @@ class Backend:
         return image
 
 
-backend = Backend()
-backend.get_image('authors/edgar.png')
+# Typical Usage (SignUp & SignIn):
+# backend = Backend()
+# backend.sign_up('javiergarcia', 'pokemon123')
+# backend.sign_in('javiergarcia', 'poke525') # should return False because it doesn't match password in cloud storage
+# backend.sign_in('javiergarcia', 'pokemon123') # should return True and sign the user in
