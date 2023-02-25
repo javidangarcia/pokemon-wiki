@@ -5,6 +5,7 @@
     <head>
         <!-- TODO(Checkpoint Requirement 3): Change the title and content of your wiki.-->
         <title>{% block page_name%} PokeWiki {% endblock %}</title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
     </head>
 </head>
 
@@ -21,13 +22,11 @@
             <li><a href="/upload">UPLOAD</a></li>
         </ul>
     </div>
-    <div>     
+    <div class="title">     
         <!-- TODO(Checkpoint Requirement 3): Change the title and content of your wiki.-->
-        {% block content %}  
-        <h1>Welcome to the pokemon Wiki!</h1>
+        {% block content %}
+        <h1>Welcome to the Pokemon Wiki!</h1>
         <p>This is a minimal implementation of a wiki that allows users to login and upload pages.</p>
-        <p>Authors: Javier Garcia, Edgar Ochoa Sotelo, Mark Toro</p>
-             
         {% endblock %}
     </div>
 </body>
