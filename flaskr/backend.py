@@ -13,7 +13,7 @@ class Backend:
     def get_all_page_names(self):
         pass
 
-    def upload(self, file):
+    def upload(self, file, json):
         bucket = self.client.get_bucket('wiki-content-techx')
         blob = bucket.blob('poke_imgs/' + file.filename)
         blob.upload_from_file(file)

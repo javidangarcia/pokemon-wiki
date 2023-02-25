@@ -55,7 +55,9 @@ def make_endpoints(app):
     
     @app.route("/upload",methods=["POST"])
     def upload_file():
+        name = request.form["name"]
+        
         file_to_upload = request.files['file']
         backend = Backend()
-        backend.upload(file_to_upload)
+        backend.upload(file_to_upload, json_to_upload)
         return render_template("main.html")
