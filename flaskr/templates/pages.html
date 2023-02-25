@@ -6,4 +6,9 @@ Pages directory
 
 {% block content %}
 This is pages content
+    <ul>
+    {% for page in pages %}
+        <li>{{page}}</li>
+    {% endfor %}
+    </ul>
 {% endblock %}

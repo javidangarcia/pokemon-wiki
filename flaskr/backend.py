@@ -14,7 +14,12 @@ class Backend:
         pass
 
     def get_all_page_names(self):
-        pass
+        blobs = self.client.list_blobs("wiki-content-techx", prefix="pokemon/" )
+        page_names = []
+        for blob in blobs:
+            name = blob.name
+            page_names.append(blob.name)
+        return page_names
 
     def upload(self, file, pokemon_dict ):
         bucket = self.client.get_bucket('wiki-content-techx')
@@ -27,7 +32,7 @@ class Backend:
         img_url = AUTHENTICATED_URL + file.filename
         pokemon_dict["img_url"] = img_url
         json_obj = json.dumps( pokemon_dict )
-        
+
         # json object upload
         json_blob = bucket.blob('pokemon/' + pokemon_dict["name"])
         json_blob.upload_from_string(data=json_obj, content_type="application/json")
