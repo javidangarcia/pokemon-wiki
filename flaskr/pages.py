@@ -1,4 +1,4 @@
-from flask import render_template,request
+from flask import render_template, request, json
 from .backend import Backend
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField, validators
@@ -33,7 +33,9 @@ def make_endpoints(app):
 
     @app.route("/pages")
     def pages():
-        return render_template('pages.html')
+        backend = Backend()
+        pages = backend.get_all_page_names()
+        return render_template('pages.html', pages=pages)
 
     @app.route('/login', methods=['GET', 'POST'])
     def login():
@@ -55,7 +57,22 @@ def make_endpoints(app):
     
     @app.route("/upload",methods=["POST"])
     def upload_file():
+        # dictionary that holds all values from the form, except for the file
+        pokemon_dict = {
+            "name":request.form["name"],
+            "hit_points":request.form["hit_points"],
+            "attack":request.form["attack"],
+            "defense":request.form["defense"],
+            "speed":request.form["speed"],
+            "special_attack":request.form["special_attack"],
+            "special_defense":request.form["special_defense"]
+        }
+        # json object to be uploaded
         file_to_upload = request.files['file']
+
+        # call backend upload
         backend = Backend()
-        backend.upload(file_to_upload)
+        backend.upload(file_to_upload, pokemon_dict)
+
+        # render homepage
         return render_template("main.html")
