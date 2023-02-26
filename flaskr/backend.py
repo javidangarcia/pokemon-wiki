@@ -46,16 +46,22 @@ class Backend:
         
     def sign_up(self, username, password):
         bucket = self.client.get_bucket('users-passwords-techx')
-        blob = bucket.blob(username)
 
-        # salting the password with username and a secret word
-        salt = f"{username}jmepokemon{password}"
-        # generating hashed password after the salting
-        hashed_password = hashlib.blake2b(salt.encode()).hexdigest()
+        # if an account with that username already exists we shouldn't be creating a new one
+        if bucket.get_blob(username):
+            return False
+        else:
+            blob = bucket.blob(username)
 
-        # writing hashed password to the new user blob we created
-        with blob.open('w') as f:
-            f.write(hashed_password)
+            # salting the password with username and a secret word
+            salt = f"{username}jmepokemon{password}"
+            # generating hashed password after the salting
+            hashed_password = hashlib.blake2b(salt.encode()).hexdigest()
+
+            # writing hashed password to the new user blob we created
+            with blob.open('w') as f:
+                f.write(hashed_password)
+            return True
         
     def sign_in(self, username, password):
         # salting the password with username and a secret word
@@ -73,7 +79,7 @@ class Backend:
         # checking whether the hashed password matches the password given
         if content == hashed_password:
             return True
-        else: return False
+        return False
 
     def get_image(self, blob_name):
         bucket = self.client.get_bucket('wiki-content-techx')
@@ -89,3 +95,6 @@ class Backend:
 # backend.sign_up('javiergarcia', 'pokemon123')
 # backend.sign_in('javiergarcia', 'poke525') # should return False because it doesn't match password in cloud storage
 # backend.sign_in('javiergarcia', 'pokemon123') # should return True and sign the user in
+
+backend = Backend()
+backend.sign_up('javiergarc', '12')
