@@ -11,12 +11,18 @@ class Backend:
         self.client = storage.Client()
         
     def get_wiki_page(self, name):
-        pass
+        bucket = self.client.get_bucket('wiki-content-techx')
+        blob = bucket.get_blob(f'pages/{name}')
+        with blob.open('r') as f:
+            content = f.read()
+        return content
 
     def get_all_page_names(self):
         bucket = self.client.get_bucket('wiki-content-techx')
         blobs = bucket.list_blobs(prefix = 'pokemon/')
         page_names = []
+
+        # adding every blob to page_names except the first blob since it's just the folder name
         for index, blob in enumerate(blobs):
             if index != 0:
                 page_names.append(blob.name)
