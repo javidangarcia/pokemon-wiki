@@ -10,15 +10,16 @@ class Backend:
     def __init__(self):
         self.client = storage.Client()
         
-    def get_wiki_page(self, name, bucket_name):
+    def get_wiki_page(self, name):
         pass
 
     def get_all_page_names(self):
-        blobs = self.client.list_blobs("wiki-content-techx", prefix="pokemon/" )
+        bucket = self.client.get_bucket('wiki-content-techx')
+        blobs = bucket.list_blobs(prefix = 'pokemon/')
         page_names = []
-        for blob in blobs:
-            name = blob.name
-            page_names.append(blob.name)
+        for index, blob in enumerate(blobs):
+            if index != 0:
+                page_names.append(blob.name)
         return page_names
 
     def upload(self, file, pokemon_dict ):
@@ -82,3 +83,6 @@ class Backend:
 # backend.sign_up('javiergarcia', 'pokemon123')
 # backend.sign_in('javiergarcia', 'poke525') # should return False because it doesn't match password in cloud storage
 # backend.sign_in('javiergarcia', 'pokemon123') # should return True and sign the user in
+
+backend = Backend()
+print(backend.get_all_page_names())
