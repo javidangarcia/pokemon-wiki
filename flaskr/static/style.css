@@ -5,7 +5,7 @@ body {
 
 .title {
     display: flex;
-    height: 500px;
+    height: 700px;
     justify-content: center;
     align-items: center;
     flex-direction: column;
@@ -16,4 +16,25 @@ body {
 img {
     height: 200px;
     width: 200px;
+}
+
+.upload-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.upload-form input {
+    width: 300px;
+}
+
+.upload-form input[type=text] {
+    padding: 12px 20px;
+    box-sizing: border-box;
+    margin: 8px 0;
+}
+
+.upload-form input[type=number] {
+    padding: 12px 20px;
+    box-sizing: border-box;
+    margin: 8px 0;
 }
