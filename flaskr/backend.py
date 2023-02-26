@@ -49,7 +49,7 @@ class Backend:
         blob = bucket.blob(username)
 
         # salting the password with username and a secret word
-        salt = f"{username}{jmepokemon}{password}"
+        salt = f"{username}jmepokemon{password}"
         # generating hashed password after the salting
         hashed_password = hashlib.blake2b(salt.encode()).hexdigest()
 
@@ -59,7 +59,7 @@ class Backend:
         
     def sign_in(self, username, password):
         # salting the password with username and a secret word
-        salt = f"{username}{jmepokemon}{password}"
+        salt = f"{username}jmepokemon{password}"
         # generating hashed password after the salting
         hashed_password = hashlib.blake2b(salt.encode()).hexdigest()
 
@@ -89,6 +89,3 @@ class Backend:
 # backend.sign_up('javiergarcia', 'pokemon123')
 # backend.sign_in('javiergarcia', 'poke525') # should return False because it doesn't match password in cloud storage
 # backend.sign_in('javiergarcia', 'pokemon123') # should return True and sign the user in
-
-backend = Backend()
-print(backend.get_all_page_names())
