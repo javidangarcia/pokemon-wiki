@@ -7,7 +7,8 @@ Login
 {% block content %}
 This is the log in content
 <h1>Log In</h1>
-<form>
+<form method="POST", action="">
+    {{form.csrf_token}}
     {{form.username}}
     {{form.password}}
     {{form.submit}}
