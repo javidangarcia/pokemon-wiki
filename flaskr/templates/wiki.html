@@ -1,0 +1,11 @@
+{% extends "main.html" %}
+
+{% block page_name %}
+{{ poke["name"] }}
+{% endblock %}
+
+<div>
+    {% block content %}
+    <div>name: {{ poke["name"] }}</div>
+    {% endblock %}
+</div>

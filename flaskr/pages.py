@@ -41,6 +41,14 @@ def make_endpoints(app):
         pages = backend.get_all_page_names()
         return render_template('pages.html', pages=pages)
 
+    @app.route("/pages/<pokemon>")
+    def wiki(pokemon="abra"):
+        backend = Backend()
+        poke_string = backend.get_wiki_page(pokemon)
+        # pokemon blob is returned as string, turn into json
+        poke_json = json.loads(poke_string)
+        return render_template("wiki.html", poke=poke_json)
+
     @app.route('/login', methods=['GET', 'POST'])
     def login():
         form = LoginForm()
