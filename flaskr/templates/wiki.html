@@ -4,8 +4,13 @@
 {{ poke["name"] }}
 {% endblock %}
 
+
+{% block content %}
 <div>
-    {% block content %}
-    <div>name: {{ poke["name"] }}</div>
-    {% endblock %}
+    {{ poke}}
+    {{poke["img_url"]}}
+    <img src="{{ poke["img_url"]}}">
 </div>
+<div>name: {{ poke["name"] }}</div>
+{% endblock %}
+

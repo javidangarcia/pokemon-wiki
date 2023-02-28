@@ -3,7 +3,7 @@ import base64
 import hashlib
 from flask import json
 
-AUTHENTICATED_URL = "https://storage.cloud.google.com/wiki-content-techx/poke_imgs/"
+AUTHENTICATED_URL = "https://storage.cloud.google.com/wiki-content-techx/pokemon/"
 
 class Backend:
     
