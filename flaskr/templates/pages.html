@@ -8,7 +8,7 @@ Pages directory
 This is pages content
     <ul>
     {% for page in pages %}
-        <li>{{page}}</li>
+        <li><a href="{{page}}">{{page}}</a></li>
     {% endfor %}
     </ul>
 {% endblock %}

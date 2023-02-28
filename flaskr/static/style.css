@@ -5,7 +5,7 @@ body {
 
 .title {
     display: flex;
-    height: 700px;
+    height: 650px;
     justify-content: center;
     align-items: center;
     flex-direction: column;
@@ -38,3 +38,10 @@ img {
     box-sizing: border-box;
     margin: 8px 0;
 }
+
+.nav-bar {
+    display: flex;
+    justify-content: space-evenly;
+    padding: 25px;
+}
+
