@@ -69,21 +69,23 @@ class Backend:
             return True
         
     def sign_in(self, username, password):
-        # salting the password with username and a secret word
-        salt = f"{username}jmepokemon{password}"
-        # generating hashed password after the salting
-        hashed_password = hashlib.blake2b(salt.encode()).hexdigest()
-
         bucket = self.client.get_bucket('users-passwords-techx')
         blob = bucket.get_blob(username)
 
-        # reading hashed password from the username
-        with blob.open('r') as f:
-            content = f.read()
+        if blob:
+            # salting the password with username and a secret word
+            salt = f"{username}jmepokemon{password}"
+            # generating hashed password after the salting
+            hashed_password = hashlib.blake2b(salt.encode()).hexdigest()
 
-        # checking whether the hashed password matches the password given
-        if content == hashed_password:
-            return True
+            # reading hashed password from the username
+            with blob.open('r') as f:
+                content = f.read()
+
+            # checking whether the hashed password matches the password given
+            if content == hashed_password:
+                return True
+        
         return False
 
     def get_image(self, blob_name):
