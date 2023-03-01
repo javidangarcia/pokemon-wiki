@@ -5,10 +5,10 @@ Pages directory
 {% endblock %}
 
 {% block content %}
-This is pages content
+    Browse the pokemon wiki
     <ul>
     {% for page in pages %}
-        <li><a href="{{page}}">{{page}}</a></li>
+        <li><a href="{{page}}">{{ (page[6:]).capitalize()}}</a></li>
     {% endfor %}
     </ul>
 {% endblock %}
