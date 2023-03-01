@@ -96,6 +96,17 @@ class Backend:
         image = base64.b64encode(content).decode("utf-8")
         return image
 
+    def get_user(username):
+        bucket = self.client.get_bucket('users-passwords-techx')
+        blob = bucket.get_blob(username)
+
+        if blob:
+            with blob.open('r') as f:
+                password = f.read()
+            return User(username, password)
+        else:
+            return None
+
 
 # Typical Usage (SignUp & SignIn):
 # backend = Backend()
