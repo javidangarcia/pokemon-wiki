@@ -2,7 +2,7 @@ from google.cloud import storage
 import base64
 import hashlib
 from flask import json
-from user import User
+from .user import User
 
 AUTHENTICATED_URL = "https://storage.cloud.google.com/wiki-content-techx/pokemon/"
 
