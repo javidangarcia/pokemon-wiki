@@ -2,6 +2,7 @@ from google.cloud import storage
 import base64
 import hashlib
 from flask import json
+from user import User
 
 AUTHENTICATED_URL = "https://storage.cloud.google.com/wiki-content-techx/pokemon/"
 
@@ -96,7 +97,7 @@ class Backend:
         image = base64.b64encode(content).decode("utf-8")
         return image
 
-    def get_user(username):
+    def get_user(self, username):
         bucket = self.client.get_bucket('users-passwords-techx')
         blob = bucket.get_blob(username)
 
