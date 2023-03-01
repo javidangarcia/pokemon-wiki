@@ -117,7 +117,8 @@ def make_endpoints(app):
             "defense":request.form["defense"],
             "speed":request.form["speed"],
             "special_attack":request.form["special_attack"],
-            "special_defense":request.form["special_defense"]
+            "special_defense":request.form["special_defense"],
+            "type":request.form["type"]
         }
         # json object to be uploaded
         file_to_upload = request.files['file']

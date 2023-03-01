@@ -7,10 +7,15 @@
 
 {% block content %}
 <div>
-    {{ poke}}
-    {{poke["img_url"]}}
     <img src="{{ poke["img_url"]}}">
 </div>
-<div>name: {{ poke["name"] }}</div>
+<div>
+    <div>Type: {{ poke["type"] }}</div>
+    <div>Name: {{ poke["name"] }}</div>
+    <div>Attack: {{ poke["attack"] }}</div>
+    <div>Defense: {{ poke["defense"] }}</div>
+    <div>Special Attack: {{ poke["special_attack"] }}</div>
+    <div>Special Defense: {{ poke["special_defense"] }}</div>   
+</div>
 {% endblock %}
 

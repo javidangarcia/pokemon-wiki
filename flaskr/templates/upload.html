@@ -15,6 +15,17 @@ Upload a Pokemon!
             <td>Speed<input type="number" name="speed"></td>
             <td>Special Attack<input type="number" name="special_attack"></td>
             <td>Special Defense<input type="number" name="special_defense"></td>
+            <td>
+                <label for="type">Type</label>
+                <select name="type">
+                    {% set types=['Normal','Fire','Water','Grass','Electric','Ice','Fighting','Poison',
+                    'Ground','Flying','Psychic','Bug','Rock','Ghost','Dark','Dragon','Steel','Fairy'] %}
+                    {% for type in types %}
+                    <option value="{{type}}">{{type}}</option>
+                    {% endfor %}
+                </select>
+
+            </td>
         </tr>
         <tr>
             <td>File to upload:</td>
