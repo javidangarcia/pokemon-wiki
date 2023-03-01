@@ -45,3 +45,8 @@ img {
     padding: 25px;
 }
 
+.about p {
+    display: flex;
+    justify-content: center;
+}
+
