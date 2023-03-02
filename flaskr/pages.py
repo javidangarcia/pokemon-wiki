@@ -100,7 +100,7 @@ def make_endpoints(app):
     @app.route('/logout', methods=['GET', 'POST'])
     @flask_login.login_required
     def signout():
-        login_manager.logout_user()
+        flask_login.logout_user()
         return redirect(url_for('login'))
 
     @app.route("/upload")
