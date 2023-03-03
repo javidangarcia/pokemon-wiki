@@ -3,7 +3,6 @@ from .backend import Backend
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField, validators
 from .user import User
-# from is_safe_url import is_safe_url
 from .__init__ import login_manager
 import flask_login
 
@@ -64,11 +63,7 @@ def make_endpoints(app):
                 flask_login.login_user(user)
                 flash('Logged in succesfully.')
 
-                next = request.args.get('next')
-                # if not is_safe_url(next):
-                #     return abort(400)
-                
-                return redirect(next or url_for('upload'))
+                return redirect(url_for('about'))
             else:
                 flash('Wrong username or password.')
 
@@ -87,11 +82,7 @@ def make_endpoints(app):
             if register:
                 flash('Succesfully created an account.')
 
-                next = request.args.get('next')
-                # if not is_safe_url(next):
-                #     return abort(400)
-                
-                return redirect(next or url_for('login'))
+                return redirect(url_for('login'))
             else:
                 flash('Account already exists.')
             
@@ -100,7 +91,7 @@ def make_endpoints(app):
     @app.route('/logout', methods=['GET', 'POST'])
     @flask_login.login_required
     def signout():
-        login_manager.logout_user()
+        flask_login.logout_user()
         return redirect(url_for('login'))
 
     @app.route("/upload")
