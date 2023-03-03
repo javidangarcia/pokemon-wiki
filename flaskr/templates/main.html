@@ -18,9 +18,10 @@
         <a href="/pages">PAGES</a>
         <a href="/login">LOGIN</a>
         <a href="/signup">SIGN UP</a>
-        <a href="/upload">UPLOAD</a>
         {% if current_user.is_authenticated %}
+            <a href="/upload">UPLOAD</a>
             <a href="{{url_for('signout')}}">LOGOUT</a>
+            <p class="username">{{current_user.username.upper()}}</p>
         {% endif %}
     </div>
     <div class="title">     
