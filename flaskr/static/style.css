@@ -3,9 +3,23 @@ body {
     margin: 0px;
 }
 
+
+/* Navigation Bar */
+
+
+.nav-bar {
+    display: flex;
+    justify-content: space-evenly;
+    padding: 25px;
+}
+
+
+/* Home Page */
+
+
 .title {
     display: flex;
-    height: 700px;
+    height: 90vh;
     justify-content: center;
     align-items: center;
     flex-direction: column;
@@ -25,10 +39,40 @@ body {
     margin: 0px;
 }
 
-img {
+
+/* About Page */
+
+
+.about {
+    display: flex;
+    height: 90vh;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: white;
+    background-color: rgb(51, 85, 197);
+}
+
+.about img {
     height: 200px;
     width: 200px;
 }
+
+.about p {
+    display: flex;
+    justify-content: center;
+}
+
+
+/* Pages Page */
+
+
+
+
+
+
+/* Upload Page */
+
 
 .upload-form {
     display: flex;
@@ -50,15 +94,3 @@ img {
     box-sizing: border-box;
     margin: 8px 0;
 }
-
-.nav-bar {
-    display: flex;
-    justify-content: space-evenly;
-    padding: 25px;
-}
-
-.about p {
-    display: flex;
-    justify-content: center;
-}
-

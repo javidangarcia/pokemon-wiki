@@ -4,20 +4,19 @@
 About the Pokemon Wiki
 {% endblock %}
 
+
+
 {% block content %}
-<h3>About this Wiki</h3>
-
-<!-- TODO(Project 1): Add info about the wiki. -->
-<p>This wiki is for pokemon uploads. Upload your favorite pokemon or create your own and upload it for the world to see!</p>
-
-<h3>Your Authors</h3>
-
-<!-- TODO(Project 1): Add team members and pictures to about page. -->
 <div class="about">
+    <h3>About this Wiki</h3>
+    <p>This wiki is for pokemon uploads. Upload your favorite pokemon or create your own and upload it for the world to see!</p>
+    <h3>Your Authors</h3>
     <p>Javier Garcia, Edgar Ochoa Sotelo, Mark Toro</p>
-    {% for image in images %}
-        <img src="data:image/png;base64,{{image}}">
-    {% endfor %}
+    <div>
+        {% for image in images %}
+            <img src="data:image/png;base64,{{image}}">
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}
 

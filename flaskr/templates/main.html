@@ -24,9 +24,9 @@
             <p class="username">{{current_user.username.upper()}}</p>
         {% endif %}
     </div>
+    {% block content %}
     <div class="title">     
         <!-- TODO(Checkpoint Requirement 3): Change the title and content of your wiki.-->
-        {% block content %}
         {% with messages = get_flashed_messages() %}
             {% if messages %}
                 {% for message in messages %}
@@ -40,8 +40,8 @@
         </div>
         <h1>Welcome to the Pokemon Wiki!</h1>
         <p>Browse, upload, have fun.</p>
-        {% endblock %}
     </div>
+    {% endblock %}
 </body>
 
 </html>
