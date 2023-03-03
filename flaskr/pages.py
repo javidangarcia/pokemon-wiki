@@ -63,7 +63,7 @@ def make_endpoints(app):
                 flask_login.login_user(user)
                 flash('Logged in succesfully.')
 
-                return redirect(url_for('about'))
+                return redirect(url_for('home'))
             else:
                 flash('Wrong username or password.')
 
@@ -92,9 +92,11 @@ def make_endpoints(app):
     @flask_login.login_required
     def signout():
         flask_login.logout_user()
+        flash('Logged out successfully.')
         return redirect(url_for('login'))
 
     @app.route("/upload")
+    @flask_login.login_required
     def upload():
         return render_template("upload.html")
     
