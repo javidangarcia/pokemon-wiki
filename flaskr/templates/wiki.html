@@ -6,16 +6,18 @@
 
 
 {% block content %}
-<div>
-    <img src="data:image/{{poke['image_type']}};base64,{{poke['image']}}">
-</div>
-<div>
-    <div>Name: {{ poke["name"] }}</div>
-    <div>Type: {{ poke["type"] }}</div>
-    <div>Attack: {{ poke["attack"] }}</div>
-    <div>Defense: {{ poke["defense"] }}</div>
-    <div>Special Attack: {{ poke["special_attack"] }}</div>
-    <div>Special Defense: {{ poke["special_defense"] }}</div>   
+<div class="wiki-pages">
+    <div class="stats">
+        <p>Name: {{ poke["name"] }}</p>
+        <p>Type: {{ poke["type"] }}</p>
+        <p>Attack: {{ poke["attack"] }}</p>
+        <p>Defense: {{ poke["defense"] }}</p>
+        <p>Special Attack: {{ poke["special_attack"] }}</p>
+        <p>Special Defense: {{ poke["special_defense"] }}</p>  
+    </div>
+    <div class="user-image">
+        <img src="data:image/{{poke['image_type']}};base64,{{poke['image']}}">
+    </div>
 </div>
 {% endblock %}
 
