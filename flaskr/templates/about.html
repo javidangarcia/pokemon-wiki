@@ -16,7 +16,7 @@ About the Pokemon Wiki
 <div class="about">
     <p>Javier Garcia, Edgar Ochoa Sotelo, Mark Toro</p>
     {% for image in images %}
-        <img src="data:{{ content_type }};base64,{{ image }}">
+        <img src="data:image/png;base64,{{image}}">
     {% endfor %}
 </div>
 {% endblock %}

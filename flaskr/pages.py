@@ -5,6 +5,8 @@ from wtforms import StringField, SubmitField, PasswordField, validators
 from .user import User
 from .__init__ import login_manager
 import flask_login
+import base64
+import io
 
 
 def make_endpoints(app):
@@ -25,14 +27,16 @@ def make_endpoints(app):
     def home():
         # TODO(Checkpoint Requirement 2 of 3): Change this to use render_template
         # to render main.html on the home page.
-        return render_template('main.html')
+        backend = Backend()
+        image = backend.get_image('pokemon/logo.jpg')
+        return render_template('main.html', image=image)
 
     # TODO(Project 1): Implement additional routes according to the project requirements.
     @app.route("/about")
     def about():
         backend = Backend()
         images = [backend.get_image('authors/javier.png'), backend.get_image('authors/edgar.png'), backend.get_image('authors/mark.png')]
-        return render_template('about.html', content_type='image/png', images=images)
+        return render_template('about.html', images=images)
 
     @app.route("/pages")
     def pages():

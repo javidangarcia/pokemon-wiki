@@ -3,8 +3,7 @@ import base64
 import hashlib
 from flask import json
 from .user import User
-
-AUTHENTICATED_URL = "https://storage.cloud.google.com/wiki-content-techx/pokemon/"
+import io
 
 class Backend:
     
@@ -39,8 +38,10 @@ class Backend:
         pokemon.upload_from_file(file)
 
         # adding image url to pokemon dictionary
-        img_url = AUTHENTICATED_URL + file.filename
-        pokemon_dict["img_url"] = img_url
+        image = self.get_image(f'pokemon/{file.filename}')
+        pokemon_dict["image"] = image
+
+        pokemon_dict["image_type"] = file.content_type
 
         # converting pokemon dictionary to json object
         json_obj = json.dumps(pokemon_dict)
@@ -94,7 +95,8 @@ class Backend:
         blob = bucket.get_blob(blob_name)
         with blob.open('rb') as f:
             content = f.read()
-        image = base64.b64encode(content).decode("utf-8")
+        data = io.BytesIO(content)
+        image = base64.b64encode(data.getvalue()).decode("utf-8")
         return image
 
     def get_user(self, username):

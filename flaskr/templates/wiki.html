@@ -7,7 +7,7 @@
 
 {% block content %}
 <div>
-    <img src="{{ poke['img_url']}}">
+    <img src="data:image/{{poke['image_type']}};base64,{{poke['image']}}">
 </div>
 <div>
     <div>Name: {{ poke["name"] }}</div>
