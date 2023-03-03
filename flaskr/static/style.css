@@ -13,6 +13,10 @@ body {
     padding: 25px;
 }
 
+.username {
+    margin: 0px;
+}
+
 
 /* Home Page */
 
@@ -139,6 +143,10 @@ body {
     flex-direction: column;
     color: white;
     background-color: rgb(51, 85, 197);
+}
+
+.account h1 {
+    margin-top: 0px;
 }
 
 .flash {
