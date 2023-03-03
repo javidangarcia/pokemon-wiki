@@ -147,6 +147,23 @@ body {
 
 .account h1 {
     margin-top: 0px;
+    display: flex;
+    justify-content: center;
+}
+
+.account-window {
+    background-color: #2C4047;
+    padding: 70px;
+    border: 3px solid white;
+}
+
+.account-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.account-window a {
+    color: white;
 }
 
 .flash {

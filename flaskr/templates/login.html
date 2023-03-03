@@ -14,12 +14,15 @@ Login
     {% endif %}
 {% endwith %}
 <div class="account">
-    <h1>Log In</h1>
-    <form method="POST", action="">
-        {{form.csrf_token}}
-        {{form.username}}
-        {{form.password}}
-        {{form.submit}}
-    </form>
+    <div class="account-window">
+        <h1>Log In</h1>
+        <form class="account-form" method="POST", action="">
+            {{form.csrf_token}}
+            {{form.username}}
+            {{form.password}}
+            {{form.submit}}
+        </form>
+        Need to create an account? <a href="{{url_for('signup')}}">Sign Up</a>
+    </div>
 </div>
 {% endblock %}
