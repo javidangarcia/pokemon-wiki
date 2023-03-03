@@ -19,7 +19,7 @@
         {% if current_user.is_authenticated %}
             <a href="/upload">UPLOAD</a>
             <a href="{{url_for('signout')}}">LOGOUT</a>
-            <p class="username">{{current_user.username.upper()}}</p>
+            <p class="username">{{current_user.username}}</p>
         {% else %}
             <a href="/login">LOGIN</a>
             <a href="/signup">SIGN UP</a>
@@ -31,7 +31,7 @@
         {% with messages = get_flashed_messages() %}
             {% if messages %}
                 {% for message in messages %}
-                    <p class="flash">{{message}}</p>
+                    <h1 class="flash-welcome">{{message}}</h1>
                 {% endfor %}
             {% endif %}
         {% endwith %}

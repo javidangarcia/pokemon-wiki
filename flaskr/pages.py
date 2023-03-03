@@ -65,7 +65,7 @@ def make_endpoints(app):
             if login_:
                 user = User(form.username.data, form.password.data)
                 flask_login.login_user(user)
-                flash(f'Welcome {flask_login.current_user.username.upper()}!')
+                flash(f'Welcome {flask_login.current_user.username}!')
 
                 return redirect(url_for('home'))
             else:
