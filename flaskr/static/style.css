@@ -128,13 +128,38 @@ body {
 }
 
 
+/* Login & Sign Up Pages */
+
+
+.account {
+    display: flex;
+    height: 90vh;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: white;
+    background-color: rgb(51, 85, 197);
+}
+
+
 
 /* Upload Page */
 
 
+.upload {
+    display: flex;
+    height: auto;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: white;
+    background-color: rgb(51, 85, 197);
+}
+
 .upload-form {
     display: flex;
     flex-direction: column;
+    margin: 35px;
 }
 
 .upload-form input {

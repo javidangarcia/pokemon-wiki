@@ -13,12 +13,13 @@ Login
         {% endfor %}
     {% endif %}
 {% endwith %}
-
-<h1>Log In</h1>
-<form method="POST", action="">
-    {{form.csrf_token}}
-    {{form.username}}
-    {{form.password}}
-    {{form.submit}}
-</form>
+<div class="account">
+    <h1>Log In</h1>
+    <form method="POST", action="">
+        {{form.csrf_token}}
+        {{form.username}}
+        {{form.password}}
+        {{form.submit}}
+    </form>
+</div>
 {% endblock %}
