@@ -19,10 +19,21 @@
         <a href="/login">LOGIN</a>
         <a href="/signup">SIGN UP</a>
         <a href="/upload">UPLOAD</a>
+        {% if current_user.is_authenticated %}
+            <a href="{{url_for('signout')}}">LOGOUT</a>
+        {% endif %}
     </div>
     <div class="title">     
         <!-- TODO(Checkpoint Requirement 3): Change the title and content of your wiki.-->
         {% block content %}
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <p class="flash">{{message}}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        {% block body %}{% endblock %}
         <div>
             <img src="https://storage.cloud.google.com/wiki-content-techx/pokemon/site_logo.png">
         </div>
@@ -30,8 +41,6 @@
         <p>Browse, upload, have fun.</p>
         {% endblock %}
     </div>
-
-    <a href="{{url_for('signout')}}">Logout</a>
 </body>
 
 </html>
