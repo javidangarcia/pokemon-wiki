@@ -7,8 +7,8 @@ import io
 
 class Backend:
     
-    def __init__(self):
-        self.client = storage.Client()
+    def __init__(self, client=storage.Client()):
+        self.client = client
         
     def get_wiki_page(self, name):
         bucket = self.client.get_bucket('wiki-content-techx')
