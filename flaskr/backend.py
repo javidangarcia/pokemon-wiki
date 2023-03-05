@@ -7,8 +7,9 @@ import io
 
 class Backend:
     
-    def __init__(self, client=storage.Client()):
+    def __init__(self, client=storage.Client(), hashfunc=hashlib):
         self.client = client
+        self.hashfunc = hashfunc
         
     def get_wiki_page(self, name):
         bucket = self.client.get_bucket('wiki-content-techx')
@@ -63,7 +64,7 @@ class Backend:
             # salting the password with username and a secret word
             salt = f"{username}jmepokemon{password}"
             # generating hashed password after the salting
-            hashed_password = hashlib.blake2b(salt.encode()).hexdigest()
+            hashed_password = self.hashfunc.blake2b(salt.encode()).hexdigest()
 
             # writing hashed password to the new user blob we created
             with blob.open('w') as f:
@@ -78,12 +79,11 @@ class Backend:
             # salting the password with username and a secret word
             salt = f"{username}jmepokemon{password}"
             # generating hashed password after the salting
-            hashed_password = hashlib.blake2b(salt.encode()).hexdigest()
+            hashed_password = self.hashfunc.blake2b(salt.encode()).hexdigest()
 
             # reading hashed password from the username
             with blob.open('r') as f:
                 content = f.read()
-
             # checking whether the hashed password matches the password given
             if content == hashed_password:
                 return True
