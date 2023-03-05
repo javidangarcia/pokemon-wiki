@@ -55,7 +55,8 @@ class Backend:
             name = pokemon_dict["name"].lower()
             json_blob = bucket.blob(f'pages/{name}')
             json_blob.upload_from_string(data=json_obj, content_type="application/json")
-        
+        else:
+            return redirect("/pages")
         
     def sign_up(self, username, password):
         bucket = self.client.get_bucket('users-passwords-techx')
