@@ -1,7 +1,7 @@
 from google.cloud import storage
 import base64
 import hashlib
-from flask import json
+from flask import json, render_template, flash, redirect, url_for
 from .user import User
 import io
 
@@ -33,24 +33,29 @@ class Backend:
 
     def upload(self, file, pokemon_dict):
         bucket = self.client.get_bucket('wiki-content-techx')
-    
-        # uploading user image of pokemon to the pokemon blob
-        pokemon = bucket.blob(f'pokemon/{file.filename}')
-        pokemon.upload_from_file(file)
+        
+        blob_path = "pages/" + pokemon_dict["name"].lower()
+        blob_exists = bucket.blob(blob_path).exists()
 
-        # adding image url to pokemon dictionary
-        image = self.get_image(f'pokemon/{file.filename}')
-        pokemon_dict["image"] = image
+        if not blob_exists:
+            # uploading user image of pokemon to the pokemon blob
+            pokemon = bucket.blob(f'pokemon/{file.filename}')
+            pokemon.upload_from_file(file)
 
-        pokemon_dict["image_type"] = file.content_type
+            # adding image url to pokemon dictionary
+            image = self.get_image(f'pokemon/{file.filename}')
+            pokemon_dict["image"] = image
 
-        # converting pokemon dictionary to json object
-        json_obj = json.dumps(pokemon_dict)
+            pokemon_dict["image_type"] = file.content_type
 
-        # creating a json object blob in the pages blob
-        name = pokemon_dict["name"].lower()
-        json_blob = bucket.blob(f'pages/{name}')
-        json_blob.upload_from_string(data=json_obj, content_type="application/json")
+            # converting pokemon dictionary to json object
+            json_obj = json.dumps(pokemon_dict)
+
+            # creating a json object blob in the pages blob
+            name = pokemon_dict["name"].lower()
+            json_blob = bucket.blob(f'pages/{name}')
+            json_blob.upload_from_string(data=json_obj, content_type="application/json")
+        
         
     def sign_up(self, username, password):
         bucket = self.client.get_bucket('users-passwords-techx')

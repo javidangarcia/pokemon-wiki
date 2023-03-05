@@ -125,4 +125,4 @@ def make_endpoints(app):
         backend.upload(file_to_upload, pokemon_dict)
 
         # render homepage
-        return render_template("main.html")
+        return pages()
