@@ -79,30 +79,32 @@ class MockHashFunction:
 
 
 @pytest.fixture
-def mock_storage():
-    return mock_storage_client()
+def client():
+    return MagicMock()
 
 @pytest.fixture
-def mock_hashfunc():
-    return MockHashFunction()    
+def bucket():
+    return MagicMock()
+
+@pytest.fixture
+def blob():
+    return MagicMock()
+
+@pytest.fixture
+def file():
+    return MagicMock()
 
 
-def test_get_wiki_page():
-    client = MagicMock()
-    bucket = MagicMock()
-    blob = MagicMock()
-    f = MagicMock()
+def test_get_wiki_page(client, bucket, blob, file):
     client.get_bucket.return_value = bucket
     bucket.get_blob.return_value = blob
-    blob.open.return_value.__enter__.return_value = f
-    f.read.return_value = ['Charmander', 'Fire', 'Kanto']
+    blob.open.return_value.__enter__.return_value = file
+    file.read.return_value = ['Charmander', 'Fire', 'Kanto']
     backend = Backend(client)
     assert backend.get_wiki_page('charmander') == ['Charmander', 'Fire', 'Kanto']
 
 
-def test_get_all_page_names():
-    client = MagicMock()
-    bucket = MagicMock()
+def test_get_all_page_names(client, bucket):
     blob1 = MagicMock()
     blob2 = MagicMock()
     blob3 = MagicMock()
@@ -113,6 +115,7 @@ def test_get_all_page_names():
     bucket.list_blobs.return_value = [blob1, blob2, blob3]
     backend = Backend(client)
     assert backend.get_all_page_names() == ['pages/charmander', 'pages/squirtle']
+
 
 """
 def test_get_wiki_page(mock_storage):
