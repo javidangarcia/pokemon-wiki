@@ -2,18 +2,10 @@ from flaskr import pages
 
 from flask import Flask
 
-from flask_login import LoginManager
-from .backend import Backend
+from .pages import login_manager
 
 import logging
 logging.basicConfig(level=logging.DEBUG)
-
-login_manager = LoginManager()
-
-@login_manager.user_loader
-def load_user(username):
-    backend = Backend()
-    return backend.get_user(username)
 
 # The flask terminal command inside "run-flask.sh" searches for
 # this method inside of __init__.py (containing flaskr module 

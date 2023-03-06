@@ -3,11 +3,17 @@ from .backend import Backend
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField, validators
 from .user import User
-from .__init__ import login_manager
 import flask_login
+from flask_login import LoginManager
 import base64
 import io
 
+login_manager = LoginManager()
+
+@login_manager.user_loader
+def load_user(username):
+    backend = Backend()
+    return backend.get_user(username)
 
 def make_endpoints(app):
 
