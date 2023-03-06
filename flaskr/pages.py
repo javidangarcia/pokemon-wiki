@@ -130,5 +130,5 @@ def make_endpoints(app):
         backend = Backend()
         backend.upload(file_to_upload, pokemon_dict)
 
-        # render homepage
+        # render pages list
         return pages()
