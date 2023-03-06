@@ -9,10 +9,10 @@ import base64
 import io
 
 login_manager = LoginManager()
+backend = Backend()
 
 @login_manager.user_loader
 def load_user(username):
-    backend = Backend()
     return backend.get_user(username)
 
 def make_endpoints(app):
@@ -33,26 +33,22 @@ def make_endpoints(app):
     def home():
         # TODO(Checkpoint Requirement 2 of 3): Change this to use render_template
         # to render main.html on the home page.
-        backend = Backend()
         image = backend.get_image('pokemon/logo.jpg')
         return render_template('main.html', image=image)
 
     # TODO(Project 1): Implement additional routes according to the project requirements.
     @app.route("/about")
     def about():
-        backend = Backend()
         images = [backend.get_image('authors/javier.png'), backend.get_image('authors/edgar.png'), backend.get_image('authors/mark.png')]
         return render_template('about.html', images=images)
 
     @app.route("/pages")
     def pages():
-        backend = Backend()
         pages = backend.get_all_page_names()
         return render_template('pages.html', pages=pages)
 
     @app.route("/pages/<pokemon>")
     def wiki(pokemon="abra"):
-        backend = Backend()
         poke_string = backend.get_wiki_page(pokemon)
         # pokemon blob is returned as string, turn into json
         poke_json = json.loads(poke_string)
@@ -65,7 +61,6 @@ def make_endpoints(app):
         # User validation
         if form.validate_on_submit():
 
-            backend = Backend()
             login_ = backend.sign_in(form.username.data, form.password.data)
 
             if login_:
@@ -86,7 +81,6 @@ def make_endpoints(app):
         # User validation
         if form.validate_on_submit():
 
-            backend = Backend()
             register = backend.sign_up(form.username.data, form.password.data)
 
             if register:
@@ -127,7 +121,6 @@ def make_endpoints(app):
         file_to_upload = request.files['file']
 
         # call backend upload
-        backend = Backend()
         backend.upload(file_to_upload, pokemon_dict)
 
         # render pages list

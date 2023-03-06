@@ -66,7 +66,7 @@ def mock_storage_client():
     
     return MockStorageClient()
 
-class HashFunction:
+class MockHashFunction:
     def __init__(self):
         pass    
     
@@ -83,7 +83,7 @@ def mock_storage():
 
 @pytest.fixture
 def mock_hashfunc():
-    return HashFunction()    
+    return MockHashFunction()    
 
 
 def test_get_wiki_page(mock_storage):
@@ -114,5 +114,3 @@ def test_sign_in_account_does_not_exist(mock_storage):
 def test_sign_in_successful(mock_storage, mock_hashfunc):
     backend = Backend(mock_storage, mock_hashfunc)
     assert backend.sign_in('javier', 'pokemon123') == True
-
-
