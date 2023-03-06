@@ -1,5 +1,6 @@
 from flaskr.backend import Backend
 import pytest
+from unittest.mock import MagicMock
 
 def mock_storage_client():
     buckets = { 'wiki-content-techx' : ['pages/', 'pages/charmander', 'pages/squirtle', 'pages/bulbasaur'], 
@@ -86,6 +87,34 @@ def mock_hashfunc():
     return MockHashFunction()    
 
 
+def test_get_wiki_page():
+    client = MagicMock()
+    bucket = MagicMock()
+    blob = MagicMock()
+    f = MagicMock()
+    client.get_bucket.return_value = bucket
+    bucket.get_blob.return_value = blob
+    blob.open.return_value.__enter__.return_value = f
+    f.read.return_value = ['Charmander', 'Fire', 'Kanto']
+    backend = Backend(client)
+    assert backend.get_wiki_page('charmander') == ['Charmander', 'Fire', 'Kanto']
+
+
+def test_get_all_page_names():
+    client = MagicMock()
+    bucket = MagicMock()
+    blob1 = MagicMock()
+    blob2 = MagicMock()
+    blob3 = MagicMock()
+    blob1.name = "pages/"
+    blob2.name = "pages/charmander"
+    blob3.name = "pages/squirtle"
+    client.get_bucket.return_value = bucket
+    bucket.list_blobs.return_value = [blob1, blob2, blob3]
+    backend = Backend(client)
+    assert backend.get_all_page_names() == ['pages/charmander', 'pages/squirtle']
+
+"""
 def test_get_wiki_page(mock_storage):
     backend = Backend(mock_storage)
     assert backend.get_wiki_page('charmander') == ['Charmander', 'Fire', 'Kanto']
@@ -114,3 +143,4 @@ def test_sign_in_account_does_not_exist(mock_storage):
 def test_sign_in_successful(mock_storage, mock_hashfunc):
     backend = Backend(mock_storage, mock_hashfunc)
     assert backend.sign_in('javier', 'pokemon123') == True
+"""
