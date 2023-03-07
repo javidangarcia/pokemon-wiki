@@ -65,5 +65,13 @@ def test_pages(client):
 
 def test_get_wiki_page(client):
     response = client.get("/pages/abra")
+    assert response.status_code == 200
     assert b"abra" in response.data
+
+def test_upload_get(client):
+    response = client.get("/upload")
+    assert response.status_code == 302
+    assert "upload" in response.location
+
+
 
