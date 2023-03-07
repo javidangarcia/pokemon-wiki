@@ -91,3 +91,6 @@ def test_get_image(client, bucket, blob, file, hashfunc, base64func):
     base64func.b64encode.return_value.decode.return_value = "YSqYWCEU3S9RsqUCGlwfUtQTkcpzLxM4pS3Pj1A"
     backend = Backend(client, hashfunc, base64func)
     assert backend.get_image('charmander') == "YSqYWCEU3S9RsqUCGlwfUtQTkcpzLxM4pS3Pj1A"
+
+def test_upload(client, bucket, blob):
+    pass
