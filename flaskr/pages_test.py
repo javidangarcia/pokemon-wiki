@@ -1,5 +1,5 @@
 from flaskr import create_app
-
+from backend_test import *
 import pytest
 
 # See https://flask.palletsprojects.com/en/2.2.x/testing/ 
@@ -14,6 +14,11 @@ def app():
 @pytest.fixture
 def client(app):
     return app.test_client()
+
+@pytest.fixture
+def mock_pages():
+    pages = ["pages/abra","pages/mudkip","pages/bob"]
+    return pages
 
 # TODO(Checkpoint (groups of 4 only) Requirement 4): Change test to
 # match the changes made in the other Checkpoint Requirements.
@@ -31,6 +36,8 @@ def test_about_page(client):
     assert b"Mark Toro" in resp.data
     assert b"Javier Garcia" in resp.data
 
-def test_pages(client):
-    resp = client.get("/pages")
+def test_pages(client,mock_pages):
+    test_backend = backend_test.mock_storage_client()
+    resp = client.get("/pages", data=mock_pages)
+    assert resp.status_code == 200
 
