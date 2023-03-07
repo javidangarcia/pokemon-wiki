@@ -49,11 +49,6 @@ def test_get_all_page_names(client, bucket):
     backend = Backend(client)
     assert backend.get_all_page_names() == ['pages/charmander', 'pages/squirtle']
 
-
-def test_upload(client, bucket):
-    client.get_bucket.return_value = bucket
-    
-
 def test_sign_up_account_already_exists(client, bucket, blob):
     client.get_bucket.return_value = bucket
     bucket.get_blob.return_value = blob

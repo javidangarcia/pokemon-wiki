@@ -16,8 +16,8 @@ class mock_backend():
     def get(self,x):
         if x == "/pages":
             return self.backend.get_all_page_names()
-        elif x == "pages/test"
-            return
+        elif x == "pages/test":
+            return '{"name":"abra","hit_points":"999","image":"NONE","attack":"999","defense":"999","speed":"999","special_attack":"999","special_defense":"999","type":"999"}'
 
 
     """
@@ -80,9 +80,7 @@ def test_upload_post(client,mockend):
     form = json.dumps(form_dict)
     response = client.post("/upload", data=form, headers={'Content-Type':'application/json'})
     assert response.status_code == 400
-    #assert response.data == ""
+  
 
-def test_upload_post_block(client):
-    
-    pass
+
 
