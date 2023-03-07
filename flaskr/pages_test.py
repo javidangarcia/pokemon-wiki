@@ -58,9 +58,12 @@ def test_about_page(client):
     assert b"Mark Toro" in resp.data
     assert b"Javier Garcia" in resp.data
 
-# work in progress
 def test_pages(client):
     response = client.get("/pages")
     assert response.status_code == 200
     assert b"User Generated Pages" in response.data
+
+def test_get_wiki_page(client):
+    response = client.get("/pages/abra")
+    assert b"abra" in response.data
 
