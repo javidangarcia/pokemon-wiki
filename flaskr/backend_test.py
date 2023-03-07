@@ -85,7 +85,7 @@ def test_sign_in_successful(client, bucket, blob, file, hashfunc):
     blob.open.return_value.__enter__.return_value = file
     file.read.return_value = "pokemon123"
     backend = Backend(client, hashfunc)
-    assert backend.sign_in('newUser', 'pokemon123') == True
+    assert backend.sign_in('javier', 'pokemon123') == True
 
 
 def test_get_image(client, bucket, blob, file, hashfunc, base64func):
