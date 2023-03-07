@@ -85,7 +85,6 @@ def test_sign_in_successful(client, bucket, blob, file, hashfunc):
     blob.open.return_value.__enter__.return_value = file
     file.read.return_value = "pokemon123"
     backend = Backend(client, hashfunc)
-<<<<<<< HEAD
     assert backend.sign_in('javier', 'pokemon123') == True
 
 
@@ -97,6 +96,3 @@ def test_get_image(client, bucket, blob, file, hashfunc, base64func):
     base64func.b64encode.return_value.decode.return_value = "YSqYWCEU3S9RsqUCGlwfUtQTkcpzLxM4pS3Pj1A"
     backend = Backend(client, hashfunc, base64func)
     assert backend.get_image('charmander') == "YSqYWCEU3S9RsqUCGlwfUtQTkcpzLxM4pS3Pj1A"
-=======
-    assert backend.sign_in('newUser', 'pokemon123') == True
->>>>>>> 2a68673 (working on pages)
