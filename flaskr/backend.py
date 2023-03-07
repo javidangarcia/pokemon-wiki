@@ -7,10 +7,11 @@ import io
 
 class Backend:
     
-    def __init__(self, client=storage.Client(), hashfunc=hashlib, base64func=base64):
+    def __init__(self, client=storage.Client(), hashfunc=hashlib, base64func=base64, json=json):
         self.client = client
         self.hashfunc = hashfunc
         self.base64func = base64func
+        self.json = json
         
     def get_wiki_page(self, name):
         bucket = self.client.get_bucket('wiki-content-techx')
@@ -53,13 +54,15 @@ class Backend:
             pokemon_data["image_type"] = file.content_type
 
             # converting pokemon dictionary to json object
-            json_obj = json.dumps(pokemon_data)
+            json_obj = self.json.dumps(pokemon_data)
 
             # creating a json object blob in the pages blob
             blob = bucket.blob(path)
             blob.upload_from_string(data=json_obj, content_type="application/json")
-        else:
-            return redirect("/pages")
+
+            return True
+        
+        return False
 
         
     def sign_up(self, username, password):

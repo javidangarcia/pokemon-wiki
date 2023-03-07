@@ -27,6 +27,14 @@ def hashfunc():
 def base64func():
     return MagicMock()
 
+@pytest.fixture
+def imagefile():
+    return MagicMock()
+
+@pytest.fixture
+def mockjson():
+    return MagicMock()
+
 
 def test_get_wiki_page(client, bucket, blob, file):
     client.get_bucket.return_value = bucket
@@ -48,6 +56,30 @@ def test_get_all_page_names(client, bucket):
     bucket.list_blobs.return_value = [blob1, blob2, blob3]
     backend = Backend(client)
     assert backend.get_all_page_names() == ['pages/charmander', 'pages/squirtle']
+
+
+def test_upload_successful(client, bucket, blob, file, base64func, imagefile, mockjson):
+    client.get_bucket.return_value = bucket
+    bucket.get_blob.return_value = None
+    bucket.blob.return_value = blob
+    blob.open.return_value.__enter__.return_value = file
+    file.read.return_value = "\x00\x08\x00\x00\x00\x06\x00\x12\x01\x03"
+    base64func.b64encode.return_value.decode.return_value = "YSqYWCEU3S9RsqUCGlwfUtQTkcpzLxM4pS3Pj1A"
+    imagefile.content_type = "image/png"
+    backend = Backend(client, hashfunc, base64func, mockjson)
+    pokemon_data = {"name" : "Charmander"}
+    assert backend.upload(imagefile, pokemon_data) == True
+    assert pokemon_data["image"] == "YSqYWCEU3S9RsqUCGlwfUtQTkcpzLxM4pS3Pj1A"
+    assert pokemon_data["image_type"] == "image/png"
+
+
+def test_upload_page_already_exists(client, bucket, blob, imagefile):
+    client.get_bucket.return_value = bucket
+    bucket.get_blob.return_value = blob
+    backend = Backend(client)
+    pokemon_data = {"name" : "Charmander"}
+    assert backend.upload(imagefile, pokemon_data) == False
+
 
 def test_sign_up_account_already_exists(client, bucket, blob):
     client.get_bucket.return_value = bucket
