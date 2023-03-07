@@ -34,3 +34,21 @@ def test_about_page(client):
 def test_pages(client):
     resp = client.get("/pages")
 
+def test_sign_up(client):
+    data={'username': 'username', 'password': 'password'}
+    resp = client.post('/signup', data=data)
+    assert resp.status_code == 200
+    assert b'username' in resp.data
+    assert b'Sign Up' in resp.data
+
+def test_sign_in(client):
+    data={'username': 'marktoro', 'password': 'mypassword'}
+    resp = client.post('login', data=data)
+    assert resp.status_code == 200
+    assert b'marktoro' in resp.data
+    assert b'Log In' in resp.data
+
+def test_logout(client):
+    resp = client.post('/logout')
+    assert resp.status_code == 302 # Redirection found
+    assert 'login' in resp.location
