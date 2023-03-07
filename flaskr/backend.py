@@ -7,9 +7,10 @@ import io
 
 class Backend:
     
-    def __init__(self, client=storage.Client(), hashfunc=hashlib):
+    def __init__(self, client=storage.Client(), hashfunc=hashlib, base64func=base64):
         self.client = client
         self.hashfunc = hashfunc
+        self.base64func = base64func
         
     def get_wiki_page(self, name):
         bucket = self.client.get_bucket('wiki-content-techx')
@@ -45,7 +46,7 @@ class Backend:
             # adding image data to pokemon dictionary
             with pokemon.open('rb') as f:
                 content = f.read()
-            image = base64.b64encode(content).decode("utf-8")
+            image = self.base64func.b64encode(content).decode("utf-8")
             pokemon_data["image"] = image
 
             # adding image type (jpg, png, etc) to pokemon dictionary
@@ -104,7 +105,7 @@ class Backend:
         blob = bucket.get_blob(blob_name)
         with blob.open('rb') as f:
             content = f.read()
-        image = base64.b64encode(content).decode("utf-8")
+        image = self.base64func.b64encode(content).decode("utf-8")
         return image
 
     def get_user(self, username):
