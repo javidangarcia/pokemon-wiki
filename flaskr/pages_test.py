@@ -1,5 +1,5 @@
 from flaskr import create_app
-from flask import render_template
+from flask import render_template, json
 from unittest.mock import MagicMock
 import pytest
 
@@ -16,6 +16,8 @@ class mock_backend():
     def get(self,x):
         if x == "/pages":
             return self.backend.get_all_page_names()
+        elif x == "pages/test"
+            return
 
 
     """
@@ -39,7 +41,7 @@ def client(app):
 
 
 @pytest.fixture
-def backend_mock():
+def mockend():
     return mock_backend()
 
 # TODO(Checkpoint (groups of 4 only) Requirement 4): Change test to
@@ -73,5 +75,14 @@ def test_upload_get(client):
     assert response.status_code == 302
     assert "upload" in response.location
 
+def test_upload_post(client,mockend):
+    form_dict = '{"name":"abra","hit_points":"999","image":"NONE","attack":"999","defense":"999","speed":"999","special_attack":"999","special_defense":"999","type":"999"}'
+    form = json.dumps(form_dict)
+    response = client.post("/upload", data=form, headers={'Content-Type':'application/json'})
+    assert response.status_code == 400
+    #assert response.data == ""
 
+def test_upload_post_block(client):
+    
+    pass
 
