@@ -19,7 +19,6 @@ class mock_backend():
         elif x == "pages/test":
             return '{"name":"abra","hit_points":"999","image":"NONE","attack":"999","defense":"999","speed":"999","special_attack":"999","special_defense":"999","type":"999"}'
 
-
     """
        @app.route("/pages")
         def pages(pages=None):
@@ -52,8 +51,7 @@ def test_home_page(client):
     assert b"Welcome to the Pokemon Wiki" in response.data
     assert b"Browse, upload, have fun." in response.data
 
-# TODO(Project 1): Write tests for other routes.
-
+# Tests about page, should return author's names
 def test_about_page(client):
     resp = client.get("/about")
     assert resp.status_code == 200
@@ -61,22 +59,26 @@ def test_about_page(client):
     assert b"Mark Toro" in resp.data
     assert b"Javier Garcia" in resp.data
 
+# should return list of pages
 def test_pages(client):
     response = client.get("/pages")
     assert response.status_code == 200
     assert b"User Generated Pages" in response.data
 
+# should return page for abra
 def test_get_wiki_page(client):
     response = client.get("/pages/abra")
     assert response.status_code == 200
     assert b"abra" in response.data
 
+# should return back to upload page
 def test_upload_get(client):
     response = client.get("/upload")
     assert response.status_code == 302
     assert "upload" in response.location
 
-def test_upload_post(client,mockend):
+
+def test_upload_post(client):
     form_dict = '{"name":"abra","hit_points":"999","image":"NONE","attack":"999","defense":"999","speed":"999","special_attack":"999","special_defense":"999","type":"999"}'
     form = json.dumps(form_dict)
     response = client.post("/upload", data=form, headers={'Content-Type':'application/json'})
