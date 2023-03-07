@@ -43,7 +43,8 @@ def make_endpoints(app):
         return render_template('about.html', images=images)
 
     @app.route("/pages")
-    def pages():
+    def pages(backend = Backend()):
+        #backend = Backend()
         pages = backend.get_all_page_names()
         return render_template('pages.html', pages=pages)
 
