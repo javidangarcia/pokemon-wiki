@@ -8,7 +8,7 @@
 {% block content %}
 <div class="wiki-pages">
     <div class="stats">
-        <p>Name: {{ poke["name"] }}</p>
+        <p>Name: {{ poke["name"].capitalize() }}</p>
         <p>Type: {{ poke["type"] }}</p>
         <p>Attack: {{ poke["attack"] }}</p>
         <p>Defense: {{ poke["defense"] }}</p>

@@ -31,32 +31,35 @@ class Backend:
             page_names.append(blob.name)
         return page_names
 
-    def upload(self, file, pokemon_dict):
+    def upload(self, file, pokemon_data):
         bucket = self.client.get_bucket('wiki-content-techx')
         
-        blob_path = "pages/" + pokemon_dict["name"].lower()
-        blob_exists = bucket.blob(blob_path).exists()
+        path = 'pages/' + pokemon_data["name"].lower()
+        blob = bucket.get_blob(path)
 
-        if not blob_exists:
+        if not blob:
             # uploading user image of pokemon to the pokemon blob
             pokemon = bucket.blob(f'pokemon/{file.filename}')
             pokemon.upload_from_file(file)
 
-            # adding image url to pokemon dictionary
-            image = self.get_image(f'pokemon/{file.filename}')
-            pokemon_dict["image"] = image
+            # adding image data to pokemon dictionary
+            with pokemon.open('rb') as f:
+                content = f.read()
+            image = base64.b64encode(content).decode("utf-8")
+            pokemon_data["image"] = image
 
-            pokemon_dict["image_type"] = file.content_type
+            # adding image type (jpg, png, etc) to pokemon dictionary
+            pokemon_data["image_type"] = file.content_type
 
             # converting pokemon dictionary to json object
-            json_obj = json.dumps(pokemon_dict)
+            json_obj = json.dumps(pokemon_data)
 
             # creating a json object blob in the pages blob
-            name = pokemon_dict["name"].lower()
-            json_blob = bucket.blob(f'pages/{name}')
-            json_blob.upload_from_string(data=json_obj, content_type="application/json")
+            blob = bucket.blob(path)
+            blob.upload_from_string(data=json_obj, content_type="application/json")
         else:
             return redirect("/pages")
+
         
     def sign_up(self, username, password):
         bucket = self.client.get_bucket('users-passwords-techx')
@@ -101,8 +104,7 @@ class Backend:
         blob = bucket.get_blob(blob_name)
         with blob.open('rb') as f:
             content = f.read()
-        data = io.BytesIO(content)
-        image = base64.b64encode(data.getvalue()).decode("utf-8")
+        image = base64.b64encode(content).decode("utf-8")
         return image
 
     def get_user(self, username):
