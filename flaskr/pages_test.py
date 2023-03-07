@@ -59,17 +59,8 @@ def test_about_page(client):
     assert b"Javier Garcia" in resp.data
 
 # work in progress
-def test_pages(client,backend_mock):
-    #backend = mock_backend()
-    pages = backend_mock.get_all_page_names()
-    print(pages)
-    whole_page = render_template('pages.html', pages=pages)
-    print("whole page:",whole_page)
-    #client.pages.return_value("pages/bob")
-    #resp = client.get("/pages")
-    #response = backend_mock.get("/pages")
-    assert "pages/abra" in whole_page
-   # assert resp.status_code == 200
-   # assert b"pages/squirtle" in resp.data
-   # assert b"pages/mudkip" in resp.data
+def test_pages(client):
+    response = client.get("/pages")
+    assert response.status_code == 200
+    assert b"User Generated Pages" in response.data
 
