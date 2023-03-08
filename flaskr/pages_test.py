@@ -84,10 +84,7 @@ def test_upload_post(client):
     response = client.post("/upload", data=form, headers={'Content-Type':'application/json'})
     assert response.status_code == 400
   
-
-
-
-
+# Tests sign up page
 def test_sign_up(client):
     data={'username': 'username', 'password': 'password'}
     resp = client.post('/signup', data=data)
@@ -95,6 +92,7 @@ def test_sign_up(client):
     assert b'username' in resp.data
     assert b'Sign Up' in resp.data
 
+# Tests sign in page
 def test_sign_in(client):
     data={'username': 'marktoro', 'password': 'mypassword'}
     resp = client.post('login', data=data)
@@ -102,6 +100,7 @@ def test_sign_in(client):
     assert b'marktoro' in resp.data
     assert b'Log In' in resp.data
 
+# Tests logout redirect
 def test_logout(client):
     resp = client.post('/logout')
     assert resp.status_code == 302 # Redirection found
