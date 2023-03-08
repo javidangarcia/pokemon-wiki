@@ -1,3 +1,7 @@
+<!--This module contains all the visible data that users use to interact with the signup page.
+    
+    Shows signup form, flashed messages and a login link.
+-->
 {% extends "main.html" %}
 
 {% block page_name %}
@@ -6,6 +10,7 @@ Sign up to Pokemon wiki
 
 {% block content %}
 
+<!-- Shows flashed messages -->
 {% with messages = get_flashed_messages() %}
     {% if messages %}
         {% for message in messages %}
@@ -16,12 +21,14 @@ Sign up to Pokemon wiki
 <div class="account">
     <div class="account-window">
         <h1>Sign Up</h1>
+        <!-- Shows signup form -->
         <form class="account-form" method="POST", action="">
             {{form.csrf_token}}
             {{form.username}}
             {{form.password}}
             {{form.submit}}
         </form>
+        <!-- Link to login page -->
         Already have an account? <a href="{{url_for('login')}}">Login</a>
     </div>
 </div>

@@ -8,6 +8,14 @@ from flask_login import LoginManager
 import base64
 import io
 
+'''This module takes care of rendering pages and page functions.
+
+   Contains all functions in charge of rendering all pages. Calls backend 
+   functions to store data in gcp buckets. Takes care of validating user information
+   for login and signup. It logsin, signups and logs out users from session. Uploads
+   pokemon wiki information to buckets. 
+'''
+
 login_manager = LoginManager() # Lets the app and Flask-Login work together for user loading, login, etc.
 backend = Backend()
 
@@ -70,7 +78,7 @@ def make_endpoints(app):
         '''Creates login form and logs in user.
 
            Creates login form and validates inputs in the form. Calls the backend
-           to login the user and checks if the user exists or credentials are correct.
+           to login the user and checks if the user exists or information is correct.
            Renders login page and form, when logged in successfully it redirects to home page and
            flashes a welcome message. When inputs are not correct it flashes an error message.
            
