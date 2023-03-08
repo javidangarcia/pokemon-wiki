@@ -1,19 +1,47 @@
+"""This module contains the backend of the pokemon wiki which interacts with the Google Cloud Storage.
+The backend retrieves user generated pages and image data from the cloud, creates username and password blobs, creates hashed passwords,
+compares username and password blobs for logging in, and uploads user generated page data to the cloud.
+
+Typical Usage:
+backend = Backend()
+data = backend.get_wiki_page('charmander')
+pages = backend.get_all_page_names()
+backend.upload('charmander.png', pokemon_dictionary)
+signup = backend.sign_up('javier', 'pokemon123')
+login = backend.sign_in('javier', 'pokemon123')
+image = get_image('pokemon/charmander')
+"""
+
+
 from google.cloud import storage
 import base64
 import hashlib
 from flask import json, render_template, flash, redirect, url_for
 from .user import User
-import io
+
 
 class Backend:
     
     def __init__(self, client=storage.Client(), hashfunc=hashlib, base64func=base64, json=json):
+        """
+        Args:
+            client: Dependency injection for mocking the cloud storage client.
+            hashfunc: Dependency injection for mocking the hashlib module.
+            base64func: Dependency injection for mocking the base64 module.
+            json: Dependency injection for mocking the json module.
+        """
         self.client = client
         self.hashfunc = hashfunc
         self.base64func = base64func
         self.json = json
         
     def get_wiki_page(self, name):
+        """ Retrieves user generated page from cloud storage and returns it.
+        Args:
+            name: The name of the user generated page to retrieve from the cloud.
+        Returns:
+            content: The user generated page data.
+        """
         bucket = self.client.get_bucket('wiki-content-techx')
         blob = bucket.get_blob(f'pages/{name}')
 
@@ -23,6 +51,10 @@ class Backend:
         return content
 
     def get_all_page_names(self):
+        """ Retrieves the names of all user generated pages and returns a list containing them.
+        Returns:
+            page_names: List that contains all user generated page names as strings.
+        """
         bucket = self.client.get_bucket('wiki-content-techx')
         blobs = bucket.list_blobs(prefix = 'pages/')
         page_names = []
@@ -34,6 +66,11 @@ class Backend:
         return page_names
 
     def upload(self, file, pokemon_data):
+        """ Uploads image data and user generated page data to the cloud storage.
+        Args:
+            file: The image file uploaded by the user.
+            pokemon_data: A dictionary with all data associated with user generated page.
+        """
         bucket = self.client.get_bucket('wiki-content-techx')
         
         path = 'pages/' + pokemon_data["name"].lower()
@@ -66,6 +103,12 @@ class Backend:
 
         
     def sign_up(self, username, password):
+        """ Uploads user account information to the cloud storage if account doesn't already exist.
+            Creates a hashed password from user password and uploads new password to cloud storage.
+        Args:
+            username: The username that the user inputs.
+            password: The password that the user inputs.
+        """
         bucket = self.client.get_bucket('users-passwords-techx')
 
         # if an account with that username already exists we shouldn't be creating a new one
@@ -85,6 +128,13 @@ class Backend:
             return True
         
     def sign_in(self, username, password):
+        """ Checks whether specific account information exists in the cloud storage.
+            Creates a hashed password from user password and compares it with the hashed 
+            password associated with the username if it exists.
+        Args:
+            username: The username that the user inputs.
+            password: The password that the user inputs.
+        """
         bucket = self.client.get_bucket('users-passwords-techx')
         blob = bucket.get_blob(username)
 
@@ -104,6 +154,12 @@ class Backend:
         return False
 
     def get_image(self, blob_name):
+        """ Retrieves image data from cloud storage and converts it to base64.
+        Args:
+            blob_name: Name of image blob that needs to be retrieved and displayed on website.
+        Returns:
+            image: Image data converted to base64 for front-end use.
+        """
         bucket = self.client.get_bucket('wiki-content-techx')
         blob = bucket.get_blob(blob_name)
         with blob.open('rb') as f:
@@ -112,6 +168,12 @@ class Backend:
         return image
 
     def get_user(self, username):
+        """ Creates User object containing username and hashed password retreived from cloud storage.
+        Args:
+            username: The username that the user inputs.
+        Returns:
+            User(username, password): User object for account related use.
+        """
         bucket = self.client.get_bucket('users-passwords-techx')
         blob = bucket.get_blob(username)
 
@@ -121,10 +183,3 @@ class Backend:
             return User(username, password)
         else:
             return None
-
-
-# Typical Usage (SignUp & SignIn):
-# backend = Backend()
-# backend.sign_up('javiergarcia', 'pokemon123')
-# backend.sign_in('javiergarcia', 'poke525') # should return False because it doesn't match password in cloud storage
-# backend.sign_in('javiergarcia', 'pokemon123') # should return True and sign the user in
