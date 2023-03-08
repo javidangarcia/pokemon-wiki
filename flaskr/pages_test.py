@@ -5,27 +5,6 @@ import pytest
 
 # See https://flask.palletsprojects.com/en/2.2.x/testing/ 
 # for more info on testing
-class mock_backend():
-    def __init__(self):
-        self.backend = MagicMock()
-        #self.backend.get_all_page_names.return_value(["pages/abra","pages/mudkip","pages/bob"])
-    #backend.get_all_page_names.return_value(["pages/abra","pages/mudkip","pages/bob"])
-    def get_all_page_names(self):
-        return ["pages/abra","pages/mudkip","pages/bob"]
-    
-    def get(self,x):
-        if x == "/pages":
-            return self.backend.get_all_page_names()
-        elif x == "pages/test":
-            return '{"name":"abra","hit_points":"999","image":"NONE","attack":"999","defense":"999","speed":"999","special_attack":"999","special_defense":"999","type":"999"}'
-
-    """
-       @app.route("/pages")
-        def pages(pages=None):
-        backend = Backend()
-        pages = backend.get_all_page_names()
-        return render_template('pages.html', pages=pages)
-    """
     
 @pytest.fixture
 def app():
@@ -37,11 +16,6 @@ def app():
 @pytest.fixture
 def client(app):
     return app.test_client()
-
-
-@pytest.fixture
-def mockend():
-    return mock_backend()
 
 # TODO(Checkpoint (groups of 4 only) Requirement 4): Change test to
 # match the changes made in the other Checkpoint Requirements.
@@ -77,7 +51,8 @@ def test_upload_get(client):
     assert response.status_code == 302
     assert "upload" in response.location
 
-
+# returns bad request error code, client must have app running in order to function. 
+# but app cannot run while testing.
 def test_upload_post(client):
     form_dict = '{"name":"abra","hit_points":"999","image":"NONE","attack":"999","defense":"999","speed":"999","special_attack":"999","special_defense":"999","type":"999"}'
     form = json.dumps(form_dict)
