@@ -19,15 +19,15 @@ unittest:
   - merge_requests
 
 prod:
-image: google/cloud-sdk:alpine
-stage: deploy
-needs:
-- pipeline: test
-  job: unittest
-environment: Production
-only:
-- main
-script:
-- echo $SERVICE_ACCOUNT > /tmp/$CI_PIPELINE_ID.json
-- gcloud auth activate-service-account --key-file /tmp/$CI_PIPELINE_ID.json
-- gcloud --quiet --project $PROJECT_ID app deploy
+  image: google/cloud-sdk:alpine
+  stage: deploy
+  needs:
+  - pipeline: test
+    job: unittest
+  environment: Production
+  only:
+  - main
+  script:
+  - echo $SERVICE_ACCOUNT > /tmp/$CI_PIPELINE_ID.json
+  - gcloud auth activate-service-account --key-file /tmp/$CI_PIPELINE_ID.json
+  - gcloud --quiet --project $PROJECT_ID app deploy
