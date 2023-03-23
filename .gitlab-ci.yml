@@ -3,6 +3,7 @@ lint:
   stage: test
   script:
   - pip install yapf==0.32.0
+  - pip install -U Flask-WTF
   - yapf --recursive . -i --style google
   only:
   - pushes
@@ -14,7 +15,6 @@ unittest:
     job: lint
   script:
   - pip install -r requirements.txt
-  - pip install -U Flask-WTF
   - pytest .
   only:
   - pushes
