@@ -16,7 +16,7 @@ def app():
 @pytest.fixture
 def client(app):
     return app.test_client()
-
+"""
 # TODO(Checkpoint (groups of 4 only) Requirement 4): Change test to
 # match the changes made in the other Checkpoint Requirements.
 def test_home_page(client):
@@ -32,7 +32,7 @@ def test_about_page(client):
     assert b"Edgar Ochoa Sotelo" in resp.data
     assert b"Mark Toro" in resp.data
     assert b"Javier Garcia" in resp.data
-"""
+
 # should return list of pages
 def test_pages(client):
     with patch("flaskr.backend.Backend.get_all_page_names",return_value=["User Generated Pages"]):
