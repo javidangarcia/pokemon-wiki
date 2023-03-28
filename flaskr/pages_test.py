@@ -16,7 +16,7 @@ def app():
 @pytest.fixture
 def client(app):
     return app.test_client()
-"""
+
 # TODO(Checkpoint (groups of 4 only) Requirement 4): Change test to
 # match the changes made in the other Checkpoint Requirements.
 def test_home_page(client):
@@ -24,7 +24,7 @@ def test_home_page(client):
     assert response.status_code == 200
     assert b"Welcome to the Pokemon Wiki" in response.data
     assert b"Browse, upload, have fun." in response.data
-
+"""
 # Tests about page, should return author's names
 def test_about_page(client):
     resp = client.get("/about")
