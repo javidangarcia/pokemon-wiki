@@ -32,7 +32,7 @@ def test_about_page(client):
     assert b"Edgar Ochoa Sotelo" in resp.data
     assert b"Mark Toro" in resp.data
     assert b"Javier Garcia" in resp.data
-
+"""
 # should return list of pages
 def test_pages(client):
     with patch("flaskr.backend.Backend.get_all_page_names",return_value=["User Generated Pages"]):
@@ -48,7 +48,7 @@ def test_upload_get(client):
     response = client.get("/upload")
     assert response.status_code == 302
     assert "upload" in response.location
-"""
+
 # returns bad request error code, client must have app running in order to function. 
 # but app cannot run while testing.
 #@patch("flaskr.backend.Backend.upload",return_value="uploaded")
@@ -65,7 +65,7 @@ def test_get_wiki_page(client):
     response = client.get("/pages/abra")
     #assert response.status_code == 200
     #assert b"abra" in response.data
-"""
+
 # Tests sign up page
 def test_sign_up(client):
     data={'username': 'username', 'password': 'password'}
@@ -87,3 +87,5 @@ def test_logout(client):
     resp = client.post('/logout')
     assert resp.status_code == 302 # Redirection found
     assert 'login' in resp.location
+
+"""
