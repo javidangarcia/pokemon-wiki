@@ -47,11 +47,11 @@ def make_endpoints(app):
 
     # Flask uses the "app.route" decorator to call methods when users
     # go to a specific route on the project's website.
-    @app.route("/")
-    def home():
+    @app.route("/",backend_ = backend)
+    def home(backend_):
         # TODO(Checkpoint Requirement 2 of 3): Change this to use render_template
         # to render main.html on the home page.
-        image = backend.get_image('pokemon/logo.jpg')
+        image = backend_.get_image('pokemon/logo.jpg')
         return render_template('main.html', image=image)
 
     # TODO(Project 1): Implement additional routes according to the project requirements.
