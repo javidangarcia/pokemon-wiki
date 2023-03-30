@@ -53,7 +53,8 @@ def test_about_page(mock_get_image,client):
     assert b"Mark Toro" in resp.data
     assert b"Javier Garcia" in resp.data
     assert b"This is an image too!" in resp.data
-"""
+
+
 # should return list of pages
 def test_pages(client):
     with patch("flaskr.backend.Backend.get_all_page_names",return_value=["User Generated Pages"]):
@@ -61,7 +62,7 @@ def test_pages(client):
         assert response.status_code == 200
         assert b"User Generated Pages" in response.data
 
-
+"""
 # should return back to upload page
 def test_upload_get(client):
     response = client.get("/upload")
