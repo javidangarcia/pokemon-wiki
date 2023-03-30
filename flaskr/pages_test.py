@@ -62,13 +62,14 @@ def test_pages(client):
         assert response.status_code == 200
         assert b"User Generated Pages" in response.data
 
-"""
+
 # should return back to upload page
 def test_upload_get(client):
     response = client.get("/upload")
     assert response.status_code == 302
     assert "upload" in response.location
 
+"""
 # returns bad request error code, client must have app running in order to function. 
 # but app cannot run while testing.
 #@patch("flaskr.backend.Backend.upload",return_value="uploaded")
