@@ -102,7 +102,7 @@ def test_sign_up(client):
     assert resp.status_code == 200
     assert b'username' in resp.data
     assert b'Sign Up' in resp.data
-"""
+
 # Tests sign in page
 def test_sign_in(client):
     data={'username': 'marktoro', 'password': 'mypassword'}
@@ -110,7 +110,7 @@ def test_sign_in(client):
     assert resp.status_code == 200
     assert b'marktoro' in resp.data
     assert b'Log In' in resp.data
-
+"""
 # Tests logout redirect
 def test_logout(client):
     resp = client.post('/logout')
