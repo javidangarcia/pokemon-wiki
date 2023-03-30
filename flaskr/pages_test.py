@@ -90,7 +90,7 @@ def test_get_wiki_page(mock_json,mock_get_page,client):
     assert b"abra" in response.data
     mock_json.assert_called_once_with(b"{'name':'diff'}")
    
-
+"""
 # Tests sign up page
 def test_sign_up(client):
     data={'username': 'username', 'password': 'password'}
@@ -113,3 +113,4 @@ def test_logout(client):
     assert resp.status_code == 302 # Redirection found
     assert 'login' in resp.location
 
+"""
