@@ -110,11 +110,10 @@ def test_sign_in(client):
     assert resp.status_code == 200
     assert b'marktoro' in resp.data
     assert b'Log In' in resp.data
-"""
+
 # Tests logout redirect
 def test_logout(client):
     resp = client.post('/logout')
     assert resp.status_code == 302 # Redirection found
     assert 'login' in resp.location
 
-"""
