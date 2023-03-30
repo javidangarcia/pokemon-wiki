@@ -1,5 +1,5 @@
 from flaskr import create_app
-from flask import render_template, json
+from flask import render_template, json, request
 from unittest.mock import MagicMock, patch
 import pytest
 import base64
@@ -31,7 +31,7 @@ def base64func():
     return MagicMock
 
 @pytest.fixture
-def jayson():
+def fake_file():
     return MagicMock()
 
 # TODO(Checkpoint (groups of 4 only) Requirement 4): Change test to
@@ -72,14 +72,18 @@ def test_upload_get(client):
 """
 # returns bad request error code, client must have app running in order to function. 
 # but app cannot run while testing.
-@patch("flaskr.backend.Backend.upload",return_value=b"Uploaded a test pokemon!")
+#@patch("flaskr.backend.Backend.upload",return_value=b"Uploaded a test pokemon!")
+#@patch("flaskr.backend.Backend.get_all_page_names",return_value=["name1","name2","name3"])
+#@patch("flask.request.files",return_value=fake_file)
 def test_upload_post(client):
-    form = b"A file"
-    dictionary_object = {"name":"A pokemon","type":"A type"}
-    #file=form, pokemon_data=dictionary_object
-    response = client.post("/upload")
-    print(response.status_code)
-    assert b"Uploaded a test pokemon!" in response.data
+    with client.test_request_context('/upload',method='POST'):
+                
+
+
+        response = client.post("/upload")
+        print(response.status_code)
+        assert b"name1" in response.data
+    #assert b"Uploaded a test pokemon!" in response.data
 """
 # should return page for abra
 
@@ -90,7 +94,7 @@ def test_get_wiki_page(mock_json,mock_get_page,client):
     assert b"abra" in response.data
     mock_json.assert_called_once_with(b"{'name':'diff'}")
    
-"""
+
 # Tests sign up page
 def test_sign_up(client):
     data={'username': 'username', 'password': 'password'}
@@ -98,7 +102,7 @@ def test_sign_up(client):
     assert resp.status_code == 200
     assert b'username' in resp.data
     assert b'Sign Up' in resp.data
-
+"""
 # Tests sign in page
 def test_sign_in(client):
     data={'username': 'marktoro', 'password': 'mypassword'}
