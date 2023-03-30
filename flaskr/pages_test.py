@@ -69,22 +69,7 @@ def test_upload_get(client):
     assert response.status_code == 302
     assert "upload" in response.location
 
-"""
-# returns bad request error code, client must have app running in order to function. 
-# but app cannot run while testing.
-#@patch("flaskr.backend.Backend.upload",return_value=b"Uploaded a test pokemon!")
-#@patch("flaskr.backend.Backend.get_all_page_names",return_value=["name1","name2","name3"])
-#@patch("flask.request.files",return_value=fake_file)
-def test_upload_post(client):
-    with client.test_request_context('/upload',method='POST'):
-                
 
-
-        response = client.post("/upload")
-        print(response.status_code)
-        assert b"name1" in response.data
-    #assert b"Uploaded a test pokemon!" in response.data
-"""
 # should return page for abra
 
 @patch("flaskr.backend.Backend.get_wiki_page", return_value=b"{'name':'diff'}")
@@ -117,3 +102,27 @@ def test_logout(client):
     assert resp.status_code == 302 # Redirection found
     assert 'login' in resp.location
 
+
+@patch("flaskr.backend.Backend.upload",return_value=b"Uploaded a test pokemon!")
+@patch("flaskr.backend.Backend.get_all_page_names",return_value=["name1","name2","name3"])
+#@patch("flask.request.files",return_value=fake_file)
+def test_upload_post(mock_all_pages,mock_upload,client):
+    response = client.post("/upload")
+    assert b"Bad Request" in response.data
+
+"""
+# returns bad request error code, client must have app running in order to function. 
+# but app cannot run while testing.
+@patch("flaskr.backend.Backend.upload",return_value=b"Uploaded a test pokemon!")
+@patch("flaskr.backend.Backend.get_all_page_names",return_value=["name1","name2","name3"])
+@patch("flask.request.files",return_value=fake_file)
+def test_upload_post(mock_request_files,mock_get_all_pages,mock_upload,app,client):
+    #with app.test_request_context('/upload',method='POST'):
+    response = client.port("/upload")
+
+
+        #response = client.post("/upload")
+        #print(response.status_code)
+   # assert b"name1" in response.data
+    #assert b"Uploaded a test pokemon!" in response.data
+"""
