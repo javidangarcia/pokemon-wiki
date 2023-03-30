@@ -43,24 +43,17 @@ def test_home_page(mock_get_wiki_page,client):
     assert response.status_code == 200
     assert b"Welcome to the Pokemon Wiki" in response.data
     assert b"This should have been a real image!" in response.data
-    #base64func.b64encode.return_value.decode.return_value = "YSqYWCEU3S9RsqUCGlwfUtQTkcpzLxM4pS3Pj1A"
 
-    #backend = Backend(client, hashfunc, base64func)
-    
-    
-    #assert b"Browse, upload, have fun." in response.data
-
-
-
-"""
 # Tests about page, should return author's names
-def test_about_page(client):
+@patch("flaskr.backend.Backend.get_image", return_value=b"This is an image too!")
+def test_about_page(mock_get_image,client):
     resp = client.get("/about")
     assert resp.status_code == 200
     assert b"Edgar Ochoa Sotelo" in resp.data
     assert b"Mark Toro" in resp.data
     assert b"Javier Garcia" in resp.data
-
+    assert b"This is an image too!" in resp.data
+"""
 # should return list of pages
 def test_pages(client):
     with patch("flaskr.backend.Backend.get_all_page_names",return_value=["User Generated Pages"]):
