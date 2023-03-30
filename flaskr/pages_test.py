@@ -72,20 +72,24 @@ def test_upload_get(client):
 """
 # returns bad request error code, client must have app running in order to function. 
 # but app cannot run while testing.
-#@patch("flaskr.backend.Backend.upload",return_value="uploaded")
+@patch("flaskr.backend.Backend.upload",return_value=b"Uploaded a test pokemon!")
 def test_upload_post(client):
-    form_dict = '{"name":"abra","hit_points":"999","image":"NONE","attack":"999","defense":"999","speed":"999","special_attack":"999","special_defense":"999","type":"999"}'
-    form = json.dumps(form_dict)
-    response = client.post("/upload", data=form, headers={'Content-Type':'application/json'})
-    assert response.status_code == 400
-  
+    form = b"A file"
+    dictionary_object = {"name":"A pokemon","type":"A type"}
+    #file=form, pokemon_data=dictionary_object
+    response = client.post("/upload")
+    print(response.status_code)
+    assert b"Uploaded a test pokemon!" in response.data
+"""
 # should return page for abra
-@patch("flaskr.backend.Backend.get_wiki_page", return_value="{"+"abra"+"}")
-#@patch("json.loads",return_value="abra")
-def test_get_wiki_page(client):
+
+@patch("flaskr.backend.Backend.get_wiki_page", return_value=b"{'name':'diff'}")
+@patch("flask.json.loads",return_value= {'name':'abra','type':'','attack':'','defense':'','special_attack':'','special_defense':''})
+def test_get_wiki_page(mock_json,mock_get_page,client):
     response = client.get("/pages/abra")
-    #assert response.status_code == 200
-    #assert b"abra" in response.data
+    assert b"abra" in response.data
+    mock_json.assert_called_once_with(b"{'name':'diff'}")
+   
 
 # Tests sign up page
 def test_sign_up(client):
@@ -109,4 +113,3 @@ def test_logout(client):
     assert resp.status_code == 302 # Redirection found
     assert 'login' in resp.location
 
-"""
