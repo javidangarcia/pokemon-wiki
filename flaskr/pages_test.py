@@ -19,20 +19,39 @@ def client(app):
     return app.test_client()
 
 @pytest.fixture
-def mockend():
+def backend():
     return MagicMock()
-"""
+
+@pytest.fixture
+def hashfunc():
+    return MagicMock
+
+@pytest.fixture
+def base64func():
+    return MagicMock
+
+@pytest.fixture
+def jayson():
+    return MagicMock()
+
 # TODO(Checkpoint (groups of 4 only) Requirement 4): Change test to
 # match the changes made in the other Checkpoint Requirements.
-@patch("flaskr.backend.Backend.get_image",return_value="not an actual image")
-def test_home_page(client,mockend):
-    mockend.get_image.return_value = "image file"
-    response = client.get("/", mockend)
-    print(response.data)
-    assert b"image file" in response.data
-    #assert response.status_code == 200
-    #assert b"Welcome to the Pokemon Wiki" in response.data
+@patch("flaskr.backend.Backend.get_image",return_value = b"This should have been a real image!" )
+def test_home_page(mock_get_wiki_page,client):
+    
+    response = client.get("/")
+    assert response.status_code == 200
+    assert b"Welcome to the Pokemon Wiki" in response.data
+    assert b"This should have been a real image!" in response.data
+    #base64func.b64encode.return_value.decode.return_value = "YSqYWCEU3S9RsqUCGlwfUtQTkcpzLxM4pS3Pj1A"
+
+    #backend = Backend(client, hashfunc, base64func)
+    
+    
     #assert b"Browse, upload, have fun." in response.data
+
+
+
 """
 # Tests about page, should return author's names
 def test_about_page(client):
@@ -41,15 +60,13 @@ def test_about_page(client):
     assert b"Edgar Ochoa Sotelo" in resp.data
     assert b"Mark Toro" in resp.data
     assert b"Javier Garcia" in resp.data
-"""
+
 # should return list of pages
 def test_pages(client):
     with patch("flaskr.backend.Backend.get_all_page_names",return_value=["User Generated Pages"]):
         response = client.get("/pages")
         assert response.status_code == 200
         assert b"User Generated Pages" in response.data
-
-
 
 
 # should return back to upload page
