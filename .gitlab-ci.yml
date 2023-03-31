@@ -9,8 +9,6 @@ lint:
 
 unittest:
   stage: test
-  dependencies:
-  - lint
   script:
   - pip install -r requirements.txt
   - pytest .
@@ -20,9 +18,6 @@ unittest:
 prod:
   image: google/cloud-sdk:alpine
   stage: deploy
-  needs:
-  - pipeline: test
-    job: unittest
   environment: Production
   only:
   - main

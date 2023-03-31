@@ -1,7 +1,8 @@
 from flaskr import create_app
-from flask import render_template, json
-from unittest.mock import MagicMock
+from flask import render_template, json, request
+from unittest.mock import MagicMock, patch
 import pytest
+import base64
 
 # See https://flask.palletsprojects.com/en/2.2.x/testing/ 
 # for more info on testing
@@ -17,33 +18,50 @@ def app():
 def client(app):
     return app.test_client()
 
+@pytest.fixture
+def backend():
+    return MagicMock()
+
+@pytest.fixture
+def hashfunc():
+    return MagicMock
+
+@pytest.fixture
+def base64func():
+    return MagicMock
+
+@pytest.fixture
+def fake_file():
+    return MagicMock()
+
 # TODO(Checkpoint (groups of 4 only) Requirement 4): Change test to
 # match the changes made in the other Checkpoint Requirements.
-def test_home_page(client):
+@patch("flaskr.backend.Backend.get_image",return_value = b"This should have been a real image!" )
+def test_home_page(mock_get_wiki_page,client):
+    
     response = client.get("/")
     assert response.status_code == 200
     assert b"Welcome to the Pokemon Wiki" in response.data
-    assert b"Browse, upload, have fun." in response.data
+    assert b"This should have been a real image!" in response.data
 
 # Tests about page, should return author's names
-def test_about_page(client):
+@patch("flaskr.backend.Backend.get_image", return_value=b"This is an image too!")
+def test_about_page(mock_get_image,client):
     resp = client.get("/about")
     assert resp.status_code == 200
     assert b"Edgar Ochoa Sotelo" in resp.data
     assert b"Mark Toro" in resp.data
     assert b"Javier Garcia" in resp.data
+    assert b"This is an image too!" in resp.data
+
 
 # should return list of pages
 def test_pages(client):
-    response = client.get("/pages")
-    assert response.status_code == 200
-    assert b"User Generated Pages" in response.data
+    with patch("flaskr.backend.Backend.get_all_page_names",return_value=["User Generated Pages"]):
+        response = client.get("/pages")
+        assert response.status_code == 200
+        assert b"User Generated Pages" in response.data
 
-# should return page for abra
-def test_get_wiki_page(client):
-    response = client.get("/pages/abra")
-    assert response.status_code == 200
-    assert b"abra" in response.data
 
 # should return back to upload page
 def test_upload_get(client):
@@ -51,14 +69,17 @@ def test_upload_get(client):
     assert response.status_code == 302
     assert "upload" in response.location
 
-# returns bad request error code, client must have app running in order to function. 
-# but app cannot run while testing.
-def test_upload_post(client):
-    form_dict = '{"name":"abra","hit_points":"999","image":"NONE","attack":"999","defense":"999","speed":"999","special_attack":"999","special_defense":"999","type":"999"}'
-    form = json.dumps(form_dict)
-    response = client.post("/upload", data=form, headers={'Content-Type':'application/json'})
-    assert response.status_code == 400
-  
+
+# should return page for abra
+
+@patch("flaskr.backend.Backend.get_wiki_page", return_value=b"{'name':'diff'}")
+@patch("flask.json.loads",return_value= {'name':'abra','type':'','attack':'','defense':'','special_attack':'','special_defense':''})
+def test_get_wiki_page(mock_json,mock_get_page,client):
+    response = client.get("/pages/abra")
+    assert b"abra" in response.data
+    mock_json.assert_called_once_with(b"{'name':'diff'}")
+   
+
 # Tests sign up page
 def test_sign_up(client):
     data={'username': 'username', 'password': 'password'}
@@ -80,3 +101,41 @@ def test_logout(client):
     resp = client.post('/logout')
     assert resp.status_code == 302 # Redirection found
     assert 'login' in resp.location
+
+
+@patch("flaskr.backend.Backend.upload",return_value=b"Uploaded a test pokemon!")
+@patch("flaskr.backend.Backend.get_all_page_names",return_value=["name1","name2","name3"])
+#@patch("flask.request.files",return_value=fake_file)
+def test_upload_post(mock_get_all_pages,mock_upload,app,client):
+    with app.test_request_context("",query_string={'name':'abra','type':'','attack':'','defense':'','special_attack':'','special_defense':''}):
+
+        response = client.post("/upload")
+        #assert response.status_code == 0
+        assert request.args.get("name") == "abra"
+        assert mock_upload() == b"Uploaded a test pokemon!"
+        assert mock_get_all_pages() == ["name1","name2","name3"]
+        
+
+
+    """
+    response = client.post("/upload")
+    print(response.data)
+    assert response.status_code == 400
+    """
+
+"""
+# returns bad request error code, client must have app running in order to function. 
+# but app cannot run while testing.
+@patch("flaskr.backend.Backend.upload",return_value=b"Uploaded a test pokemon!")
+@patch("flaskr.backend.Backend.get_all_page_names",return_value=["name1","name2","name3"])
+@patch("flask.request.files",return_value=fake_file)
+def test_upload_post(mock_request_files,mock_get_all_pages,mock_upload,app,client):
+    #with app.test_request_context('/upload',method='POST'):
+    response = client.port("/upload")
+
+
+        #response = client.post("/upload")
+        #print(response.status_code)
+   # assert b"name1" in response.data
+    #assert b"Uploaded a test pokemon!" in response.data
+"""

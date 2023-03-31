@@ -143,6 +143,11 @@ def make_endpoints(app):
     @flask_login.login_required
     def upload():
         return render_template("upload.html")
+
+    @app.route("/game")
+    @flask_login.login_required
+    def play_game():
+        return render_template("game.html")
     
     @app.route("/upload",methods=["POST"])
     def upload_file():
@@ -164,4 +169,4 @@ def make_endpoints(app):
         backend.upload(file_to_upload, pokemon_dict)
 
         # render pages list
-        return pages()
+        return redirect(url_for('pages'))
