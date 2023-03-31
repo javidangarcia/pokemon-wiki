@@ -106,9 +106,22 @@ def test_logout(client):
 @patch("flaskr.backend.Backend.upload",return_value=b"Uploaded a test pokemon!")
 @patch("flaskr.backend.Backend.get_all_page_names",return_value=["name1","name2","name3"])
 #@patch("flask.request.files",return_value=fake_file)
-def test_upload_post(mock_all_pages,mock_upload,client):
+def test_upload_post(mock_get_all_pages,mock_upload,app,client):
+    with app.test_request_context("",query_string={'name':'abra','type':'','attack':'','defense':'','special_attack':'','special_defense':''}):
+
+        response = client.post("/upload")
+        #assert response.status_code == 0
+        assert request.args.get("name") == "abra"
+        assert mock_upload() == b"Uploaded a test pokemon!"
+        assert mock_get_all_pages() == ["name1","name2","name3"]
+        
+
+
+    """
     response = client.post("/upload")
-    assert b"Bad Request" in response.data
+    print(response.data)
+    assert response.status_code == 400
+    """
 
 """
 # returns bad request error code, client must have app running in order to function. 

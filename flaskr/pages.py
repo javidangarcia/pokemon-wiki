@@ -164,4 +164,4 @@ def make_endpoints(app):
         backend.upload(file_to_upload, pokemon_dict)
 
         # render pages list
-        return pages()
+        return redirect(url_for('pages'))
