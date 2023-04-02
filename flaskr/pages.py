@@ -144,10 +144,6 @@ def make_endpoints(app):
     def upload():
         return render_template("upload.html")
 
-    @app.route("/game")
-    @flask_login.login_required
-    def play_game():
-        return render_template("game.html")
     
     @app.route("/upload",methods=["POST"])
     def upload_file():
@@ -170,3 +166,8 @@ def make_endpoints(app):
 
         # render pages list
         return redirect(url_for('pages'))
+
+    @app.route("/game")
+    @flask_login.login_required
+    def play_game():
+        return render_template("game.html")
