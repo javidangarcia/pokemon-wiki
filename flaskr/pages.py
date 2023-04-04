@@ -60,11 +60,16 @@ def make_endpoints(app):
         images = [backend.get_image('authors/javier.png'), backend.get_image('authors/edgar.png'), backend.get_image('authors/mark.png')]
         return render_template('about.html', images=images)
 
-    @app.route("/pages")
-    def pages(backend = Backend()):
-        #backend = Backend()
-        pages = backend.get_all_page_names()
-        return render_template('pages.html', pages=pages)
+    @app.route("/pages", methods = ['GET', 'POST'])
+    def pages():
+        if request.method == "POST":
+            page_name = request.form["page-name"]
+            # TODO: Pass in page name to a search backend function and return all page names that match page name given.
+            pages = [f'pages/{page_name}']
+            return render_template('pages.html', pages=pages)
+        else:
+            pages = backend.get_all_page_names()
+            return render_template('pages.html', pages=pages)
 
     @app.route("/pages/<pokemon>")
     def wiki(pokemon="abra"):
