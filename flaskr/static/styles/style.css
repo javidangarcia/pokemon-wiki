@@ -87,6 +87,11 @@ body {
     padding-bottom: 0px;
 }
 
+.search form {
+    display: flex;
+    flex-direction: row;
+}
+
 .search input[type=text] {
     padding: 6px;
     font-size: 17px;
