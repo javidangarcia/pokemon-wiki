@@ -12,7 +12,6 @@ login = backend.sign_in('javier', 'pokemon123')
 image = get_image('pokemon/charmander')
 """
 
-
 from google.cloud import storage
 import base64
 import hashlib
@@ -22,8 +21,12 @@ from secrets import randbelow
 
 
 class Backend:
-    
-    def __init__(self, client=storage.Client(), hashfunc=hashlib, base64func=base64, json=json):
+
+    def __init__(self,
+                 client=storage.Client(),
+                 hashfunc=hashlib,
+                 base64func=base64,
+                 json=json):
         """
         Args:
             client: Dependency injection for mocking the cloud storage client.
@@ -35,7 +38,7 @@ class Backend:
         self.hashfunc = hashfunc
         self.base64func = base64func
         self.json = json
-        
+
     def get_wiki_page(self, name):
         """ Retrieves user generated page from cloud storage and returns it.
         Args:
@@ -57,12 +60,13 @@ class Backend:
             page_names: List that contains all user generated page names as strings.
         """
         bucket = self.client.get_bucket('wiki-content-techx')
-        blobs = bucket.list_blobs(prefix = 'pages/')
+        blobs = bucket.list_blobs(prefix='pages/')
         page_names = []
 
         # adding every blob to page_names except the first blob since it's just the folder name
         for index, blob in enumerate(blobs):
-            if index == 0: continue
+            if index == 0:
+                continue
             page_names.append(blob.name)
         return page_names
 
@@ -73,7 +77,7 @@ class Backend:
             pokemon_data: A dictionary with all data associated with user generated page.
         """
         bucket = self.client.get_bucket('wiki-content-techx')
-        
+
         path = 'pages/' + pokemon_data["name"].lower()
         blob = bucket.get_blob(path)
 
@@ -96,13 +100,13 @@ class Backend:
 
             # creating a json object blob in the pages blob
             blob = bucket.blob(path)
-            blob.upload_from_string(data=json_obj, content_type="application/json")
+            blob.upload_from_string(data=json_obj,
+                                    content_type="application/json")
 
             return True
-        
+
         return False
 
-        
     def sign_up(self, username, password):
         """ Uploads user account information to the cloud storage if account doesn't already exist.
             Creates a hashed password from user password and uploads new password to cloud storage.
@@ -127,7 +131,7 @@ class Backend:
             with blob.open('w') as f:
                 f.write(hashed_password)
             return True
-        
+
     def sign_in(self, username, password):
         """ Checks whether specific account information exists in the cloud storage.
             Creates a hashed password from user password and compares it with the hashed 
@@ -151,7 +155,7 @@ class Backend:
             # checking whether the hashed password matches the password given
             if content == hashed_password:
                 return True
-        
+
         return False
 
     def get_image(self, blob_name):
@@ -184,9 +188,3 @@ class Backend:
             return User(username, password)
         else:
             return None
-
-
-
-
-
-
