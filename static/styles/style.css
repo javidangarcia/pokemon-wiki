@@ -77,8 +77,34 @@ body {
 /* Pages Page */
 
 
+.search-filter-container {
+    display: flex;
+    justify-content: space-between;
+    background-color: rgb(51, 85, 197);
+    color: white;
+    font-size: 30px;
+    padding: 30px;
+    padding-bottom: 0px;
+}
+
+.search form {
+    display: flex;
+    flex-direction: row;
+}
+
+.search input[type=text] {
+    padding: 6px;
+    font-size: 17px;
+}
+
+.search input[type=submit] {
+    padding: 6px;
+    font-size: 17px;
+}
+
 .pages {
     display: flex;
+    min-height: 100vh;
     height: auto;
     justify-content: left;
     align-items: center;
