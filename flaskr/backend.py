@@ -116,6 +116,9 @@ class Backend:
         """
         bucket = self.client.get_bucket('users-passwords-techx')
 
+        game_users_bucket = self.client.get_bucket('wiki-content-techx')
+        path = f'user_game_ranking/game_users/{username}'
+
         # if an account with that username already exists we shouldn't be creating a new one
         if bucket.get_blob(username):
             return False
@@ -130,6 +133,12 @@ class Backend:
             # writing hashed password to the new user blob we created
             with blob.open('w') as f:
                 f.write(hashed_password)
+
+            game_blob = game_users_bucket.blob(path)
+            json_obj = {"points": 0, "rank": None}
+            json_str = self.json.dumps(json_obj)
+            game_blob.upload_from_string(data=json_str, content_type="application/json")
+
             return True
 
     def sign_in(self, username, password):
