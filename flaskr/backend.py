@@ -197,3 +197,15 @@ class Backend:
             return User(username, password)
         else:
             return None
+
+    def get_game_user(self, username):
+            game_users_bucket = self.client.get_bucket('wiki-content-techx')
+            path = f'user_game_ranking/game_users/{username}'
+
+            blob = game_users_bucket.get_blob(path)
+
+            json_str = blob.download_as_string().decode('utf-8')
+
+            json_obj = self.json.loads(json_str)
+
+            return username, json_obj # Returns tuple
