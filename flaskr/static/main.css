@@ -1,0 +1,251 @@
+body {
+    font-family: sans-serif;
+    margin: 0px;
+    user-select: none;
+}
+
+
+/* Navigation Bar */
+
+
+.nav-bar {
+    display: flex;
+    justify-content: space-evenly;
+    padding: 25px;
+}
+
+.nav-bar a {
+    color: #2C4047;
+    text-decoration: None;
+}
+
+.username {
+    margin: 0px;
+}
+
+
+/* Home Page */
+
+
+.title {
+    display: flex;
+    height: 90vh;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: white;
+    background-color: rgb(51, 85, 197);
+}
+
+.logo {
+    height: 300px;
+    width: 500px;
+    margin: 50px;
+    margin-bottom: 20px;
+    border: 3px solid white;
+}
+
+.title h1 {
+    margin: 0px;
+}
+
+
+/* About Page */
+
+
+.about {
+    display: flex;
+    height: 90vh;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: white;
+    background-color: rgb(51, 85, 197);
+}
+
+.about img {
+    height: 200px;
+    width: 200px;
+}
+
+.about p {
+    display: flex;
+    justify-content: center;
+}
+
+
+/* Pages Page */
+
+
+.search-filter-container {
+    display: flex;
+    justify-content: space-between;
+    background-color: rgb(51, 85, 197);
+    color: white;
+    font-size: 30px;
+    padding: 30px;
+    padding-bottom: 0px;
+}
+
+.search form {
+    display: flex;
+    flex-direction: row;
+}
+
+.search input[type=text] {
+    padding: 6px;
+    font-size: 17px;
+}
+
+.search input[type=submit] {
+    padding: 6px;
+    font-size: 17px;
+}
+
+.pages {
+    display: flex;
+    min-height: 100vh;
+    height: auto;
+    justify-content: left;
+    align-items: center;
+    flex-direction: column;
+    color: white;
+    background-color: rgb(51, 85, 197);
+}
+
+.user-pages {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 100px;
+}
+
+.pages h3 {
+    font-size: 30px;
+    font-weight: 600;
+    padding-top: 20px;
+}
+
+.pages a {
+    font-size: 20px;
+    padding: 10px;
+    color: #f1faee;
+    text-decoration: None;
+}
+
+
+/* Wiki User Pages */
+
+
+.wiki-pages {
+    display: flex;
+    height: 90vh;
+    justify-content: space-evenly;
+    align-items: center;
+    color: white;
+    background-color: rgb(51, 85, 197);
+}
+
+.stats {
+    padding: 20px;
+    border: 3px solid white;
+    background-color: #2C4047;
+}
+
+.wiki-pages p {
+    margin: 2px;
+    font-size: 25px;
+}
+
+.user-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+    width: 300px;
+}
+
+
+/* Login & Sign Up Pages */
+
+
+.account {
+    display: flex;
+    height: 90vh;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: white;
+    background-color: rgb(51, 85, 197);
+}
+
+.account h1 {
+    margin-top: 0px;
+    display: flex;
+    justify-content: center;
+}
+
+.account-window {
+    background-color: #2C4047;
+    padding: 70px;
+    border: 3px solid white;
+}
+
+.account-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.account-window a {
+    color: white;
+}
+
+.flash {
+    padding: 15px;
+    vertical-align: middle;
+    border-style: solid;
+    border-width: 2.5px;
+    width: fit-content;
+    border-radius: 8px;
+    color: black;
+    border-color: rgb(255, 251, 0);
+    background-color: rgba(255, 254, 194, 0.801);
+    position: absolute;
+}
+
+
+/* Upload Page */
+
+
+.upload {
+    display: flex;
+    height: auto;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: white;
+    background-color: rgb(51, 85, 197);
+}
+
+.upload-form {
+    display: flex;
+    flex-direction: column;
+    margin: 35px;
+}
+
+.upload-form input {
+    width: 300px;
+}
+
+.upload-form input[type=text] {
+    padding: 12px 20px;
+    box-sizing: border-box;
+    margin: 8px 0;
+}
+
+.upload-form input[type=number] {
+    padding: 12px 20px;
+    box-sizing: border-box;
+    margin: 8px 0;
+}
+
+/* comment for testing */
