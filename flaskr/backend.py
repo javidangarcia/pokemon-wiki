@@ -204,7 +204,7 @@ class Backend:
 
             blob = game_users_bucket.get_blob(path)
 
-            json_str = blob.download_as_string().decode('utf-8')
+            json_str = blob.download_as_string()
 
             json_obj = self.json.loads(json_str)
 
