@@ -134,6 +134,7 @@ class Backend:
             with blob.open('w') as f:
                 f.write(hashed_password)
 
+            # Adds new user to the ranking blob
             game_blob = game_users_bucket.blob(path)
             json_obj = {"points": 0, "rank": None}
             json_str = self.json.dumps(json_obj)
