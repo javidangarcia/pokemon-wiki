@@ -89,11 +89,11 @@ def test_upload_get(client):
        return_value={
            'name': 'abra',
            'type': '',
-           'attack': '',
-           'defense': '',
-           'special_attack': '',
-           'special_defense': '',
-           'image-name': ''
+           'region': '',
+           'nature': '',
+           'level': '',
+           'image-name': '',
+           'image-type': ''
        })
 def test_get_wiki_page(mock_json, mock_get_page, client):
     response = client.get("/pages/abra")
@@ -136,10 +136,11 @@ def test_upload_post(mock_get_all_pages, mock_upload, app, client):
                                   query_string={
                                       'name': 'abra',
                                       'type': '',
-                                      'attack': '',
-                                      'defense': '',
-                                      'special_attack': '',
-                                      'special_defense': ''
+                                      'region': '',
+                                      'nature': '',
+                                      'level': '',
+                                      'image-name': '',
+                                      'image-type': ''
                                   }):
 
         response = client.post("/upload")
