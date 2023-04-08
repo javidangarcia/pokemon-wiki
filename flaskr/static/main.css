@@ -219,37 +219,35 @@ body {
 
 /* Upload Page */
 
-
 .upload {
+    height: 90vh;
     display: flex;
-    height: auto;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
-    color: white;
     background-color: rgb(51, 85, 197);
 }
 
 .upload-form {
     display: flex;
     flex-direction: column;
-    margin: 35px;
+    justify-content: center;  
+    width: 600px;
 }
 
 .upload-form input {
-    width: 300px;
+    padding: 10px;
+    margin: 10px;
 }
 
-.upload-form input[type=text] {
-    padding: 12px 20px;
-    box-sizing: border-box;
-    margin: 8px 0;
+.upload-form select {
+    padding: 10px;
+    margin: 10px;
 }
 
-.upload-form input[type=number] {
-    padding: 12px 20px;
-    box-sizing: border-box;
-    margin: 8px 0;
+.choose-file {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
 }
-
-/* comment for testing */

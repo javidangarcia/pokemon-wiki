@@ -82,23 +82,22 @@ class Backend:
         blob = bucket.get_blob(path)
 
         if not blob:
-            # uploading user image of pokemon to the pokemon blob
-            pokemon = bucket.blob(f'pokemon/{file.filename}')
-            pokemon.upload_from_file(file)
+            # uploading user image of pokemon to the images blob
+            images = bucket.blob(f'images/{file.filename}')
+            images.upload_from_file(file)
 
-            # adding image data to pokemon dictionary
+            # adding image name to pokemon dictionary
             pokemon_data["image-name"] = file.filename
 
             # adding image type (jpg, png, etc) to pokemon dictionary
-            pokemon_data["image_type"] = file.content_type
+            pokemon_data["image-type"] = file.content_type
 
             # converting pokemon dictionary to json object
             json_obj = self.json.dumps(pokemon_data)
 
-            # creating a json object blob in the pages blob
+            # uploading a json object to the new pages blob
             blob = bucket.blob(path)
-            blob.upload_from_string(data=json_obj,
-                                    content_type="application/json")
+            blob.upload_from_string(data=json_obj, content_type="application/json")
 
             return True
 
@@ -173,7 +172,7 @@ class Backend:
             image: Image data converted to base64 for front-end use.
         """
         bucket = self.client.get_bucket('wiki-content-techx')
-        blob = bucket.get_blob(f'pokemon/{blob_name}')
+        blob = bucket.get_blob(blob_name)
         with blob.open('rb') as f:
             content = f.read()
         image = self.base64func.b64encode(content).decode("utf-8")
@@ -208,19 +207,17 @@ class Backend:
 
         return username, json_obj # Returns tuple
 
-    def get_pages_using_filter(self, option):
+    def get_pages_using_filter(self, filter):
         bucket = self.client.get_bucket('wiki-content-techx')
         blobs = bucket.list_blobs(prefix='pages/')
         page_names = []
 
         for index, blob in enumerate(blobs):
-            if index == 0:
-                continue
+            if index == 0: continue
             with blob.open('r') as f:
                 content = f.read()
             content = json.loads(content)
-            print(content["type"])
-            if content["type"] == option:
+            if content["type"] == filter or content["region"] == filter:
                 page_names.append(blob.name)
 
         return page_names

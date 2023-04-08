@@ -8,13 +8,13 @@ Pages directory
 <div class="search-filter-container">
     <div class="search">
         <form action="" method="POST">
-            <input type="text" placeholder="Search for Pokemon.." name="page-name">
+            <input type="text" placeholder="Search for Pokemon.." name="search">
             <input type="submit">
         </form>
     </div>
     <div>
         <form action="" method="POST">
-            <select class="filter" name="option" id="" onchange='this.form.submit()'>
+            <select class="filter" name="filter" onchange='this.form.submit()'>
                 <option value="">Select a Filter Option</option>
                 <optgroup label="Filter by Type">
                     <option value="Normal">Normal</option>
@@ -37,8 +37,12 @@ Pages directory
                     <option value="Fairy">Fairy</option>
                 </optgroup>
                 <optgroup label="Filter by Region">
-                    <option value="">Hoenn</option>
-                    <option value="">Sinnoh</option>
+                    <option value="Kanto">Kanto</option>
+                    <option value="Johto">Johto</option>
+                    <option value="Hoenn">Hoenn</option>
+                    <option value="Sinnoh">Sinnoh</option>
+                    <option value="Unova">Unova</option>
+                    <option value="Kalos">Kalos</option> 
                 </optgroup>
             </select>
         </form>

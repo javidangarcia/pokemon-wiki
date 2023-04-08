@@ -1,22 +1,21 @@
 {% extends "main.html" %}
 
 {% block page_name %}
-{{ poke["name"] }}
+{{ pokemon["name"] }}
 {% endblock %}
 
 
 {% block content %}
 <div class="wiki-pages">
     <div class="stats">
-        <p>Name: {{ poke["name"].capitalize() }}</p>
-        <p>Type: {{ poke["type"] }}</p>
-        <p>Attack: {{ poke["attack"] }}</p>
-        <p>Defense: {{ poke["defense"] }}</p>
-        <p>Special Attack: {{ poke["special_attack"] }}</p>
-        <p>Special Defense: {{ poke["special_defense"] }}</p>  
+        <p>Name: {{ pokemon["name"].capitalize() }}</p>
+        <p>Type: {{ pokemon["type"] }}</p>
+        <p>Region: {{ pokemon["region"] }}</p>
+        <p>Nature: {{ pokemon["nature"] }}</p>   
+        <p>Level: {{ pokemon["level"] }}</p>    
     </div>
     <div class="user-image">
-        <img src="data:image/{{poke['image_type']}};base64,{{image}}" style="height: 400px; width: 400px;">
+        <img src="data:image/{{pokemon['image-type']}};base64,{{image}}" style="height: 400px; width: 400px;">
     </div>
 </div>
 {% endblock %}
