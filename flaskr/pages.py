@@ -73,10 +73,15 @@ def make_endpoints(app):
     @app.route("/pages", methods=['GET', 'POST'])
     def pages():
         if request.method == "POST":
-            page_name = request.form["page-name"]
-            # TODO: Pass in page name to a search backend function and return all page names that match page name given.
-            pages = [f'pages/{page_name}']
-            return render_template('pages.html', pages=pages)
+            if "page-name" in request.form:
+                page_name = request.form["page-name"]
+                # TODO: Pass in page name to a search backend function and return all page names that match page name given.
+                pages = [f'pages/{page_name}']
+                return render_template('pages.html', pages=pages)
+            else:
+                option = request.form["option"]
+                pages = backend.get_pages_using_filter(option)
+                return render_template('pages.html', pages=pages)
         else:
             pages = backend.get_all_page_names()
             return render_template('pages.html', pages=pages)
@@ -86,7 +91,8 @@ def make_endpoints(app):
         poke_string = backend.get_wiki_page(pokemon)
         # pokemon blob is returned as string, turn into json
         poke_json = json.loads(poke_string)
-        return render_template("wiki.html", poke=poke_json)
+        image = backend.get_image(poke_json["image-name"])
+        return render_template("wiki.html", image=image, poke=poke_json)
 
     @app.route('/login', methods=['GET', 'POST'])
     def login():

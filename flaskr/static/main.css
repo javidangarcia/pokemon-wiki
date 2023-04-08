@@ -102,6 +102,10 @@ body {
     font-size: 17px;
 }
 
+.filter {
+    padding: 8px;
+}
+
 .pages {
     display: flex;
     min-height: 100vh;
