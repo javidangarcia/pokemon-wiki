@@ -92,7 +92,8 @@ def test_upload_get(client):
            'attack': '',
            'defense': '',
            'special_attack': '',
-           'special_defense': ''
+           'special_defense': '',
+           'image-name': ''
        })
 def test_get_wiki_page(mock_json, mock_get_page, client):
     response = client.get("/pages/abra")

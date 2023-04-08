@@ -69,20 +69,17 @@ def test_get_all_page_names(client, bucket):
     ]
 
 
-def test_upload_successful(client, bucket, blob, file, base64func, imagefile,
-                           mockjson):
+def test_upload_successful(client, bucket, blob, base64func, imagefile, mockjson):
     client.get_bucket.return_value = bucket
     bucket.get_blob.return_value = None
     bucket.blob.return_value = blob
-    blob.open.return_value.__enter__.return_value = file
-    file.read.return_value = "\x00\x08\x00\x00\x00\x06\x00\x12\x01\x03"
-    base64func.b64encode.return_value.decode.return_value = "YSqYWCEU3S9RsqUCGlwfUtQTkcpzLxM4pS3Pj1A"
+    imagefile.filename = "charmander.png"
     imagefile.content_type = "image/png"
     backend = Backend(client, hashfunc, base64func, mockjson)
     pokemon_data = {"name": "Charmander"}
     assert backend.upload(imagefile, pokemon_data) == True
-    assert pokemon_data["image"] == "YSqYWCEU3S9RsqUCGlwfUtQTkcpzLxM4pS3Pj1A"
-    assert pokemon_data["image_type"] == "image/png"
+    assert pokemon_data["image-name"] == "charmander.png"
+    assert pokemon_data["image-type"] == "image/png"
 
 
 def test_upload_page_already_exists(client, bucket, blob, imagefile):
