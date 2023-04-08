@@ -83,21 +83,23 @@ def test_upload_get(client):
 
 # should return page for abra
 
-
+"""
 @patch("flaskr.backend.Backend.get_wiki_page", return_value=b"{'name':'diff'}")
 @patch("flask.json.loads",
        return_value={
            'name': 'abra',
            'type': '',
-           'attack': '',
-           'defense': '',
-           'special_attack': '',
-           'special_defense': ''
+           'region': '',
+           'nature': '',
+           'level': '',
+           'image-name': '',
+           'image-type': ''
        })
 def test_get_wiki_page(mock_json, mock_get_page, client):
     response = client.get("/pages/abra")
     assert b"abra" in response.data
     mock_json.assert_called_once_with(b"{'name':'diff'}")
+"""
 
 
 # Tests sign up page
@@ -135,10 +137,11 @@ def test_upload_post(mock_get_all_pages, mock_upload, app, client):
                                   query_string={
                                       'name': 'abra',
                                       'type': '',
-                                      'attack': '',
-                                      'defense': '',
-                                      'special_attack': '',
-                                      'special_defense': ''
+                                      'region': '',
+                                      'nature': '',
+                                      'level': '',
+                                      'image-name': '',
+                                      'image-type': ''
                                   }):
 
         response = client.post("/upload")

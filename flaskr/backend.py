@@ -82,26 +82,22 @@ class Backend:
         blob = bucket.get_blob(path)
 
         if not blob:
-            # uploading user image of pokemon to the pokemon blob
-            pokemon = bucket.blob(f'pokemon/{file.filename}')
-            pokemon.upload_from_file(file)
+            # uploading user image of pokemon to the images blob
+            images = bucket.blob(f'images/{file.filename}')
+            images.upload_from_file(file)
 
-            # adding image data to pokemon dictionary
-            with pokemon.open('rb') as f:
-                content = f.read()
-            image = self.base64func.b64encode(content).decode("utf-8")
-            pokemon_data["image"] = image
+            # adding image name to pokemon dictionary
+            pokemon_data["image-name"] = file.filename
 
             # adding image type (jpg, png, etc) to pokemon dictionary
-            pokemon_data["image_type"] = file.content_type
+            pokemon_data["image-type"] = file.content_type
 
             # converting pokemon dictionary to json object
             json_obj = self.json.dumps(pokemon_data)
 
-            # creating a json object blob in the pages blob
+            # uploading a json object to the new pages blob
             blob = bucket.blob(path)
-            blob.upload_from_string(data=json_obj,
-                                    content_type="application/json")
+            blob.upload_from_string(data=json_obj, content_type="application/json")
 
             return True
 
@@ -200,13 +196,28 @@ class Backend:
             return None
 
     def get_game_user(self, username):
-            game_users_bucket = self.client.get_bucket('wiki-content-techx')
-            path = f'user_game_ranking/game_users/{username}'
+        game_users_bucket = self.client.get_bucket('wiki-content-techx')
+        path = f'user_game_ranking/game_users/{username}'
 
-            blob = game_users_bucket.get_blob(path)
+        blob = game_users_bucket.get_blob(path)
 
-            json_str = blob.download_as_string()
+        json_str = blob.download_as_string()
 
-            json_obj = self.json.loads(json_str)
+        json_obj = self.json.loads(json_str)
 
-            return username, json_obj # Returns tuple
+        return username, json_obj # Returns tuple
+
+    def get_pages_using_filter(self, filter):
+        bucket = self.client.get_bucket('wiki-content-techx')
+        blobs = bucket.list_blobs(prefix='pages/')
+        page_names = []
+
+        for index, blob in enumerate(blobs):
+            if index == 0: continue
+            with blob.open('r') as f:
+                content = f.read()
+            content = json.loads(content)
+            if content["type"] == filter or content["region"] == filter:
+                page_names.append(blob.name)
+
+        return page_names

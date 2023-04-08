@@ -57,7 +57,7 @@ def make_endpoints(app):
     def home():
         # TODO(Checkpoint Requirement 2 of 3): Change this to use render_template
         # to render main.html on the home page.
-        image = backend.get_image('pokemon/logo.jpg')
+        image = backend.get_image('authors/logo.jpg')
         return render_template('main.html', image=image)
 
     # TODO(Project 1): Implement additional routes according to the project requirements.
@@ -73,10 +73,17 @@ def make_endpoints(app):
     @app.route("/pages", methods=['GET', 'POST'])
     def pages():
         if request.method == "POST":
-            page_name = request.form["page-name"]
-            # TODO: Pass in page name to a search backend function and return all page names that match page name given.
-            pages = [f'pages/{page_name}']
-            return render_template('pages.html', pages=pages)
+            # If the user searched for a page name in the search bar.
+            if "search" in request.form:
+                page_name = request.form["search"]
+                # TODO: Pass in page name to a search backend function and return all page names that match page name given.
+                pages = [f'pages/{page_name}']
+                return render_template('pages.html', pages=pages)
+            # If the user searched for pages using the filter button.
+            if "filter" in request.form:
+                filter = request.form["filter"]
+                pages = backend.get_pages_using_filter(filter)
+                return render_template('pages.html', pages=pages)
         else:
             pages = backend.get_all_page_names()
             return render_template('pages.html', pages=pages)
@@ -85,8 +92,9 @@ def make_endpoints(app):
     def wiki(pokemon="abra"):
         poke_string = backend.get_wiki_page(pokemon)
         # pokemon blob is returned as string, turn into json
-        poke_json = json.loads(poke_string)
-        return render_template("wiki.html", poke=poke_json)
+        pokemon_data = json.loads(poke_string)
+        image = backend.get_image(f'images/{pokemon_data["image-name"]}')
+        return render_template("wiki.html", image=image, pokemon=pokemon_data)
 
     @app.route('/login', methods=['GET', 'POST'])
     def login():
@@ -168,23 +176,20 @@ def make_endpoints(app):
         return render_template("upload.html")
 
     @app.route("/upload", methods=["POST"])
-    def upload_file():
+    def upload_data():
         # dictionary that holds all values from the form, except for the file
-        pokemon_dict = {
+        pokemon_data = {
             "name": request.form["name"],
-            "hit_points": request.form["hit_points"],
-            "attack": request.form["attack"],
-            "defense": request.form["defense"],
-            "speed": request.form["speed"],
-            "special_attack": request.form["special_attack"],
-            "special_defense": request.form["special_defense"],
-            "type": request.form["type"]
+            "type": request.form["type"],
+            "region": request.form["region"],
+            "nature": request.form["nature"],
+            "level": request.form["level"]
         }
         # json object to be uploaded
         file_to_upload = request.files['file']
 
         # call backend upload
-        backend.upload(file_to_upload, pokemon_dict)
+        backend.upload(file_to_upload, pokemon_data)
 
         # render pages list
         return redirect(url_for('pages'))

@@ -8,8 +8,43 @@ Pages directory
 <div class="search-filter-container">
     <div class="search">
         <form action="" method="POST">
-            <input type="text" placeholder="Search for Pokemon.." name="page-name">
+            <input type="text" placeholder="Search for Pokemon.." name="search">
             <input type="submit">
+        </form>
+    </div>
+    <div>
+        <form action="" method="POST">
+            <select class="filter" name="filter" onchange='this.form.submit()'>
+                <option value="">Select a Filter Option</option>
+                <optgroup label="Filter by Type">
+                    <option value="Normal">Normal</option>
+                    <option value="Fire">Fire</option>
+                    <option value="Water">Water</option>
+                    <option value="Grass">Grass</option>
+                    <option value="Electric">Electric</option>
+                    <option value="Ice">Ice</option>
+                    <option value="Fighting">Fighting</option>
+                    <option value="Poison">Poison</option>
+                    <option value="Ground">Ground</option>
+                    <option value="Flying">Flying</option>
+                    <option value="Psychic">Psychic</option>
+                    <option value="Bug">Bug</option>
+                    <option value="Rock">Rock</option>
+                    <option value="Ghost">Ghost</option>
+                    <option value="Dark">Dark</option>
+                    <option value="Dragon">Dragon</option>
+                    <option value="Steel">Steel</option>
+                    <option value="Fairy">Fairy</option>
+                </optgroup>
+                <optgroup label="Filter by Region">
+                    <option value="Kanto">Kanto</option>
+                    <option value="Johto">Johto</option>
+                    <option value="Hoenn">Hoenn</option>
+                    <option value="Sinnoh">Sinnoh</option>
+                    <option value="Unova">Unova</option>
+                    <option value="Kalos">Kalos</option> 
+                </optgroup>
+            </select>
         </form>
     </div>
 </div>

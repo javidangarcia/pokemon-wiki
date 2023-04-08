@@ -6,35 +6,52 @@ Upload a Pokemon!
 
 {% block content %}
 <div class="upload">
-    <form class="upload-form" method="post" action="/upload" enctype="multipart/form-data">
-        <tr>
-            <td>Name<input type="text" name="name"></td>
-            <td>Hit Points<input type="number" name="hit_points"></td>
-            <td>Attack<input type="number" name="attack"></td>
-            <td>Defense<input type="number" name="defense"></td>
-            <td>Speed<input type="number" name="speed"></td>
-            <td>Special Attack<input type="number" name="special_attack"></td>
-            <td>Special Defense<input type="number" name="special_defense"></td>
-            <td>
-                <label for="type">Type</label>
-                <select name="type">
-                    {% set types=['Normal','Fire','Water','Grass','Electric','Ice','Fighting','Poison',
-                    'Ground','Flying','Psychic','Bug','Rock','Ghost','Dark','Dragon','Steel','Fairy'] %}
-                    {% for type in types %}
-                    <option value="{{type}}">{{type}}</option>
-                    {% endfor %}
-                </select>
-
-            </td>
-        </tr>
-        <tr>
-            <td>File to upload:</td>
-            <td><input type="file" name="file"></td>
-
-        </tr>
-        <tr>
-            <td><input type="submit" value="Upload your pokemon!"></td>
-        </tr>
+    <form class="upload-form" method="POST" action="/upload" enctype="multipart/form-data">
+        <input type="text" name="name" placeholder="Enter Name of Pokemon..." required>
+        <select name="type" required>
+            <option value="" disabled selected>Select Type of Pokemon...</option>
+            <option value="Normal">Normal</option>
+            <option value="Fire">Fire</option>
+            <option value="Water">Water</option>
+            <option value="Grass">Grass</option>
+            <option value="Electric">Electric</option>
+            <option value="Ice">Ice</option>
+            <option value="Fighting">Fighting</option>
+            <option value="Poison">Poison</option>
+            <option value="Ground">Ground</option>
+            <option value="Flying">Flying</option>
+            <option value="Psychic">Psychic</option>
+            <option value="Bug">Bug</option>
+            <option value="Rock">Rock</option>
+            <option value="Ghost">Ghost</option>
+            <option value="Dark">Dark</option>
+            <option value="Dragon">Dragon</option>
+            <option value="Steel">Steel</option>
+            <option value="Fairy">Fairy</option>
+        </select>
+        <select name="region" required>
+            <option value="" disabled selected>Select Region of Pokemon...</option>
+            <option value="Kanto">Kanto</option>
+            <option value="Johto">Johto</option>
+            <option value="Hoenn">Hoenn</option>
+            <option value="Sinnoh">Sinnoh</option>
+            <option value="Unova">Unova</option>
+            <option value="Kalos">Kalos</option>       
+        </select>
+        <select name="nature" required>
+            <option value="" disabled selected>Select Nature of Pokemon...</option>
+            <option value="Adamant">Adamant</option>
+            <option value="Jolly">Jolly</option> 
+            <option value="Timid">Timid</option>
+            <option value="Calm">Calm</option>
+            <option value="Brave">Brave</option>
+            <option value="Impish">Impish</option>
+        </select>
+        <input type="number" name="level" placeholder="Enter Level of Pokemon.." min="1" max="100" required>
+        <div class="choose-file">
+            <input type="file" name="file" required>
+        </div>
+        <input type="submit" value="Upload your Pokemon!">
     </form>
 </div>
 {% endblock %}
