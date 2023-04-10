@@ -236,3 +236,18 @@ class Backend:
                 page_names.append(blob.name)
         
         return page_names
+
+    def get_pokemon_image(self,id):
+        
+        image_id = "{:03d}".format(id)
+       # pokedex_id = num
+        bucket = self.client.get_bucket("wiki-content-techx")
+        image_path = "master_pokedex/images/" + image_id + ".png"
+        pokemon_image_blob = bucket.get_blob(image_path)
+        #pokemon_attributes = 
+
+        with pokemon_image_blob.open('rb') as f:
+            content = f.read()
+        pokemon_image = self.base64func.b64encode(content).decode("utf-8")
+        return pokemon_image
+    
