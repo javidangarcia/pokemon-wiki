@@ -6,7 +6,7 @@ Upload a Pokemon!
 
 {% block content %}
 <div class="upload">
-    <form class="upload-form" method="POST" action="/upload" enctype="multipart/form-data">
+    <form method="POST" action="/upload" enctype="multipart/form-data">
         <input type="text" name="name" placeholder="Enter Name of Pokemon..." required>
         <select name="type" required>
             <option value="" disabled selected>Select Type of Pokemon...</option>
