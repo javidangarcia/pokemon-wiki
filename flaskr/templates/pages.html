@@ -1,7 +1,7 @@
 {% extends "main.html" %}
 
 {% block page_name %}
-Wiki Pages
+Pages directory
 {% endblock %}
 
 {% block content %}
@@ -12,9 +12,9 @@ Wiki Pages
             <input type="submit">
         </form>
     </div>
-    <div class = "filter">
+    <div>
         <form action="" method="POST">
-            <select name="filter" onchange='this.form.submit()'>
+            <select class="filter" name="filter" onchange='this.form.submit()'>
                 <option value="">Select a Filter Option</option>
                 <optgroup label="Filter by Type">
                     <option value="Normal">Normal</option>
@@ -49,7 +49,7 @@ Wiki Pages
     </div>
 </div>
 <div class="pages">
-    <h3>Wiki Pages</h3>
+    <h3>User Generated Pages</h3>
     <div class="user-pages">
         {% for page in pages %}
             <a href="{{page}}">{{ (page[6:]).capitalize()}}</a>

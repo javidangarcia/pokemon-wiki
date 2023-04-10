@@ -102,7 +102,7 @@ body {
     font-size: 17px;
 }
 
-.filter select {
+.filter {
     padding: 7px;
     font-size: 17px;
 }
@@ -229,24 +229,19 @@ body {
     background-color: rgb(51, 85, 197);
 }
 
-.upload form {
+.upload-form {
     display: flex;
     flex-direction: column;
     justify-content: center;  
     width: 600px;
 }
 
-.upload input[type=text] {
+.upload-form input {
     padding: 10px;
     margin: 10px;
 }
 
-.upload input[type=number] {
-    padding: 10px;
-    margin: 10px;    
-}
-
-.upload select {
+.upload-form select {
     padding: 10px;
     margin: 10px;
 }
