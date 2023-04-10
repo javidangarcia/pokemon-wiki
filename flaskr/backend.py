@@ -250,4 +250,12 @@ class Backend:
             content = f.read()
         pokemon_image = self.base64func.b64encode(content).decode("utf-8")
         return pokemon_image
+
+    def get_pokemon_data(self,id):
+        bucket = self.client.get_bucket("wiki-content-techx")
+        data_path = "master_pokedex/pokedex.json"
+        pokedex_blob = bucket.get_blob(data_path)
+        pokedex_json = json.loads(pokedex_blob.download_as_string())
+        pokemon_json = pokedex_json[id-1]
+        return pokemon_json
     

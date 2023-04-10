@@ -199,5 +199,5 @@ def make_endpoints(app):
     def play_game(pokemon_id=1):
         pokemon_id = randbelow(810)
         pokemon_img = backend.get_pokemon_image(pokemon_id)
-        
-        return render_template("game.html",image=pokemon_img)
+        pokemon_data = backend.get_pokemon_data(pokemon_id)
+        return render_template("game.html",image=pokemon_img,data=pokemon_data)
