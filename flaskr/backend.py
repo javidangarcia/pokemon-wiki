@@ -221,3 +221,18 @@ class Backend:
                 page_names.append(blob.name)
 
         return page_names
+    
+    def get_pages_using_search(self, name):
+        bucket = self.client.get_bucket('wiki-content-techx')
+        blobs = bucket.list_blobs(prefix='pages/')
+        page_names = []
+        
+        for index, blob in enumerate(blobs):
+            if index == 0: continue
+            with blob.open('r') as f:
+                content = f.read()
+            content = json.loads(content)
+            if name in content["name"].lower():
+                page_names.append(blob.name)
+        
+        return page_names

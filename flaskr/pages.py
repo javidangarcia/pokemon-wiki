@@ -76,8 +76,7 @@ def make_endpoints(app):
             # If the user searched for a page name in the search bar.
             if "search" in request.form:
                 page_name = request.form["search"]
-                # TODO: Pass in page name to a search backend function and return all page names that match page name given.
-                pages = [f'pages/{page_name}']
+                pages = backend.get_pages_using_search(page_name)
                 return render_template('pages.html', pages=pages)
             # If the user searched for pages using the filter button.
             if "filter" in request.form:
