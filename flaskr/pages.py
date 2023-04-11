@@ -82,12 +82,8 @@ def make_endpoints(app):
             # If the user searched for pages using the filter button.
             if "filter" in request.form:
                 filter = request.form["filter"]
-                if filter == "LowestToHighest" or filter == "HighestToLowest":
-                    pages = backend.get_pages_using_sorting(filter)
-                    return render_template('pages.html', pages=pages)
-                else:
-                    pages = backend.get_pages_using_filter(filter)
-                    return render_template('pages.html', pages=pages)
+                pages = backend.get_pages_using_filter(filter)
+                return render_template('pages.html', pages=pages)
         else:
             pages = backend.get_all_page_names()
             return render_template('pages.html', pages=pages)
