@@ -18,6 +18,7 @@
         <a href="/pages">PAGES</a>
         {% if current_user.is_authenticated %}
             <a href="/game">PLAY</a>
+            <a href="leaderboard">LEADERBOARD</a>
             <a href="/upload">UPLOAD</a>
             <a href="{{url_for('signout')}}">LOGOUT</a>
             <p class="username">{{current_user.username}}</p>
