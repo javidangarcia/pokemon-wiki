@@ -12,13 +12,15 @@ Who's that pokemon?
         <div>
             <p>{{data['name']['english']}}</p>
             <p> player: {{current_user.username}} </p>
-            <p>score: {{user['points']}} </p>
-            <p> rank: {{user['rank']}} </p>
+            <p>score: {{user[1]['points']}} </p>
+            <p> rank: {{user[1]['rank']}} </p>
+
     
         </div>
     </div>
-    <div class="game_form">
-        <form>
+    <div>
+        <form method="POST" action="/game">
+            {% set pokemon_name = data['name'] %}
             <input type="text" id="user_guess" name="user_guess">
             <input type="submit" value="Guess">
         </form>

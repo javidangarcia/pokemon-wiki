@@ -200,5 +200,13 @@ def make_endpoints(app):
         pokemon_id = randbelow(810)
         pokemon_img = backend.get_pokemon_image(pokemon_id)
         pokemon_data = backend.get_pokemon_data(pokemon_id)
-        user_points = backend.get_user_points(flask_login.current_user.username)
+        user_points = backend.get_game_user(flask_login.current_user.username)
         return render_template("game.html",image=pokemon_img,data=pokemon_data,user=user_points)
+"""
+    @app.route("/game",methods=["POST"])
+    @flask_login.login_required
+    def update_user_score():
+        guess = request.form["user_guess"]
+
+        user_points = backend.get_user_points(flask_login.current_user.username)
+        """
