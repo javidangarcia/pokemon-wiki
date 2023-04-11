@@ -210,4 +210,10 @@ def make_endpoints(app):
     @app.route("/leaderboard", methods=["GET"])
     def leaderboard():
         leaderboard = backend.get_leaderboard()
-        return render_template("leaderboard.html", leaderboard=leaderboard, backend=backend)
+
+        # Test to view leaderboard list
+        json_obj = {"name": "test", "points": 0, "rank":None, "rank_lst_index": None}
+        json_str = backend.json.dumps(json_obj)
+        leaderboard.append(json_str)
+
+        return render_template("leaderboard.html", leaderboard=leaderboard, json=backend.json)

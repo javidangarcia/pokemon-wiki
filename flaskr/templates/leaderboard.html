@@ -11,8 +11,12 @@ Leaderboard
     <div>
         <ul>
             {% for users in leaderboard %}
-                {% with user = backend.json.loads(users) %}
-                    <li>{{user["rank"]}} {{user["name"]}} {{user["points"]}}</li>
+                {% with user = json.loads(users) %}
+                    {% if user["rank"] %}
+                        <li>{{user["rank"]}} {{user["name"]}} {{user["points"]}}</li>
+                    {% else %}
+                        <li>- {{user["name"]}} {{user["points"]}}</li>
+                    {% endif %}
                 {% endwith %}
             {% endfor %}
         </ul>
