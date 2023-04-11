@@ -215,5 +215,9 @@ def make_endpoints(app):
         json_obj = {"name": "javierdangarcia", "points": 0, "rank": 1, "rank_lst_index": None}
         json_str = backend.json.dumps(json_obj)
         leaderboard.append(json_str)
+        leaderboard.append(json_str)
+        leaderboard.append(json_str)
 
-        return render_template("leaderboard.html", leaderboard=leaderboard, json=backend.json)
+        trophy = backend.get_image(f'authors/trophy.png')
+
+        return render_template("leaderboard.html", leaderboard=leaderboard, json=backend.json, trophy=trophy)

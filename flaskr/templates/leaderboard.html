@@ -7,15 +7,22 @@ Leaderboard
 {% block content %}
 
 <div class="leaderboard">
-    <h1>Leaderboard</h1>
+    <div class="board-name">
+        <img src="data:image/png;base64,{{trophy}}">
+        <h1>Leaderboard</h1>
+        <img src="data:image/png;base64,{{trophy}}">
+    </div>
     <div class="standings">
         {% for users in leaderboard %}
             {% with user = json.loads(users) %}
-                <div class="user">
+                <div class="players">
                 {% if user["rank"] %}
-                    {{user["rank"]}} {{user["name"]}} {{user["points"]}}
+                    <p style="color: gold">{{user["rank"]}}</p>
+                    <p>{{user["name"]}}</p>
+                    <p>{{user["points"]}}</p>
                 {% else %}
-                    {{user["name"]}} {{user["points"]}}
+                    <p>{{user["name"]}}</p>
+                    <p>{{user["points"]}}</p>
                 {% endif %}
                 </div>
             {% endwith %}
