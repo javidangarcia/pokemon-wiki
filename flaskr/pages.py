@@ -200,4 +200,5 @@ def make_endpoints(app):
         pokemon_id = randbelow(810)
         pokemon_img = backend.get_pokemon_image(pokemon_id)
         pokemon_data = backend.get_pokemon_data(pokemon_id)
-        return render_template("game.html",image=pokemon_img,data=pokemon_data)
+        user_points = backend.get_user_points(flask_login.current_user.username)
+        return render_template("game.html",image=pokemon_img,data=pokemon_data,user=user_points)

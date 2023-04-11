@@ -259,3 +259,9 @@ class Backend:
         pokemon_json = pokedex_json[id-1]
         return pokemon_json
     
+    def get_user_points(self,username):
+        bucket = self.client.get_bucket("wiki-content-techx")
+        user_path = "user_game_ranking/game_users/"+username
+        points_blob = bucket.get_blob(user_path)
+        points_json = json.loads(points_blob.download_as_string())
+        return points_json

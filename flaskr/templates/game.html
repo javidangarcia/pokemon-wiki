@@ -7,12 +7,15 @@ Who's that pokemon?
 {% block content %}
 <div>
     <div class="game_background">
-        <img src="data:image/jpg;base64,{{image}}">
-    </div>
-    <div>
-        <p>
-            {{data}}
-        </p>
+        <img src="data:image/jpg;base64,{{image}}" class="dark">
+    
+        <div>
+            <p>{{data['name']['english']}}</p>
+            <p> player: {{current_user.username}} </p>
+            <p>score: {{user['points']}} </p>
+            <p> rank: {{user['rank']}} </p>
+    
+        </div>
     </div>
     <div class="game_form">
         <form>
