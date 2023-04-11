@@ -82,7 +82,6 @@ def test_upload_get(client):
 
 
 # should return page for abra
-
 """
 @patch("flaskr.backend.Backend.get_wiki_page", return_value=b"{'name':'diff'}")
 @patch("flask.json.loads",

@@ -1,7 +1,7 @@
 {% extends "main.html" %}
 
 {% block page_name %}
-Pages directory
+Wiki Pages
 {% endblock %}
 
 {% block content %}
@@ -42,12 +42,24 @@ Pages directory
                     <option value="Unova">Unova</option>
                     <option value="Kalos">Kalos</option> 
                 </optgroup>
+                <optgroup label="Filter by Nature">
+                    <option value="Adamant">Adamant</option>
+                    <option value="Jolly">Jolly</option> 
+                    <option value="Naive">Naive</option>
+                    <option value="Calm">Calm</option>
+                    <option value="Brave">Brave</option>
+                    <option value="Impish">Impish</option>
+                </optgroup>
+                <optgroup label="Sort by Level">
+                    <option value="LowestToHighest">Lowest to Highest</option>
+                    <option value="HighestToLowest">Highest to Lowest</option> 
+                </optgroup>
             </select>
         </form>
     </div>
 </div>
 <div class="pages">
-    <h3>User Generated Pages</h3>
+    <h3>Wiki Pages</h3>
     <div class="user-pages">
         {% for page in pages %}
             <a href="{{page}}">{{ (page[6:]).capitalize()}}</a>
