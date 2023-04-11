@@ -262,3 +262,60 @@ body {
 .dark {
     filter: brightness(0%)
 }
+
+
+/* Leaderboard */
+
+
+.leaderboard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgb(51, 85, 197);
+    min-height: 100vh;
+}
+
+.board-name {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 35px;
+    padding-bottom: 25px;
+}
+
+.board-name img {
+    height: 45px;
+    width: 45px;
+    margin-right: 20px;
+    margin-left: 20px;
+}
+
+.leaderboard h1 {
+    color: white;
+    font-weight: 200;
+    margin: 0px;
+    margin-top: 5px;
+    margin-right: -6px;
+}
+
+.standings {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    width: 70vw;
+}
+
+.players {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    background-color: #4a9fcf;
+    color: white;
+    padding: 25px;
+    margin: 10px;
+    width: 200px;
+    border-radius: 15px;
+}
+
+.players p {
+    margin: 0px;    
+}
