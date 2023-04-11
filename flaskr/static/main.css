@@ -252,3 +252,13 @@ body {
     align-items: center;
     color: white;
 }
+
+/* game css */
+
+.game_background {
+    background-color: red;
+}
+
+.dark {
+    filter: brightness(0%)
+}
