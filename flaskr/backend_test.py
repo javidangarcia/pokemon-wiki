@@ -69,7 +69,8 @@ def test_get_all_page_names(client, bucket):
     ]
 
 
-def test_upload_successful(client, bucket, blob, base64func, imagefile, mockjson):
+def test_upload_successful(client, bucket, blob, base64func, imagefile,
+                           mockjson):
     client.get_bucket.return_value = bucket
     bucket.get_blob.return_value = None
     bucket.blob.return_value = blob
@@ -133,3 +134,23 @@ def test_get_image(client, bucket, blob, file, hashfunc, base64func):
     backend = Backend(client, hashfunc, base64func)
     assert backend.get_image(
         'charmander') == "YSqYWCEU3S9RsqUCGlwfUtQTkcpzLxM4pS3Pj1A"
+
+
+"""
+Unit Tests for New Backend Features
+
+
+
+def test_get_pages_using_filter(client, bucket, blob):
+    blobs = [MagicMock() for i in range(6)]
+    blobs[0].name = "pages/"
+    blobs[1].name = "pages/charmander"
+    blobs[2].name = "pages/bulbasaur"
+    blobs[3].name = "pages/squirtle"
+    blobs[4].name = "pages/charmeleon"
+    blobs[5].name = "pages/charizard"
+    client.get_bucket.return_value = bucket
+    bucket.list_blobs.return_value = iter(blobs)
+    backend = Backend(client)
+    assert backend.get_pages_using_filter("Fire") == ["pages/charmander", "pages/charmeleon", "pages/charizard"]
+"""
