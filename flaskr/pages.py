@@ -206,3 +206,14 @@ def make_endpoints(app):
         pokemon_data = backend.get_pokemon_data(pokemon_id)
         user_points = backend.get_user_points(flask_login.current_user.username)
         return render_template("game.html",image=pokemon_img,data=pokemon_data,user=user_points)
+
+    @app.route("/leaderboard", methods=["GET"])
+    def leaderboard():
+        leaderboard = backend.get_leaderboard()
+
+        # Test to view leaderboard list
+        json_obj = {"name": "test", "points": 0, "rank":None, "rank_lst_index": None}
+        json_str = backend.json.dumps(json_obj)
+        leaderboard.append(json_str)
+
+        return render_template("leaderboard.html", leaderboard=leaderboard, json=backend.json)

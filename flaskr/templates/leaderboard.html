@@ -1,0 +1,26 @@
+{% extends "main.html" %}
+
+{% block page_name %}
+Leaderboard
+{% endblock %}
+
+{% block content %}
+
+<div>
+    <h1>Leaderboard</h1>
+    <div>
+        <ul>
+            {% for users in leaderboard %}
+                {% with user = json.loads(users) %}
+                    {% if user["rank"] %}
+                        <li>{{user["rank"]}} {{user["name"]}} {{user["points"]}}</li>
+                    {% else %}
+                        <li>- {{user["name"]}} {{user["points"]}}</li>
+                    {% endif %}
+                {% endwith %}
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+{% endblock %}
