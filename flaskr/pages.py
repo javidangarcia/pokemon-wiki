@@ -7,6 +7,7 @@ import flask_login
 from flask_login import LoginManager
 import base64
 import io
+from secrets import randbelow
 '''This module takes care of rendering pages and page functions.
 
    Contains all functions in charge of rendering all pages. Calls backend 
@@ -81,8 +82,12 @@ def make_endpoints(app):
             # If the user searched for pages using the filter button.
             if "filter" in request.form:
                 filter = request.form["filter"]
-                pages = backend.get_pages_using_filter(filter)
-                return render_template('pages.html', pages=pages)
+                if filter == "LowestToHighest" or filter == "HighestToLowest":
+                    pages = backend.get_pages_using_sorting(filter)
+                    return render_template('pages.html', pages=pages)
+                else:
+                    pages = backend.get_pages_using_filter(filter)
+                    return render_template('pages.html', pages=pages)
         else:
             pages = backend.get_all_page_names()
             return render_template('pages.html', pages=pages)
@@ -195,5 +200,9 @@ def make_endpoints(app):
 
     @app.route("/game")
     @flask_login.login_required
-    def play_game():
-        return render_template("game.html")
+    def play_game(pokemon_id=1):
+        pokemon_id = randbelow(810)
+        pokemon_img = backend.get_pokemon_image(pokemon_id)
+        pokemon_data = backend.get_pokemon_data(pokemon_id)
+        user_points = backend.get_user_points(flask_login.current_user.username)
+        return render_template("game.html",image=pokemon_img,data=pokemon_data,user=user_points)
