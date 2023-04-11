@@ -6,20 +6,20 @@ Leaderboard
 
 {% block content %}
 
-<div>
+<div class="leaderboard">
     <h1>Leaderboard</h1>
-    <div>
-        <ul>
-            {% for users in leaderboard %}
-                {% with user = json.loads(users) %}
-                    {% if user["rank"] %}
-                        <li>{{user["rank"]}} {{user["name"]}} {{user["points"]}}</li>
-                    {% else %}
-                        <li>- {{user["name"]}} {{user["points"]}}</li>
-                    {% endif %}
-                {% endwith %}
-            {% endfor %}
-        </ul>
+    <div class="standings">
+        {% for users in leaderboard %}
+            {% with user = json.loads(users) %}
+                <div class="user">
+                {% if user["rank"] %}
+                    {{user["rank"]}} {{user["name"]}} {{user["points"]}}
+                {% else %}
+                    {{user["name"]}} {{user["points"]}}
+                {% endif %}
+                </div>
+            {% endwith %}
+        {% endfor %}
     </div>
 </div>
 

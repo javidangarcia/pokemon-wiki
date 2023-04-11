@@ -212,7 +212,7 @@ def make_endpoints(app):
         leaderboard = backend.get_leaderboard()
 
         # Test to view leaderboard list
-        json_obj = {"name": "test", "points": 0, "rank":None, "rank_lst_index": None}
+        json_obj = {"name": "javierdangarcia", "points": 0, "rank": 1, "rank_lst_index": None}
         json_str = backend.json.dumps(json_obj)
         leaderboard.append(json_str)
 

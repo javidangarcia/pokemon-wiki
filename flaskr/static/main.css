@@ -262,3 +262,21 @@ body {
 .dark {
     filter: brightness(0%)
 }
+
+
+/* Leaderboard */
+
+
+.leaderboard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.user {
+    text-align: center;
+    background-color: #4a9fcf;
+    color: white;
+    padding: 20px;
+    width: 200px;
+}
