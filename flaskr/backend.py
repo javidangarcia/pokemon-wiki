@@ -235,7 +235,7 @@ class Backend:
                 continue
             with blob.open('r') as f:
                 content = f.read()
-            content = json.loads(content)
+            content = self.json.loads(content)
             if name in content["name"].lower():
                 page_names.append(blob.name)
 

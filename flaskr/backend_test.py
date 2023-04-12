@@ -154,3 +154,23 @@ def test_get_pages_using_filter(client, bucket, blob):
     backend = Backend(client)
     assert backend.get_pages_using_filter("Fire") == ["pages/charmander", "pages/charmeleon", "pages/charizard"]
 """
+
+def test_get_pages_by_search(client, bucket, mockjson):
+    blobs = [MagicMock() for i in range(2)]
+    blobs[0].name = "pages/"
+    blobs[1].name = "pages/charmander"
+    json_obj = {"name": "charmander"}
+    client.get_bucket.return_value = bucket
+    bucket.list_blobs.return_value = iter(blobs)
+    mockjson.loads.return_value = json_obj
+    backend = backend = Backend(client, json=mockjson)
+    assert backend.get_pages_using_search("char") == ["pages/charmander"]
+
+def test_get_leaderboard(client, bucket, blob, mockjson):
+    client.get_bucket.return_value = bucket
+    bucket.get_blob.return_value = blob
+    blob.download_as_string.return_value = ""
+    data = ["name1", "name2", "name3"]
+    mockjson.loads.return_value = {"ranks_list": data}
+    backend = Backend(client, json=mockjson)
+    assert backend.get_leaderboard() == data 
