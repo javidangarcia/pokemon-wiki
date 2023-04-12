@@ -273,11 +273,9 @@ class Backend:
     def get_pokemon_image(self,id):
         
         image_id = "{:03d}".format(id)
-       # pokedex_id = num
         bucket = self.client.get_bucket("wiki-content-techx")
         image_path = "master_pokedex/images/" + image_id + ".png"
         pokemon_image_blob = bucket.get_blob(image_path)
-        #pokemon_attributes = 
 
         with pokemon_image_blob.open('rb') as f:
             content = f.read()
@@ -291,8 +289,8 @@ class Backend:
         pokedex_json = json.loads(pokedex_blob.download_as_string())
         pokemon_json = pokedex_json[id-1]
         return pokemon_json
-    
-    def get_user_points(self,username):
+
+    def update_points(self,username,new_score):
         bucket = self.client.get_bucket("wiki-content-techx")
         user_path = "user_game_ranking/game_users/"+username
         points_blob = bucket.get_blob(user_path)

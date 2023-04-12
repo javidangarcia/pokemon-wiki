@@ -5,25 +5,63 @@ Who's that pokemon?
 {% endblock %}
 
 {% block content %}
+<meta id="user_points" data-name="user_points" data-other="{{user[1]['points']}}">
 <div>
     <div class="game_background">
-        <img src="data:image/jpg;base64,{{image}}" class="dark">
+        <img id="pokemon_image" src="data:image/jpg;base64,{{image}}" class="pokemon_image">
     
         <div>
+            <!--
             <p>{{data['name']['english']}}</p>
             <p> player: {{current_user.username}} </p>
-            <p>score: {{user['points']}} </p>
-            <p> rank: {{user['rank']}} </p>
+            <p>score: {{user[1]['points']}} </p>
+            <p> rank: {{user[1]['rank']}} </p>
+            -->
     
         </div>
-    </div>
-    <div class="game_form">
-        <form>
-            <input type="text" id="user_guess" name="user_guess">
-            <input type="submit" value="Guess">
-        </form>
+   
+        <div>
+            <form id="game_form" class="game_form" method="POST" action="/game">
+                <input type="hidden" id="username" name="username" value="{{current_user.username}}">
+                <input type="hidden" id="data" name="data" value="{{data}}">
+                <input type="hidden" id="points" name="points" value="{{user[1]['points']}}">
+                <input type="text" id="user_guess" name="user_guess" value="Who's that pokemon?" onfocus="this.value=''">
+                <!--
+                <input type="submit" value="Guess" class="game_button">
+                -->
+            </form>
+        </div>
     </div>
 </div>
 
+
+<script>
+   /* var form = document.getElementById("game_form");
+    form.addEventListener("submit", e=> {
+        const formData = new FormData();
+        var user_points = $('#user_points').data();
+        formData.append("score","66666");
+        console.log(formData.entries());
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST','/game',true);
+        xhr.send(formData);
+    });
+
+ */
+    var pokemon_image = document.getElementById('pokemon_image')
+    var form = document.getElementById('game_form')
+    form.addEventListener("submit", function(e) {
+        e.preventDefault()
+        //pokemon_image = document.getElementById("pokemon_image") //.css({brightness: 100%},"slow")
+        pokemon_image.classList.add('reveal');
+        pokemon_image.addEventListener("animationend", () => {
+       
+         
+            form.submit();
+        });
+       
+    })
+ </script>
 
 {% endblock %}

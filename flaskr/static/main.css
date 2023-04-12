@@ -1,3 +1,7 @@
+
+@import url('https://fonts.cdnfonts.com/css/pokemon-solid');
+
+                
 body {
     font-family: sans-serif;
     margin: 0px;
@@ -256,13 +260,62 @@ body {
 /* game css */
 
 .game_background {
-    background-color: red;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #dd1918;
+    padding-bottom: 80px;
 }
 
-.dark {
+.pokemon_image {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 80px;
+    padding-bottom: 80px;
     filter: brightness(0%)
 }
 
+.pokemon_image.reveal {
+    transition: 3s;
+    filter: brightness(100%);
+    animation: pulse 2s
+    
+}
+
+
+.game_button {
+
+    background-color: white;    
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.25);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+#user_guess {
+    background: transparent;
+    outline: none;
+    border: none;
+    border-bottom: 5px solid white;
+    font-size: 4em;
+    text-align: center;
+    padding-bottom: 15px;
+    font-family: 'Pokemon Solid',sans-serif;
+    color: #ffb000;
+    -webkit-text-stroke: 3px #3a5da8;
+    letter-spacing: 0.1em;
+}
 
 /* Leaderboard */
 
@@ -319,3 +372,4 @@ body {
 .players p {
     margin: 0px;    
 }
+
