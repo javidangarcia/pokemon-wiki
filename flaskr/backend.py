@@ -97,7 +97,8 @@ class Backend:
 
             # uploading a json object to the new pages blob
             blob = bucket.blob(path)
-            blob.upload_from_string(data=json_obj, content_type="application/json")
+            blob.upload_from_string(data=json_obj,
+                                    content_type="application/json")
 
             return True
 
@@ -132,9 +133,10 @@ class Backend:
 
             # Adds new user to the ranking blob
             game_blob = game_users_bucket.blob(path)
-            json_obj = {"points": 0, "rank": None}
+            json_obj = {"name": username, "points": 0, "rank": None, "rank_lst_index": None}
             json_str = self.json.dumps(json_obj)
-            game_blob.upload_from_string(data=json_str, content_type="application/json")
+            game_blob.upload_from_string(data=json_str,
+                                         content_type="application/json")
 
             return True
 
@@ -205,7 +207,7 @@ class Backend:
 
         json_obj = self.json.loads(json_str)
 
-        return username, json_obj # Returns tuple
+        return username, json_obj  # Returns tuple
 
     def get_pages_using_filter(self, filter):
         bucket = self.client.get_bucket('wiki-content-techx')
@@ -213,29 +215,60 @@ class Backend:
         page_names = []
 
         for index, blob in enumerate(blobs):
-            if index == 0: continue
+            if index == 0:
+                continue
             with blob.open('r') as f:
                 content = f.read()
             content = json.loads(content)
-            if content["type"] == filter or content["region"] == filter:
+            if content["type"] == filter or content["region"] == filter or content["nature"] == filter:
                 page_names.append(blob.name)
 
         return page_names
-    
+
     def get_pages_using_search(self, name):
         bucket = self.client.get_bucket('wiki-content-techx')
         blobs = bucket.list_blobs(prefix='pages/')
         page_names = []
-        
+
         for index, blob in enumerate(blobs):
-            if index == 0: continue
+            if index == 0:
+                continue
             with blob.open('r') as f:
                 content = f.read()
             content = json.loads(content)
             if name in content["name"].lower():
                 page_names.append(blob.name)
-        
+
         return page_names
+
+
+    def get_pages_using_sorting(self, filter):
+        bucket = self.client.get_bucket('wiki-content-techx')
+        blobs = bucket.list_blobs(prefix='pages/')
+        page_content = []
+
+        for index, blob in enumerate(blobs):
+            if index == 0:
+                continue
+            with blob.open('r') as f:
+                pokemon_data = f.read()
+            pokemon_data = json.loads(pokemon_data)
+            level = int(pokemon_data["level"])
+            page_content.append([level, blob.name])
+        
+        if filter == "LowestToHighest":
+            page_content.sort()
+        if filter == "HighestToLowest":
+            page_content.sort(reverse = True)
+
+        print(page_content)
+        page_names = []
+
+        for level, name in page_content:
+            page_names.append(name)
+
+        return page_names
+
 
     def get_pokemon_image(self,id):
         
@@ -260,7 +293,13 @@ class Backend:
     def update_points(self,username,new_score):
         bucket = self.client.get_bucket("wiki-content-techx")
         user_path = "user_game_ranking/game_users/"+username
-        game_score_blob = bucket.blob(user_path)
-        json_obj = {"points": new_score, "rank": None}
-        json_str = self.json.dumps(json_obj)
-        game_score_blob.upload_from_string(data=json_str, content_type="application/json")
+        points_blob = bucket.get_blob(user_path)
+        points_json = json.loads(points_blob.download_as_string())
+        return points_json
+
+    def get_leaderboard(self):
+        bucket = self.client.get_bucket("wiki-content-techx")
+        blob = bucket.get_blob("user_game_ranking/ranks_list.json")
+        json_str = blob.download_as_string()
+        json_obj = self.json.loads(json_str)
+        return json_obj["ranks_list"]

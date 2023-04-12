@@ -82,8 +82,12 @@ def make_endpoints(app):
             # If the user searched for pages using the filter button.
             if "filter" in request.form:
                 filter = request.form["filter"]
-                pages = backend.get_pages_using_filter(filter)
-                return render_template('pages.html', pages=pages)
+                if filter == "LowestToHighest" or filter == "HighestToLowest":
+                    pages = backend.get_pages_using_sorting(filter)
+                    return render_template('pages.html', pages=pages)
+                else:
+                    pages = backend.get_pages_using_filter(filter)
+                    return render_template('pages.html', pages=pages)
         else:
             pages = backend.get_all_page_names()
             return render_template('pages.html', pages=pages)
@@ -234,3 +238,18 @@ def make_endpoints(app):
         backend.update_points(username,points)
         return redirect(url_for("play_game"))
    
+    @app.route("/leaderboard", methods=["GET"])
+    def leaderboard():
+        leaderboard = backend.get_leaderboard()
+
+        # Test to view leaderboard list
+        json_obj = {"name": "javierdangarcia", "points": 0, "rank": 1, "rank_lst_index": None}
+        json_str = backend.json.dumps(json_obj)
+        leaderboard.append(json_str)
+        leaderboard.append(json_str)
+        leaderboard.append(json_str)
+
+        trophy = backend.get_image(f'authors/trophy.png')
+
+        return render_template("leaderboard.html", leaderboard=leaderboard, json=backend.json, trophy=trophy)
+

@@ -1,0 +1,33 @@
+{% extends "main.html" %}
+
+{% block page_name %}
+Leaderboard
+{% endblock %}
+
+{% block content %}
+
+<div class="leaderboard">
+    <div class="board-name">
+        <img src="data:image/png;base64,{{trophy}}">
+        <h1>Leaderboard</h1>
+        <img src="data:image/png;base64,{{trophy}}">
+    </div>
+    <div class="standings">
+        {% for users in leaderboard %}
+            {% with user = json.loads(users) %}
+                <div class="players">
+                {% if user["rank"] %}
+                    <p style="color: gold">{{user["rank"]}}</p>
+                    <p>{{user["name"]}}</p>
+                    <p>{{user["points"]}}</p>
+                {% else %}
+                    <p>{{user["name"]}}</p>
+                    <p>{{user["points"]}}</p>
+                {% endif %}
+                </div>
+            {% endwith %}
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
