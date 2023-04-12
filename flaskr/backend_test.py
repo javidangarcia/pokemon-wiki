@@ -138,21 +138,6 @@ def test_get_image(client, bucket, blob, file, hashfunc, base64func):
 
 """
 Unit Tests for New Backend Features
-
-
-
-def test_get_pages_using_filter(client, bucket, blob):
-    blobs = [MagicMock() for i in range(6)]
-    blobs[0].name = "pages/"
-    blobs[1].name = "pages/charmander"
-    blobs[2].name = "pages/bulbasaur"
-    blobs[3].name = "pages/squirtle"
-    blobs[4].name = "pages/charmeleon"
-    blobs[5].name = "pages/charizard"
-    client.get_bucket.return_value = bucket
-    bucket.list_blobs.return_value = iter(blobs)
-    backend = Backend(client)
-    assert backend.get_pages_using_filter("Fire") == ["pages/charmander", "pages/charmeleon", "pages/charizard"]
 """
 
 def test_get_pages_by_search(client, bucket, mockjson):
