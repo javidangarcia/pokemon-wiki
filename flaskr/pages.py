@@ -202,11 +202,35 @@ def make_endpoints(app):
         pokemon_data = backend.get_pokemon_data(pokemon_id)
         user_points = backend.get_game_user(flask_login.current_user.username)
         return render_template("game.html",image=pokemon_img,data=pokemon_data,user=user_points)
-"""
+
+
     @app.route("/game",methods=["POST"])
     @flask_login.login_required
-    def update_user_score():
-        guess = request.form["user_guess"]
+    def update_user_and_referesh():
+        # Get pokemon data
+        data = request.form["data"]
+        data = data.replace("\'","\"")
+        data_json = json.loads(data)
 
-        user_points = backend.get_user_points(flask_login.current_user.username)
-        """
+        # Get user guess
+        user_guess = request.form["user_guess"]
+        user_guess = user_guess.upper()
+
+        # set correct answer and compare to user guess
+        correct_answer = data_json["name"]["english"]
+        correct_answer = correct_answer.upper()
+
+        points = request.form["points"]
+
+        if user_guess == correct_answer:
+            points = int(points) + 100
+        else:
+            points = int(points) - 50
+
+        # DEBUGGING
+        #print("################################",user_guess,data,points, correct_answer)
+        #print("################################",user)
+        username = flask_login.current_user.username
+        backend.update_points(username,points)
+        return redirect(url_for("play_game"))
+   
