@@ -12,58 +12,45 @@ Wiki Pages
             <input type="submit">
         </form>
     </div>
-    <div>
-        <form action="" method="POST">
-            <select class="filter" name="filter" onchange='this.form.submit()'>
-                <option value="">Select a Filter Option</option>
-                <optgroup label="Filter by Type">
-                    <option value="Normal">Normal</option>
-                    <option value="Fire">Fire</option>
-                    <option value="Water">Water</option>
-                    <option value="Grass">Grass</option>
-                    <option value="Electric">Electric</option>
-                    <option value="Ice">Ice</option>
-                    <option value="Fighting">Fighting</option>
-                    <option value="Poison">Poison</option>
-                    <option value="Ground">Ground</option>
-                    <option value="Flying">Flying</option>
-                    <option value="Psychic">Psychic</option>
-                    <option value="Bug">Bug</option>
-                    <option value="Rock">Rock</option>
-                    <option value="Ghost">Ghost</option>
-                    <option value="Dark">Dark</option>
-                    <option value="Dragon">Dragon</option>
-                </optgroup>
-                <optgroup label="Filter by Region">
-                    <option value="Kanto">Kanto</option>
-                    <option value="Johto">Johto</option>
-                    <option value="Hoenn">Hoenn</option>
-                    <option value="Sinnoh">Sinnoh</option>
-                    <option value="Unova">Unova</option>
-                    <option value="Kalos">Kalos</option> 
-                </optgroup>
-                <optgroup label="Filter by Nature">
-                    <option value="Adamant">Adamant</option>
-                    <option value="Bashful">Bashful</option> 
-                    <option value="Naive">Naive</option>
-                    <option value="Calm">Calm</option>
-                    <option value="Brave">Brave</option>
-                    <option value="Quirky">Quirky</option>
-                </optgroup>
-                <optgroup label="Sort by Level">
-                    <option value="LowestToHighest">Lowest to Highest</option>
-                    <option value="HighestToLowest">Highest to Lowest</option> 
-                </optgroup>
-            </select>
-        </form>
+
+    <div class="pages">
+        <div>
+            <h3>Wiki Pages</h3>
+        </div>
+        <div class="user-pages">
+            {% for page in pages %}
+                <a href="{{page}}">{{ (page[6:]).capitalize()}}</a>
+            {% endfor %}
+        </div>
     </div>
-</div>
-<div class="pages">
-    <h3>Wiki Pages</h3>
-    <div class="user-pages">
-        {% for page in pages %}
-            <a href="{{page}}">{{ (page[6:]).capitalize()}}</a>
-        {% endfor %}
+    
+    <div>
+        <form class="filter-form" action="" method="POST">
+            <input class="apply" type="submit" value="Apply">
+            <div class="filter-options">
+                <div>
+                    <p id="type-category">Type</p>
+                    {% for type in categories["types"] %}
+                        <input type="checkbox" class="types-check" name="type" id="{{type}}" value="{{type}}">
+                        <label for="{{type}}">{{type}}</label>
+                    {% endfor %}
+                </div>
+                <div>
+                    <p id="region-category">Region</p>
+                    {% for region in categories["regions"] %}
+                        <input type="checkbox" class="regions-check" name="region" id="{{region}}" value="{{region}}">
+                        <label for="{{region}}">{{region}}</label>
+                    {% endfor %}
+                </div>
+                <div>
+                    <p id="nature-category">Nature</p>
+                    {% for nature in categories["natures"] %}
+                    <input type="checkbox" class="natures-check" name="nature" id="{{nature}}" value="{{nature}}">
+                    <label for="{{nature}}">{{nature}}</label>
+                    {% endfor %}
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 {% endblock %}

@@ -207,7 +207,7 @@ class Backend:
 
         return json_obj
 
-    def get_pages_using_filter(self, filter):
+    def get_pages_using_filter(self, type, region, nature):
         bucket = self.client.get_bucket('wiki-content-techx')
         blobs = bucket.list_blobs(prefix='pages/')
         page_names = []
@@ -217,11 +217,12 @@ class Backend:
                 continue
             with blob.open('r') as f:
                 content = f.read()
-            content = json.loads(content)
-            if content["type"] == filter or content["region"] == filter or content["nature"] == filter:
-                page_names.append(blob.name)
+            pokemon_data = json.loads(content)
+            if (type == None or pokemon_data["type"] == type) and (region == None or pokemon_data["region"] == region) and (nature == None or pokemon_data["nature"] == nature):
+                page_names.append(blob.name)     
 
         return page_names
+        
 
     def get_pages_using_search(self, name):
         bucket = self.client.get_bucket('wiki-content-techx')
@@ -302,6 +303,13 @@ class Backend:
         json_obj = self.json.loads(json_str)
         return json_obj["ranks_list"]
 
+    def get_categories(self):
+        bucket = self.client.get_bucket("wiki-content-techx")
+        blob = bucket.get_blob("filtering/categories.json")
+        with blob.open() as f:
+            content = f.read()
+        categories = json.loads(content)
+        return categories
     # updated_user (type) = json
     def update_leaderboard(self, updated_user):
         leaderboard = self.get_leaderboard()
