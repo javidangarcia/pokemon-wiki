@@ -241,17 +241,31 @@ def make_endpoints(app):
         return redirect(url_for("play_game"))
    
     @app.route("/leaderboard", methods=["GET"])
+    @flask_login.login_required
     def leaderboard():
-        leaderboard = backend.get_leaderboard()
+        # leaderboard = backend.get_leaderboard()
+        json_obj = {"name": "javierdangarcia", "points": 0, "rank": 1}
 
         # Test to view leaderboard list
-        json_obj = {"name": "javierdangarcia", "points": 0, "rank": 1, "rank_lst_index": None}
-        json_str = backend.json.dumps(json_obj)
-        leaderboard.append(json_str)
-        leaderboard.append(json_str)
-        leaderboard.append(json_str)
+        leaderboard = [json_obj for x in range(20)]
+
+        length = len(leaderboard)
+
+        # top3 = leaderboard[:3] if length >= 3 else None
+        top3 = [{"name": "javierdangarcia", "points": 0, "rank": 1}, {"name": "javierdangarcia", "points": 0, "rank": 2}, 
+        {"name": "javierdangarcia", "points": 0, "rank": 3}]
+        
+        curr_user = backend.get_game_user(flask_login.current_user.username)
+        if length >= 14 and (curr_user["rank"] == None or curr_user["rank"] > 15):
+            leaderboard = leaderboard[4:15]
+
+        elif length >= 14 and curr_user["rank"] <= 15:
+            leaderboard = leaderboard[4:16]
+        
+        else:
+            leaderboard = leaderboard[:16]
 
         trophy = backend.get_image(f'authors/trophy.png')
 
-        return render_template("leaderboard.html", leaderboard=leaderboard, json=backend.json, trophy=trophy)
+        return render_template("leaderboard.html", leaderboard=leaderboard, top3=top3, trophy=trophy, curr_user=curr_user)
 

@@ -474,3 +474,7 @@ input[type=checkbox]:checked:disabled + label:before {
 #nature-category {
     background-color: #4a7c59;
 }
+
+#current_user {
+    background-color: #79DE70;
+}
