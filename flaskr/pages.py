@@ -20,7 +20,6 @@ login_manager = LoginManager(
 )  # Lets the app and Flask-Login work together for user loading, login, etc.
 backend = Backend()
 
-
 @login_manager.user_loader
 def load_user(username):
     '''Flask function that takes care of loading user to session.
@@ -73,25 +72,26 @@ def make_endpoints(app):
 
     @app.route("/pages", methods=['GET', 'POST'])
     def pages():
+        categories = backend.get_categories()
         if request.method == "POST":
             if "type" in request.form or "region" in request.form or "nature" in request.form:
                 type = request.form.get("type")
                 region = request.form.get("region")
                 nature = request.form.get("nature")
                 pages = backend.get_pages_using_filter(type, region, nature)
-                return render_template('pages.html', pages=pages)
+                return render_template('pages.html', pages=pages, categories=categories)
             # If the user searched for a page name in the search bar.
             elif "search" in request.form:
                 page_name = request.form["search"]
                 pages = backend.get_pages_using_search(page_name)
-                return render_template('pages.html', pages=pages)
+                return render_template('pages.html', pages=pages, categories=categories)
             # If the user searched for pages using the filter button.
             else:
                 pages = backend.get_all_page_names()
-                return render_template('pages.html', pages=pages)                
+                return render_template('pages.html', pages=pages, categories=categories)                
         else:
             pages = backend.get_all_page_names()
-            return render_template('pages.html', pages=pages)
+            return render_template('pages.html', pages=pages, categories=categories)
 
     @app.route("/pages/<pokemon>")
     def wiki(pokemon="abra"):
@@ -178,7 +178,8 @@ def make_endpoints(app):
     @app.route("/upload")
     @flask_login.login_required
     def upload():
-        return render_template("upload.html")
+        categories = backend.get_categories()
+        return render_template("upload.html", categories=categories)
 
     @app.route("/upload", methods=["POST"])
     def upload_data():

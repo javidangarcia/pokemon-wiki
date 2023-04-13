@@ -10,40 +10,21 @@ Upload a Pokemon!
         <input type="text" name="name" placeholder="Enter Name of Pokemon..." required>
         <select name="type" required>
             <option value="" disabled selected>Select Type of Pokemon...</option>
-            <option value="Normal">Normal</option>
-            <option value="Fire">Fire</option>
-            <option value="Water">Water</option>
-            <option value="Grass">Grass</option>
-            <option value="Electric">Electric</option>
-            <option value="Ice">Ice</option>
-            <option value="Fighting">Fighting</option>
-            <option value="Poison">Poison</option>
-            <option value="Ground">Ground</option>
-            <option value="Flying">Flying</option>
-            <option value="Psychic">Psychic</option>
-            <option value="Bug">Bug</option>
-            <option value="Rock">Rock</option>
-            <option value="Ghost">Ghost</option>
-            <option value="Dark">Dark</option>
-            <option value="Dragon">Dragon</option>
+            {% for type in categories["types"] %}
+                <option value="{{type}}">{{type}}</option>
+            {% endfor %}
         </select>
         <select name="region" required>
             <option value="" disabled selected>Select Region of Pokemon...</option>
-            <option value="Kanto">Kanto</option>
-            <option value="Johto">Johto</option>
-            <option value="Hoenn">Hoenn</option>
-            <option value="Sinnoh">Sinnoh</option>
-            <option value="Unova">Unova</option>
-            <option value="Kalos">Kalos</option>       
+            {% for region in categories["regions"] %}
+                <option value="{{region}}">{{region}}</option>
+            {% endfor %}      
         </select>
         <select name="nature" required>
             <option value="" disabled selected>Select Nature of Pokemon...</option>
-            <option value="Adamant">Adamant</option>
-            <option value="Bashful">Bashful</option> 
-            <option value="Naive">Naive</option>
-            <option value="Calm">Calm</option>
-            <option value="Brave">Brave</option>
-            <option value="Quirky">Quirky</option>
+            {% for nature in categories["natures"] %}
+                <option value="{{nature}}">{{nature}}</option>
+            {% endfor %}
         </select>
         <input type="number" name="level" placeholder="Enter Level of Pokemon.." min="1" max="100" required>
         <div class="choose-file">

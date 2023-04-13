@@ -28,79 +28,27 @@ Wiki Pages
             <div class="filter-options">
                 <div>
                     <p>Type</p>
-                    <input type="checkbox" name="type" id="normal" value="Normal">
-                    <label for="normal">Normal</label>
-                    <input type="checkbox" name="type" id="fire" value="Fire">
-                    <label for="fire">Fire</label>
-                    <input type="checkbox" name="type" id="water" value="Water">
-                    <label for="water">Water</label>
-                    <input type="checkbox" name="type" id="grass" value="Grass">
-                    <label for="grass">Grass</label>
-                    <input type="checkbox" name="type" id="electric" value="Electric">
-                    <label for="electric">Electric</label>
-                    <input type="checkbox" name="type" id="fighting" value="Fighting">
-                    <label for="fighting">Fighting</label>
+                    {% for type in categories["types"] %}
+                        <input type="checkbox" class="types-check" name="type" id="{{type}}" value="{{type}}">
+                        <label for="{{type}}">{{type}}</label>
+                    {% endfor %}
                 </div>
                 <div>
                     <p>Region</p>
-                    <input type="checkbox" name="region" id="kanto" value="Kanto">
-                    <label for="kanto">Kanto</label>
-                    <input type="checkbox" name="region" id="johto" value="Johto">
-                    <label for="johto">Johto</label>
-                    <input type="checkbox" name="region" id="hoenn" value="Hoenn">
-                    <label for="hoenn">Hoenn</label>
-                    <input type="checkbox" name="region" id="sinnoh" value="Sinnoh">
-                    <label for="sinnoh">Sinnoh</label>
-                    <input type="checkbox" name="region" id="unova" value="Unova">
-                    <label for="unova">Unova</label>
-                    <input type="checkbox" name="region" id="kalos" value="Kalos">
-                    <label for="kalos">Kalos</label>
+                    {% for region in categories["regions"] %}
+                        <input type="checkbox" class="regions-check" name="region" id="{{region}}" value="{{region}}">
+                        <label for="{{region}}">{{region}}</label>
+                    {% endfor %}
                 </div>
                 <div>
                     <p>Nature</p>
-                    <input type="checkbox" name="nature" id="adamant" value="Adamant">
-                    <label for="adamant">Adamant</label>
-                    <input type="checkbox" name="nature" id="bashful" value="Bashful">
-                    <label for="bashful">Bashful</label>
-                    <input type="checkbox" name="nature" id="naive" value="Naive">
-                    <label for="naive">Naive</label>
-                    <input type="checkbox" name="nature" id="calm" value="Calm">
-                    <label for="calm">Calm</label>
-                    <input type="checkbox" name="nature" id="brave" value="Brave">
-                    <label for="brave">Brave</label>
-                    <input type="checkbox" name="nature" id="quirky" value="Quirky">
-                    <label for="quirky">Quirky</label>
+                    {% for nature in categories["natures"] %}
+                    <input type="checkbox" class="natures-check" name="nature" id="{{nature}}" value="{{nature}}">
+                    <label for="{{nature}}">{{nature}}</label>
+                    {% endfor %}
                 </div>
             </div>
-        </form>    
-        <!--<form action="" method="POST">
-            <select class="filter" name="filter">
-                <option value="">Select a Filter Option</option>
-                <optgroup label="Filter by Type">
-                    <option value="Normal">Normal</option>
-                    <option value="Fire">Fire</option>
-                    <option value="Water">Water</option>
-                    <option value="Grass">Grass</option>
-                    <option value="Electric">Electric</option>
-                    <option value="Ice">Ice</option>
-                    <option value="Fighting">Fighting</option>
-                    <option value="Poison">Poison</option>
-                    <option value="Ground">Ground</option>
-                    <option value="Flying">Flying</option>
-                    <option value="Psychic">Psychic</option>
-                    <option value="Bug">Bug</option>
-                    <option value="Rock">Rock</option>
-                    <option value="Ghost">Ghost</option>
-                    <option value="Dark">Dark</option>
-                    <option value="Dragon">Dragon</option>
-                </optgroup>
-                <optgroup label="Sort by Level">
-                    <option value="LowestToHighest">Lowest to Highest</option>
-                    <option value="HighestToLowest">Highest to Lowest</option> 
-                </optgroup>
-            </select>
-            <input class="apply" type="submit" value="Apply">
-        </form>-->
+        </form>
     </div>
 </div>
 {% endblock %}

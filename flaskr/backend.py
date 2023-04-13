@@ -304,3 +304,11 @@ class Backend:
         json_str = blob.download_as_string()
         json_obj = self.json.loads(json_str)
         return json_obj["ranks_list"]
+
+    def get_categories(self):
+        bucket = self.client.get_bucket("wiki-content-techx")
+        blob = bucket.get_blob("filtering/categories.json")
+        with blob.open() as f:
+            content = f.read()
+        categories = json.loads(content)
+        return categories
