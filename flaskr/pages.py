@@ -74,8 +74,9 @@ def make_endpoints(app):
     @app.route("/pages", methods=['GET', 'POST'])
     def pages():
         if request.method == "POST":
-            if "type" in request.form:
-                pages = backend.get_pages_using_filter(request.form.get("type"))
+            if "filter" in request.form:
+                filter = request.form["filter"]
+                pages = backend.get_pages_using_filter(filter)
                 return render_template('pages.html', pages=pages)
             # If the user searched for a page name in the search bar.
             elif "search" in request.form:

@@ -433,6 +433,14 @@ input[type=checkbox]:checked:disabled + label:before {
     display: flex;
 }
 
+.filter-options p {
+    font-size: 15px;
+    text-align: center;
+    background-color: #2C4047;
+    margin: 0px;
+    padding: 5px;
+}
+
 .apply {
     font-size: 17px;
 }
