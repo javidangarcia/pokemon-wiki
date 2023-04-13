@@ -133,7 +133,7 @@ class Backend:
 
             # Adds new user to the ranking blob
             game_blob = game_users_bucket.blob(path)
-            json_obj = {"name": username, "points": 0, "rank": None, "rank_lst_index": None}
+            json_obj = {"name": username, "points": 0, "rank": None}
             json_str = self.json.dumps(json_obj)
             game_blob.upload_from_string(data=json_str,
                                          content_type="application/json")
@@ -202,12 +202,10 @@ class Backend:
         path = f'user_game_ranking/game_users/{username}'
 
         blob = game_users_bucket.get_blob(path)
-
         json_str = blob.download_as_string()
-
         json_obj = self.json.loads(json_str)
 
-        return username, json_obj  # Returns tuple
+        return json_obj
 
     def get_pages_using_filter(self, filter):
         bucket = self.client.get_bucket('wiki-content-techx')
