@@ -12,9 +12,54 @@ Wiki Pages
             <input type="submit">
         </form>
     </div>
+
+    <div class="pages">
+        <h3>Wiki Pages</h3>
+        <div class="user-pages">
+            {% for page in pages %}
+                <a href="{{page}}">{{ (page[6:]).capitalize()}}</a>
+            {% endfor %}
+        </div>
+    </div>
+    
     <div>
-        <form action="" method="POST">
-            <select class="filter" name="filter" onchange='this.form.submit()'>
+        <form class="filter-form" action="" method="POST">
+            <input class="apply" type="submit" value="Apply">
+            <div class="filter-options">
+                <div>
+                    <input type="checkbox" name="type" id="normal" value="Normal">
+                    <label for="normal">Normal</label>
+                    <input type="checkbox" name="type" id="fire" value="Fire">
+                    <label for="fire">Fire</label>
+                    <input type="checkbox" name="type" id="water" value="Water">
+                    <label for="water">Water</label>
+                    <input type="checkbox" name="type" id="grass" value="Grass">
+                    <label for="grass">Grass</label>
+                </div>
+                <div>
+                    <input type="checkbox" name="type" id="kanto" value="Kanto">
+                    <label for="kanto">Kanto</label>
+                    <input type="checkbox" name="type" id="johto" value="Johto">
+                    <label for="johto">Johto</label>
+                    <input type="checkbox" name="type" id="hoenn" value="Hoenn">
+                    <label for="hoenn">Hoenn</label>
+                    <input type="checkbox" name="type" id="sinnoh" value="Sinnoh">
+                    <label for="sinnoh">Sinnoh</label>
+                </div>
+                <div>
+                    <input type="checkbox" name="type" id="adamant" value="Adamant">
+                    <label for="adamant">Adamant</label>
+                    <input type="checkbox" name="type" id="bashful" value="Bashful">
+                    <label for="bashful">Bashful</label>
+                    <input type="checkbox" name="type" id="naive" value="Naive">
+                    <label for="naive">Naive</label>
+                    <input type="checkbox" name="type" id="calm" value="Calm">
+                    <label for="calm">Calm</label>
+                </div>
+            </div>
+        </form>    
+        <!--<form action="" method="POST">
+            <select class="filter" name="filter">
                 <option value="">Select a Filter Option</option>
                 <optgroup label="Filter by Type">
                     <option value="Normal">Normal</option>
@@ -55,15 +100,8 @@ Wiki Pages
                     <option value="HighestToLowest">Highest to Lowest</option> 
                 </optgroup>
             </select>
-        </form>
-    </div>
-</div>
-<div class="pages">
-    <h3>Wiki Pages</h3>
-    <div class="user-pages">
-        {% for page in pages %}
-            <a href="{{page}}">{{ (page[6:]).capitalize()}}</a>
-        {% endfor %}
+            <input class="apply" type="submit" value="Apply">
+        </form>-->
     </div>
 </div>
 {% endblock %}

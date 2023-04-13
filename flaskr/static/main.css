@@ -78,7 +78,7 @@ body {
 }
 
 
-/* Pages Page */
+/* Pages */
 
 
 .search-filter-container {
@@ -131,7 +131,8 @@ body {
 .pages h3 {
     font-size: 30px;
     font-weight: 600;
-    padding-top: 20px;
+    margin-top: 15px;
+    margin-bottom: 20px;
 }
 
 .pages a {
@@ -373,3 +374,65 @@ body {
     margin: 0px;    
 }
 
+
+/* Checkbox */
+
+input[type=checkbox] + label {
+    display: block;
+    cursor: pointer;
+    padding: 5px;
+    font-size: 15px;
+}
+
+input[type=checkbox] {
+    display: none;
+}
+
+input[type=checkbox] + label:before {
+    content: "\2714";
+    border: 0.1em solid white;
+    border-radius: 0.2em;
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    padding-left: 0.2em;
+    padding-bottom: 0.3em;
+    margin-right: 8px;
+    vertical-align: bottom;
+    color: transparent;
+    transition: .2s;
+}
+
+input[type=checkbox] + label:active:before {
+    transform: scale(0);
+}
+
+input[type=checkbox]:checked + label:before {
+    background-color: MediumSeaGreen;
+    border-color: MediumSeaGreen;
+    color: #fff;
+}
+
+input[type=checkbox]:disabled + label:before {
+    transform: scale(1);
+    border-color: #aaa;
+}
+
+input[type=checkbox]:checked:disabled + label:before {
+    transform: scale(1);
+    background-color: #bfb;
+    border-color: #bfb;
+}
+
+.filter-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-options {
+    display: flex;
+}
+
+.apply {
+    font-size: 17px;
+}
