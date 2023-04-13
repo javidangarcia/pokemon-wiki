@@ -7,15 +7,16 @@ About the Pokemon Wiki
 
 
 {% block content %}
-<div class="about">
-    <h3>About this Wiki</h3>
-    <p>This wiki is for pokemon uploads. Upload your favorite pokemon or create your own and upload it for the world to see!</p>
-    <h3>Your Authors</h3>
-    <p>Javier Garcia, Edgar Ochoa Sotelo, Mark Toro</p>
-    <div>
-        {% for image in images %}
-            <img src="data:image/png;base64,{{image}}">
-        {% endfor %}
+<div class="about-section">
+    <div class="about">
+        <h3>About this Wiki</h3>
+        <p>This wiki is for pokemon uploads. Upload your favorite pokemon or create your own and upload it for the world to see!</p>
+        <h3>Your Authors</h3>
+        <p class="authors">Javier Garcia, Edgar Ochoa Sotelo, Mark Toro</p>
+        <div>
+            {% for image in images %}
+                <img src="data:image/png;base64,{{image}}">
+            {% endfor %}
     </div>
 </div>
 {% endblock %}

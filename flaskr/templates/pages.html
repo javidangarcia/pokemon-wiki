@@ -14,7 +14,9 @@ Wiki Pages
     </div>
 
     <div class="pages">
-        <h3>Wiki Pages</h3>
+        <div>
+            <h3>Wiki Pages</h3>
+        </div>
         <div class="user-pages">
             {% for page in pages %}
                 <a href="{{page}}">{{ (page[6:]).capitalize()}}</a>
@@ -27,21 +29,21 @@ Wiki Pages
             <input class="apply" type="submit" value="Apply">
             <div class="filter-options">
                 <div>
-                    <p>Type</p>
+                    <p id="type-category">Type</p>
                     {% for type in categories["types"] %}
                         <input type="checkbox" class="types-check" name="type" id="{{type}}" value="{{type}}">
                         <label for="{{type}}">{{type}}</label>
                     {% endfor %}
                 </div>
                 <div>
-                    <p>Region</p>
+                    <p id="region-category">Region</p>
                     {% for region in categories["regions"] %}
                         <input type="checkbox" class="regions-check" name="region" id="{{region}}" value="{{region}}">
                         <label for="{{region}}">{{region}}</label>
                     {% endfor %}
                 </div>
                 <div>
-                    <p>Nature</p>
+                    <p id="nature-category">Nature</p>
                     {% for nature in categories["natures"] %}
                     <input type="checkbox" class="natures-check" name="nature" id="{{nature}}" value="{{nature}}">
                     <label for="{{nature}}">{{nature}}</label>
