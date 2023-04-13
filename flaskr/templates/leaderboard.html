@@ -13,20 +13,49 @@ Leaderboard
         <img src="data:image/png;base64,{{trophy}}">
     </div>
     <div class="standings">
-        {% for users in leaderboard %}
-            {% with user = json.loads(users) %}
-                <div class="players">
-                {% if user["rank"] %}
-                    <p style="color: gold">{{user["rank"]}}</p>
-                    <p>{{user["name"]}}</p>
-                    <p>{{user["points"]}}</p>
-                {% else %}
-                    <p>{{user["name"]}}</p>
-                    <p>{{user["points"]}}</p>
-                {% endif %}
-                </div>
-            {% endwith %}
+        {% for top_users in top3 %}
+        <div class="players">
+            {% if top_users["rank"] == 1 %}
+                <p style="color: gold">{{top_users["rank"]}}</p>
+                <p>{{top_users["name"]}}</p>
+                <p>{{top_users["points"]}}</p>
+            {% elif top_users["rank"] == 2 %}
+                <p style="color: silver">{{top_users["rank"]}}</p>
+                <p>{{top_users["name"]}}</p>
+                <p>{{top_users["points"]}}</p>
+            {% else %}
+                <p style="color: rgb(205, 127, 50)">{{top_users["rank"]}}</p>
+                <p>{{top_users["name"]}}</p>
+                <p>{{top_users["points"]}}</p>
+            {% endif %}
+        </div>
         {% endfor %}
+
+        {% for user in leaderboard %}
+            <div class="players">
+            {% if user["rank"] %}
+                <p style="color: white">{{user["rank"]}}</p>
+                <p>{{user["name"]}}</p>
+                <p>{{user["points"]}}</p>
+            {% else %}
+                <p>-</p>
+                <p>{{user["name"]}}</p>
+                <p>{{user["points"]}}</p>
+            {% endif %}
+            </div>
+        {% endfor %}
+        
+        <div class="players" id="current_user">
+            {% if curr_user["rank"] %}
+            <p style="color: white">{{curr_user["rank"]}}</p>
+                <p>{{curr_user["name"]}}</p>
+                <p>{{curr_user["points"]}}</p>
+            {% else %}
+                <p>-</p>
+                <p>{{curr_user["name"]}}</p>
+                <p>{{curr_user["points"]}}</p>
+            {% endif %}
+        </div>
     </div>
 </div>
 
