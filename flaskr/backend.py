@@ -301,3 +301,69 @@ class Backend:
         json_str = blob.download_as_string()
         json_obj = self.json.loads(json_str)
         return json_obj["ranks_list"]
+
+    # updated_user (type) = json
+    def update_leaderboard(self, updated_user):
+        leaderboard = self.get_leaderboard()
+
+        # If user is not on the leaderboard
+        if not updated_user["rank"]: 
+            updated_user["rank"] = len(leaderboard) + 1
+            leaderboard.append(updated_user)
+
+        # Only user in the leaderboard, update leaderboard with new points
+        elif (len(leaderboard) == 1 and updated_user["name"] == leaderboard[0].get("name")) or updated_user["rank"] == 1:
+            leaderboard[0] = updated_user
+
+        # User is in the leaderboard
+        else:   
+            leaderboard = self.sort_leaderboard(leaderboard, updated_user)
+
+        bucket = self.client.get_bucket("wiki-content-techx")
+        blob = bucket.blob("user_game_ranking/ranks_list.json")
+        json_obj = {"ranks_list": leaderboard}
+        new_data = self.json.dumps(json_obj)
+
+        blob.upload_from_string(data=new_data, content_type="application/json")
+        
+        # Updated leaderboard
+        return leaderboard
+
+    # user = user with updated points
+    def sort_leaderboard(self, leaderboard, user):
+        user_points = user["points"]
+        user_index = user["rank"] - 1
+
+        # User to compare
+        other_user_index = user_index - 1
+        other_user = leaderboard[other_user_index]
+        other_user_points = other_user.get("points")
+
+        # User did not rank up
+        if user_points <= other_user_points:
+            leaderboard[user_index] = user
+            return leaderboard
+
+        # User ranked up        
+        while other_user_index >= 0 and user_points > other_user_points:
+
+            # Update ranks and leaderboard with new ranks
+            user["rank"] -= 1
+            other_user["rank"] += 1 
+            leaderboard[other_user_index] = other_user
+            leaderboard[user_index] = user
+
+            # Update leaderboard list
+            leaderboard[other_user_index] = user
+            leaderboard[user_index] = other_user
+
+            # Updates index
+            user_index -= 1
+            other_user_index -= 1
+
+            if other_user_index >= 0:
+                # Get new other user
+                other_user = leaderboard[other_user_index]
+                other_user_points = other_user["points"]
+
+        return leaderboard
