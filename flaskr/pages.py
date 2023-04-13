@@ -74,9 +74,11 @@ def make_endpoints(app):
     @app.route("/pages", methods=['GET', 'POST'])
     def pages():
         if request.method == "POST":
-            if "filter" in request.form:
-                filter = request.form["filter"]
-                pages = backend.get_pages_using_filter(filter)
+            if "type" in request.form or "region" in request.form or "nature" in request.form:
+                type = request.form.get("type")
+                region = request.form.get("region")
+                nature = request.form.get("nature")
+                pages = backend.get_pages_using_filter(type, region, nature)
                 return render_template('pages.html', pages=pages)
             # If the user searched for a page name in the search bar.
             elif "search" in request.form:
@@ -84,14 +86,6 @@ def make_endpoints(app):
                 pages = backend.get_pages_using_search(page_name)
                 return render_template('pages.html', pages=pages)
             # If the user searched for pages using the filter button.
-            elif "filter" in request.form:
-                filter = request.form["filter"]
-                if filter == "LowestToHighest" or filter == "HighestToLowest":
-                    pages = backend.get_pages_using_sorting(filter)
-                    return render_template('pages.html', pages=pages)
-                else:
-                    pages = backend.get_pages_using_filter(filter)
-                    return render_template('pages.html', pages=pages)
             else:
                 pages = backend.get_all_page_names()
                 return render_template('pages.html', pages=pages)                
