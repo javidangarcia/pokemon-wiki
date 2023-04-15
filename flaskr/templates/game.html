@@ -6,37 +6,40 @@ Who's that pokemon?
 
 {% block content %}
 <meta id="user_points" data-name="user_points" data-other="{{user['points']}}">
-<div>
-    <div class="game_background">
-        <div id="score" class="score">score: {{user['points']}} </div>
-        <div id="rank" class="rank"> rank: {{user['rank']}} </div>
-        <img id="pokemon_image" src="data:image/jpg;base64,{{image}}" class="pokemon_image">
+<div  class="game_background" >
 
-        <div>
-            <!--
-            <p>{{data['name']['english']}}</p>
-            <p> player: {{current_user.username}} </p>
-            -->
+    <div class="stats">
+        <span id="score" class="score">score: {{user['points']}} </span>
+        <span id="rank" class="rank"> rank: {{user['rank']}} </span>
+    </div>
 
-            
-            
-    
-        </div>
-   
-        <div>
-            <form id="game_form" class="game_form" method="POST" action="/game">
-                <input type="hidden" id="username" name="username" value="{{current_user.username}}">
-                <input type="hidden" id="data" name="data" value="{{data}}">
-                <input type="hidden" id="points" name="points" value="{{user['points']}}">
-                <input type="hidden" id="rank" name="rank" value="{{user['rank']}}">
-                <input type="hidden" id="user_name" name="user_name" value="{{user['name']}}">
-                <input type="text" id="user_guess" name="user_guess" value="Who's that pokemon?" onfocus="this.value=''">
-                <input type="image" src="data:image/jpg;base64,{{pokeball}}" alt="Submit" id="pokeball" class="pokeball">
+    <img id="pokemon_image" src="data:image/jpg;base64,{{image}}" class="pokemon_image">
 
-            </form>
+    <div>
+        <!--
+        <p>{{data['name']['english']}}</p>
+        <p> player: {{current_user.username}} </p>
+        -->
+
+        
+        
 
     </div>
-</div>
+
+    <div>
+        <form id="game_form" class="game_form" method="POST" action="/game">
+            <input type="hidden" id="username" name="username" value="{{current_user.username}}">
+            <input type="hidden" id="data" name="data" value="{{data}}">
+            <input type="hidden" id="points" name="points" value="{{user['points']}}">
+            <input type="hidden" id="rank" name="rank" value="{{user['rank']}}">
+            <input type="hidden" id="user_name" name="user_name" value="{{user['name']}}">
+            <input type="text" id="user_guess" name="user_guess" value="Who's that pokemon?" onfocus="this.value=''">
+            <input type="image" src="data:image/jpg;base64,{{pokeball}}" alt="Submit" id="pokeball" class="pokeball">
+
+        </form>
+
+            
+    </div>
 
 
 <script>
