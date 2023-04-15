@@ -277,18 +277,46 @@ body {
     color: white;
 }
 
-/* game css */
+/* game */
 
 .game_background {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: #dd1918;
+    /*background-color: #dd1918; */
+    background-image: linear-gradient(12deg,     
+        #ff612b 5%, #ff612b 7.69%,
+        #ff5215 7.69%, #ff5215 15.38%, 
+        #ff4f26 15.38%, #ff4f26 23.08%, 
+        #ff320c 23.08%, #ff320c 33%, 
+        #ff3720 33%, #ff3720 38.46%, 
+        #ff2509 38.46%, #ff2509 42.31%, 
+        #ff2b15 42.31%, #ff2b15 50%, 
+        #ff1a06 50%, #ff1a06 57.69%, 
+        #ff1f15 57.69%, #ff1f15 65.38%, 
+        #ff1004 65.38%, #ff0f0f 73.08%, 
+
+        /*#fff 80.77%, #fff 88.46%, */
+        #ff1b16 73.08%, #ff1b16 80%, 
+        #ff1004 80%, #ff1004 90%,
+        #ff1a15 90%, #ff1a15 100%);
     padding-bottom: 80px;
 }
 
+.score {
+
+
+    margin-left: auto;
+    padding-left: 50px;
+}
+
+.rank {
+    margin-right: auto;
+}
+
 .pokemon_image {
+
     margin-left: auto;
     margin-right: auto;
     padding-top: 80px;
@@ -304,9 +332,12 @@ body {
 }
 
 
-.game_button {
-
-    background-color: white;    
+.pokeball {
+    display: block;
+    width: 8%;
+    margin-left: auto;
+    margin-right: auto;
+    
 }
 
 @keyframes pulse {
@@ -327,7 +358,7 @@ body {
     background: transparent;
     outline: none;
     border: none;
-    border-bottom: 5px solid white;
+
     font-size: 4em;
     text-align: center;
     padding-bottom: 15px;
