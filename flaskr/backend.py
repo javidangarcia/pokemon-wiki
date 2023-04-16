@@ -281,6 +281,16 @@ class Backend:
         pokemon_image = self.base64func.b64encode(content).decode("utf-8")
         return pokemon_image
 
+    def get_pokeball(self):
+        bucket = self.client.get_bucket("wiki-content-techx")
+        image_path = "master_pokedex/images/pokeball.png"
+        pokeball_blob = bucket.get_blob(image_path)
+
+        with pokeball_blob.open('rb') as f:
+            content = f.read()
+        pokeball_image = self.base64func.b64encode(content).decode("utf-8")
+        return pokeball_image
+
     def get_pokemon_data(self,id):
         bucket = self.client.get_bucket("wiki-content-techx")
         data_path = "master_pokedex/pokedex.json"
@@ -289,12 +299,20 @@ class Backend:
         pokemon_json = pokedex_json[id-1]
         return pokemon_json
 
-    def update_points(self,username,new_score):
+
+########################
+
+    def update_points(self,username,new_score,new_rank):
+        data_dict = {'name':username,'points':new_score,'rank':new_rank}
         bucket = self.client.get_bucket("wiki-content-techx")
-        user_path = "user_game_ranking/game_users/"+username
-        points_blob = bucket.get_blob(user_path)
-        points_json = json.loads(points_blob.download_as_string())
-        return points_json
+        path = "user_game_ranking/game_users/"+username
+        blob = bucket.blob(path)
+        json_data = self.json.dumps(data_dict)
+        blob.upload_from_string(data=json_data,content_type="application/json")
+  
+
+
+#############################
 
     def get_leaderboard(self):
         bucket = self.client.get_bucket("wiki-content-techx")
