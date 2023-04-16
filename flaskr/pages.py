@@ -86,6 +86,10 @@ def make_endpoints(app):
                 pages = backend.get_pages_using_search(page_name)
                 return render_template('pages.html', pages=pages, categories=categories)
             # If the user searched for pages using the filter button.
+            elif "sorting" in request.form:
+                sorting = request.form["sorting"]
+                pages = backend.get_pages_using_sorting(sorting)
+                return render_template('pages.html', pages=pages, categories=categories)                
             else:
                 pages = backend.get_all_page_names()
                 return render_template('pages.html', pages=pages, categories=categories)                

@@ -80,15 +80,13 @@ body {
     align-items: center;
     flex-direction: column;
     color: white;
-    background-color: #2C4047;
-    border: 3px solid white;
-    border-radius: 5px;
-    padding: 100px;
+    border-radius: 100px;
+    padding: 30px;
 }
 
 .about img {
-    height: 200px;
-    width: 200px;
+    height: 150px;
+    width: 150px;
 }
 
 .about p {
@@ -114,6 +112,11 @@ body {
     padding-bottom: 0px;
 }
 
+.search-sorting {
+    display: flex;
+    flex-direction: column;
+}
+
 .search form {
     display: flex;
     flex-direction: row;
@@ -127,6 +130,11 @@ body {
 .search input[type=submit] {
     padding: 6px;
     font-size: 17px;
+}
+
+.sorting {
+    padding: 6px;
+    font-size: 12px;
 }
 
 .pages {
@@ -182,7 +190,7 @@ body {
     background-color: rgb(51, 85, 197);
 }
 
-.stats {
+.statistics {
     padding: 35px;
     border: 3px solid white;
     background-color: #2C4047;
@@ -429,12 +437,6 @@ body {
     }
 }
 
-@media mobile(max-width: 850px) {
-    .pokemon_image {
-        max-width: 75%;
-    }
-}
-
 
 /* Leaderboard */
 
@@ -549,6 +551,7 @@ input[type=checkbox]:checked:disabled + label:before {
 
 .filter-options {
     display: flex;
+    background-color: #2C4047;
 }
 
 .apply {
