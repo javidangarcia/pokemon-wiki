@@ -208,7 +208,8 @@ def make_endpoints(app):
         pokemon_data = backend.get_pokemon_data(pokemon_id)
         user = backend.get_game_user(flask_login.current_user.username)
         pokeball_img = backend.get_pokeball()
-        return render_template("game.html",image=pokemon_img,data=pokemon_data,user=user,pokeball=pokeball_img)
+        answer = pokemon_data['name']['english']
+        return render_template("game.html",image=pokemon_img,data=pokemon_data,user=user,pokeball=pokeball_img,answer=answer)
 
 
     @app.route("/game",methods=["POST"])
