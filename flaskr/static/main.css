@@ -322,6 +322,7 @@ body {
     color: #ffb000;
     -webkit-text-stroke: 2px #3a5da8;
     letter-spacing: 0.15em;
+    overflow: hidden;
 }
 
 .score {
@@ -330,7 +331,7 @@ body {
 }
 
 .rank {
-    float: left;
+    float:left;
     padding-left: 10%;
 }
 
