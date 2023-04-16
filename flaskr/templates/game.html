@@ -34,17 +34,22 @@ Who's that pokemon?
 
 </div>
 <script>
+    /* necessary vars */
     var attempts = 0;
     var pokemon_image = document.getElementById('pokemon_image');
     var guess = document.getElementById('user_guess');
     var skip = document.getElementById('skip');
     var form = document.getElementById('game_form');
     var correct = document.getElementById('correct');
+
+    /* The skip button submits the form in order to get the next element */
     skip.onclick = function () {
         form.submit();
     }
+
     form.addEventListener("submit", function(e) {
         e.preventDefault()
+        /*Obtain guess and correct answer in order to compare and see it is correct*/
         var best_guess = form['user_guess'].value;
         var correct_string = form['data'].value;
 
@@ -54,24 +59,23 @@ Who's that pokemon?
         if( correct.value.toUpperCase() == best_guess.toUpperCase() ){
             pokemon_image.classList.add('reveal');
         }else{
+            /* Attempts greater than one reveal a skip button */
             attempts = attempts + 1;
             console.log(attempts);
+            /* if the user did not enter anything then prompt is displayed again */
             if(guess.value.length == 0) {
                 form['user_guess'].value ="Who's that pokemon?";
             }
+            /* shake animation because answer was wrong, wait for animation to end */
             guess.classList.add('shake');
             guess.addEventListener("animationend", () => {
                 guess.classList.remove('shake');
             });
-  
         }
-        if( attempts >= 1 ) {
-            skip.classList.add('reveal');
-        }
-
-        pokemon_image.addEventListener("animationend", () => {
-            form.submit();
-        });
+        /* reveal the skip button */
+        if( attempts >= 1 ) {skip.classList.add('reveal');}
+        /* when form submits the pokemon is revealed */
+        pokemon_image.addEventListener("animationend", () => {form.submit();});
        
     })
     
