@@ -218,6 +218,7 @@ def make_endpoints(app):
     @flask_login.login_required
     def update_user_and_refresh():
         username = flask_login.current_user.username
+
         # Get pokemon data
         data = request.form["data"]
         print(data)
@@ -235,10 +236,11 @@ def make_endpoints(app):
         correct_answer = data_json["name"]["english"]
         correct_answer = correct_answer.upper()
 
+        # modify and clean up points
         points = int(request.form["points"])
         if user_guess == correct_answer:
             points = points + 100
-        elif points - 100 < 0:
+        elif points - 50 < 0:
             points = 0
         else:
             points = int(points) - 50
@@ -247,10 +249,13 @@ def make_endpoints(app):
         updated_user_str = '{\"name\":\"'+ username + '\", \"points\":\"' + str(points) + '\", \"rank\":\"' + str(rank) + '\"}'
         updated_user_json = json.loads(updated_user_str)
         updated_leaderboard_json = backend.update_leaderboard(updated_user_json)
+        
+        # get the rank according to the new updated leaderboard
         for position in updated_leaderboard_json:
             if position['name'] == username:
                 rank = int(position['rank'])
         
+        # update the user with new points and new rank
         backend.update_points(username,points,rank)
         return redirect(url_for("play_game"))
    
