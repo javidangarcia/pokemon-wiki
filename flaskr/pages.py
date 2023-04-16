@@ -204,7 +204,9 @@ def make_endpoints(app):
     @flask_login.login_required
     def play_game(pokemon_id=1):
         pokemon_id = randbelow(810)
-        pokemon_img = backend.get_pokemon_image(pokemon_id)
+        pokemon_img = None
+        while pokemon_img == None:
+            pokemon_img = backend.get_pokemon_image(pokemon_id)
         pokemon_data = backend.get_pokemon_data(pokemon_id)
         user = backend.get_game_user(flask_login.current_user.username)
         pokeball_img = backend.get_pokeball()
@@ -214,7 +216,8 @@ def make_endpoints(app):
 
     @app.route("/game",methods=["POST"])
     @flask_login.login_required
-    def update_user_and_referesh():
+    def update_user_and_refresh():
+        username = flask_login.current_user.username
         # Get pokemon data
         data = request.form["data"]
         print(data)
@@ -225,22 +228,29 @@ def make_endpoints(app):
         user_guess = request.form["user_guess"]
         user_guess = user_guess.upper()
 
-        rank = int(request.form['rank']) + 5
+        # get old rank
+        rank = request.form['rank']
+     
         # set correct answer and compare to user guess
         correct_answer = data_json["name"]["english"]
         correct_answer = correct_answer.upper()
 
-        points = request.form["points"]
-
+        points = int(request.form["points"])
         if user_guess == correct_answer:
-            points = int(points) + 100
+            points = points + 100
+        elif points - 100 < 0:
+            points = 0
         else:
             points = int(points) - 50
 
-        # DEBUGGING
-        print("#############################################################################################################",user_guess,data,points, correct_answer)
-        #print("################################",user)
-        username = flask_login.current_user.username
+        # update leaderboard so that rank gets updated
+        updated_user_str = '{\"name\":\"'+ username + '\", \"points\":\"' + str(points) + '\", \"rank\":\"' + str(rank) + '\"}'
+        updated_user_json = json.loads(updated_user_str)
+        updated_leaderboard_json = backend.update_leaderboard(updated_user_json)
+        for position in updated_leaderboard_json:
+            if position['name'] == username:
+                rank = int(position['rank'])
+        
         backend.update_points(username,points,rank)
         return redirect(url_for("play_game"))
    
@@ -260,7 +270,7 @@ def make_endpoints(app):
         {"name": "javierdangarcia", "points": 0, "rank": 3}]
         
         curr_user = backend.get_game_user(flask_login.current_user.username)
-        if length >= 14 and (curr_user["rank"] == None or curr_user["rank"] > 15):
+        if length >= 14 and (curr_user["rank"] == 'None' or curr_user["rank"] > 15):
             leaderboard = leaderboard[4:15]
 
         elif length >= 14 and curr_user["rank"] <= 15:
