@@ -291,7 +291,6 @@ body {
 .game_background {
     width: 100%;
     height: 100%;
-
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -337,13 +336,17 @@ body {
 }
 
 .pokemon_image {
-    position: absolute;
-    /*z-index: 3;*/
     margin-left: auto;
     margin-right: auto;
     padding-top: 80px;
     padding-bottom: 80px;
-    filter: brightness(0%)
+    filter: brightness(0%) drop-shadow(0 0 5rem white);  
+}
+
+.image_div {
+    padding: 50px 50px;
+    background-image: radial-gradient(white, transparent,transparent);
+    padding: 0;
 }
 
 .pokemon_image.reveal {
@@ -352,23 +355,47 @@ body {
     animation: pulse 2s
 }
 
-.star_svg1 {
-    position: absolute;
-    fill: none;
-    z-index: 1;
-}
-.star_svg2 {
-    position: absolute;
-    fill: none;
-    z-index: 2;
-}
-
 .pokeball {
     display: block;
     width: 100%;
     width: 12%;
     margin-left: auto;
     margin-right: auto;
+}
+
+.user_guess {
+    width: 100%;
+    background: transparent;
+    outline: none;
+    border: none;
+    font-size: 4em;
+    text-align: center;
+    padding-bottom: 15px;
+    padding-top: 15px;
+    font-family: 'Pokemon Solid',sans-serif;
+    color: #ffb000;
+    -webkit-text-stroke: 3px #3a5da8;
+    letter-spacing: 0.1em;
+}
+
+.user_guess.shake {
+    animation: shake 0.3s ease-in-out 0s 2;
+}
+
+.skip {
+    font-family: 'Pokemon Solid',sans-serif;
+    letter-spacing: 0.1em;
+    color: #ffb000;
+    -webkit-text-stroke: 1px #3a5da8;
+    font-size: 2em;
+    transform: scale(0);
+    transition: .8s ease-in;
+    cursor: pointer;
+
+}
+
+.skip.reveal {
+    transform: scale(1);
 }
 
 @keyframes pulse {
@@ -402,42 +429,12 @@ body {
     }
 }
 
-.user_guess {
-    width: 100%;
-    background: transparent;
-    outline: none;
-    border: none;
-
-    font-size: 4em;
-    text-align: center;
-    padding-bottom: 15px;
-    padding-top: 15px;
-    font-family: 'Pokemon Solid',sans-serif;
-    color: #ffb000;
-    -webkit-text-stroke: 3px #3a5da8;
-    letter-spacing: 0.1em;
+@media mobile(max-width: 850px) {
+    .pokemon_image {
+        max-width: 75%;
+    }
 }
 
-.user_guess.shake {
-    animation: shake 0.3s ease-in-out 0s 2;
-}
-
-.skip {
-    font-family: 'Pokemon Solid',sans-serif;
-    letter-spacing: 0.1em;
-    color: #ffb000;
-    -webkit-text-stroke: 1px #3a5da8;
-    font-size: 2em;
-    transform: scale(0);
-    transition: .8s ease-in;
-    cursor: pointer;
-
-}
-
-.skip.reveal {
-    transform: scale(1);
- 
-}
 
 /* Leaderboard */
 

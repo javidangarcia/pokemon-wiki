@@ -299,9 +299,6 @@ class Backend:
         pokemon_json = pokedex_json[id-1]
         return pokemon_json
 
-
-########################
-
     def update_points(self,username,new_score,new_rank):
         data_dict = {'name':username,'points':new_score,'rank':new_rank}
         bucket = self.client.get_bucket("wiki-content-techx")
@@ -309,10 +306,6 @@ class Backend:
         blob = bucket.blob(path)
         json_data = self.json.dumps(data_dict)
         blob.upload_from_string(data=json_data,content_type="application/json")
-  
-
-
-#############################
 
     def get_leaderboard(self):
         bucket = self.client.get_bucket("wiki-content-techx")
@@ -331,7 +324,9 @@ class Backend:
     # updated_user (type) = json
     def update_leaderboard(self, updated_user):
         leaderboard = self.get_leaderboard()
-
+        
+        if updated_user["rank"] == "None":
+            updated_user["rank"] = None
         # If user is not on the leaderboard
         if not updated_user["rank"]: 
             updated_user["rank"] = len(leaderboard) + 1
@@ -358,7 +353,7 @@ class Backend:
     # user = user with updated points
     def sort_leaderboard(self, leaderboard, user):
         user_points = user["points"]
-        user_index = user["rank"] - 1
+        user_index = int(user["rank"]) - 1
 
         # User to compare
         other_user_index = user_index - 1
@@ -374,8 +369,8 @@ class Backend:
         while other_user_index >= 0 and user_points > other_user_points:
 
             # Update ranks and leaderboard with new ranks
-            user["rank"] -= 1
-            other_user["rank"] += 1 
+            user["rank"] = int(user['rank']) - 1
+            other_user["rank"] = int(other_user["rank"]) + 1 
             leaderboard[other_user_index] = other_user
             leaderboard[user_index] = user
 
