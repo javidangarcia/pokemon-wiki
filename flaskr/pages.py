@@ -74,25 +74,20 @@ def make_endpoints(app):
     def pages():
         categories = backend.get_categories()
         if request.method == "POST":
-            if "type" in request.form or "region" in request.form or "nature" in request.form:
+            if request.form["sorting"]:
+                sorting = request.form["sorting"]
+                pages = backend.get_pages_using_sorting(sorting)
+                return render_template('pages.html', pages=pages, categories=categories)       
+            elif request.form["search"] or request.form.get("type") or request.form.get("region") or request.form.get("nature"):
+                name = request.form.get("search")                
                 type = request.form.get("type")
                 region = request.form.get("region")
                 nature = request.form.get("nature")
-                pages = backend.get_pages_using_filter(type, region, nature)
-                return render_template('pages.html', pages=pages, categories=categories)
-            # If the user searched for a page name in the search bar.
-            elif "search" in request.form:
-                page_name = request.form["search"]
-                pages = backend.get_pages_using_search(page_name)
-                return render_template('pages.html', pages=pages, categories=categories)
-            # If the user searched for pages using the filter button.
-            elif "sorting" in request.form:
-                sorting = request.form["sorting"]
-                pages = backend.get_pages_using_sorting(sorting)
-                return render_template('pages.html', pages=pages, categories=categories)                
+                pages = backend.get_pages_using_filter_and_search(name, type, region, nature)
+                return render_template('pages.html', pages=pages, categories=categories)   
             else:
                 pages = backend.get_all_page_names()
-                return render_template('pages.html', pages=pages, categories=categories)                
+                return render_template('pages.html', pages=pages, categories=categories)            
         else:
             pages = backend.get_all_page_names()
             return render_template('pages.html', pages=pages, categories=categories)

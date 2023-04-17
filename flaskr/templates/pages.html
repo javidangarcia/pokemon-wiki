@@ -6,15 +6,13 @@ Wiki Pages
 
 {% block content %}
 <div class="search-filter-container">
-    <div class="search-sorting">
-        <div class="search">
-            <form action="" method="POST">
+    <form class="filter-form" action="" method="POST">
+        <div class="search-sorting">
+            <div class="search">
                 <input type="text" placeholder="Search for Pokemon.." name="search">
                 <input type="submit">
-            </form>
-        </div>
-        <div>
-            <form action="" method="POST">
+            </div>
+            <div>
                 <select class="sorting" name="sorting" onchange='this.form.submit()'>
                     <option value="">Select a Sorting Option</option>
                     <optgroup label="Sort by Level">
@@ -22,23 +20,21 @@ Wiki Pages
                         <option value="HighestToLowest">Highest to Lowest</option> 
                     </optgroup>
                 </select>
-            </form>
+            </div>
         </div>
-    </div>
 
-    <div class="pages">
-        <div>
-            <h3>Wiki Pages</h3>
+        <div class="pages">
+            <div>
+                <h3>Wiki Pages</h3>
+            </div>
+            <div class="user-pages">
+                {% for page in pages %}
+                    <a href="{{page}}">{{ (page[6:]).capitalize()}}</a>
+                {% endfor %}
+            </div>
         </div>
-        <div class="user-pages">
-            {% for page in pages %}
-                <a href="{{page}}">{{ (page[6:]).capitalize()}}</a>
-            {% endfor %}
-        </div>
-    </div>
-    
-    <div>
-        <form class="filter-form" action="" method="POST">
+
+        <div class="filter-section">
             <input class="apply" type="submit" value="Apply">
             <div class="filter-options">
                 <div>
@@ -63,7 +59,7 @@ Wiki Pages
                     {% endfor %}
                 </div>
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
 </div>
 {% endblock %}

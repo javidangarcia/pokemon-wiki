@@ -103,13 +103,17 @@ body {
 
 
 .search-filter-container {
-    display: flex;
     justify-content: space-between;
     background-color: rgb(51, 85, 197);
     color: white;
     font-size: 30px;
     padding: 30px;
     padding-bottom: 0px;
+}
+
+.filter-form {
+    display: flex;
+    justify-content: space-between;
 }
 
 .search-sorting {
@@ -120,6 +124,11 @@ body {
 .search form {
     display: flex;
     flex-direction: row;
+}
+
+.search {
+    display: flex;
+    flex-direction: row;   
 }
 
 .search input[type=text] {
@@ -158,6 +167,11 @@ body {
     margin-bottom: 100px;
 }
 
+.filter-section {
+    display: flex;
+    flex-direction: column;
+}
+
 .pages h3 {
     font-size: 30px;
     font-weight: 600;
@@ -175,6 +189,22 @@ body {
     color: #f1faee;
     text-decoration: None;
     text-align: center;
+}
+
+.filter-options {
+    display: flex;
+    background-color: #2C4047;
+}
+
+.apply {
+    font-size: 17px;
+}
+
+.filter-options p {
+    font-size: 15px;
+    text-align: center;
+    margin: 0px;
+    padding: 5px;
 }
 
 
@@ -542,27 +572,6 @@ input[type=checkbox]:checked:disabled + label:before {
     transform: scale(1);
     background-color: #bfb;
     border-color: #bfb;
-}
-
-.filter-form {
-    display: flex;
-    flex-direction: column;
-}
-
-.filter-options {
-    display: flex;
-    background-color: #2C4047;
-}
-
-.apply {
-    font-size: 17px;
-}
-
-.filter-options p {
-    font-size: 15px;
-    text-align: center;
-    margin: 0px;
-    padding: 5px;
 }
 
 #type-category {
