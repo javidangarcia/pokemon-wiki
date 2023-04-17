@@ -214,6 +214,27 @@ class Backend:
 
         return json_obj
 
+    def get_seen_pokemon(self, username):
+        game_users_bucket = self.client.get_bucket('wiki-content-techx')
+        path = f'user_game_ranking/seen/{username}'
+
+        blob = game_users_bucket.get_blob(path)
+        json_str = blob.download_as_string()
+        json_obj = self.json.loads(json_str)
+
+        return json_obj
+
+    # takes a json object to overwrite the old blob
+    def update_seen_pokemon(self,username,new_list):
+        bucket = self.client.get_bucket("wiki-content-techx")
+        seen_path = f"user_game_ranking/seen/{username}"
+        blob = bucket.blob(seen_path)
+        #json_obj = {"ranks_list": leaderboard}
+        new_seen = self.json.dumps(new_list)
+
+        blob.upload_from_string(data=new_seen, content_type="application/json")
+
+
     def get_pages_using_filter_and_search(self, name, type, region, nature):
         bucket = self.client.get_bucket('wiki-content-techx')
         blobs = bucket.list_blobs(prefix='pages/')
