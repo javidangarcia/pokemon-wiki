@@ -248,20 +248,14 @@ def make_endpoints(app):
     @app.route("/leaderboard", methods=["GET"])
     @flask_login.login_required
     def leaderboard():
-        # leaderboard = backend.get_leaderboard()
-        json_obj = {"name": "javierdangarcia", "points": 0, "rank": 1}
-
-        # Test to view leaderboard list
-        leaderboard = [json_obj for x in range(20)]
+        leaderboard = backend.get_leaderboard()
 
         length = len(leaderboard)
 
-        # top3 = leaderboard[:3] if length >= 3 else None
-        top3 = [{"name": "javierdangarcia", "points": 0, "rank": 1}, {"name": "javierdangarcia", "points": 0, "rank": 2}, 
-        {"name": "javierdangarcia", "points": 0, "rank": 3}]
+        top3 = leaderboard[:3] if length >= 3 else None
         
         curr_user = backend.get_game_user(flask_login.current_user.username)
-        if length >= 14 and (curr_user["rank"] == 'None' or curr_user["rank"] > 15):
+        if length >= 14 and (curr_user["rank"] == None or curr_user["rank"] > 15):
             leaderboard = leaderboard[4:15]
 
         elif length >= 14 and curr_user["rank"] <= 15:

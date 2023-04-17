@@ -13,23 +13,25 @@ Leaderboard
         <img src="data:image/png;base64,{{trophy}}">
     </div>
     <div class="standings">
-        {% for top_users in top3 %}
-        <div class="players">
-            {% if top_users["rank"] == 1 %}
-                <p style="color: gold">{{top_users["rank"]}}</p>
-                <p>{{top_users["name"]}}</p>
-                <p>{{top_users["points"]}}</p>
-            {% elif top_users["rank"] == 2 %}
-                <p style="color: silver">{{top_users["rank"]}}</p>
-                <p>{{top_users["name"]}}</p>
-                <p>{{top_users["points"]}}</p>
-            {% else %}
-                <p style="color: rgb(205, 127, 50)">{{top_users["rank"]}}</p>
-                <p>{{top_users["name"]}}</p>
-                <p>{{top_users["points"]}}</p>
-            {% endif %}
-        </div>
-        {% endfor %}
+        {% if top3 %}
+            {% for top_users in top3 %}
+            <div class="players">
+                {% if top_users["rank"] == 1 %}
+                    <p style="color: gold">{{top_users["rank"]}}</p>
+                    <p>{{top_users["name"]}}</p>
+                    <p>{{top_users["points"]}}</p>
+                {% elif top_users["rank"] == 2 %}
+                    <p style="color: silver">{{top_users["rank"]}}</p>
+                    <p>{{top_users["name"]}}</p>
+                    <p>{{top_users["points"]}}</p>
+                {% else %}
+                    <p style="color: rgb(205, 127, 50)">{{top_users["rank"]}}</p>
+                    <p>{{top_users["name"]}}</p>
+                    <p>{{top_users["points"]}}</p>
+                {% endif %}
+            </div>
+            {% endfor %}
+        {% endif %}
 
         {% for user in leaderboard %}
             <div class="players">
