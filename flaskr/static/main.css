@@ -352,6 +352,7 @@ body {
 .stats {
     width: 100%;
     padding: 0px;
+    padding-top: 40px;
     margin: 0px;
     background-color: transparent;
     font-family: 'Pokemon solid', sans-serif;
@@ -402,7 +403,7 @@ body {
 }
 
 .user_guess {
-    width: 100%;
+    width: 90%;
     background: transparent;
     outline: none;
     border: none;

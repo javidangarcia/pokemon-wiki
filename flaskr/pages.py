@@ -202,15 +202,25 @@ def make_endpoints(app):
     @app.route("/game")
     @flask_login.login_required
     def play_game(pokemon_id=1):
+        # make sure pokemon_id has not been guessed before
+        seen = backend.get_seen_pokemon(flask_login.current_user.username)
         pokemon_id = randbelow(810)
+        while str(pokemon_id) in seen:
+            pokemon_id = randbelow(810)
+
+        # check that image is not a None type
         pokemon_img = None
         while pokemon_img == None:
             pokemon_img = backend.get_pokemon_image(pokemon_id)
+
+        # Get the pokemon and user data
         pokemon_data = backend.get_pokemon_data(pokemon_id)
         user = backend.get_game_user(flask_login.current_user.username)
         pokeball_img = backend.get_pokeball()
         answer = pokemon_data['name']['english']
-        return render_template("game.html",image=pokemon_img,data=pokemon_data,user=user,pokeball=pokeball_img,answer=answer)
+
+        # return template
+        return render_template("game.html",image=pokemon_img,data=pokemon_data,user=user,pokeball=pokeball_img,answer=answer,seen=seen)
 
 
     @app.route("/game",methods=["POST"])
@@ -220,7 +230,6 @@ def make_endpoints(app):
 
         # Get pokemon data
         data = request.form["data"]
-        print(data)
         data = data.replace("\'","\"")
         data_json = json.loads(data)
 
@@ -241,6 +250,13 @@ def make_endpoints(app):
         else:
             points = int(points) - 50
         
+        # update the seen-pokemon list
+        seen = backend.get_seen_pokemon(username)
+        seen_id = data_json['id']
+        seen_id = str(seen_id)
+        seen[seen_id] = True
+        backend.update_seen_pokemon(username,seen)
+
         # update the user with new points and new rank
         backend.update_points(username, points) 
         return redirect(url_for("play_game"))

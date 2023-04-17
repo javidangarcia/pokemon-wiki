@@ -138,6 +138,13 @@ class Backend:
             game_blob.upload_from_string(data=json_str,
                                          content_type="application/json")
 
+            # Adds new user to the seen blob
+            seen_path = f'user_game_ranking/seen/{username}'
+            seen_blob = game_users_bucket.blob(seen_path)
+            seen_json = {} # empty because a new user has not encountered any yet
+            seen_str = self.json.dumps(seen_json)
+            seen_blob.upload_from_string(data=seen_str,content_type="application/json")
+
             return True
 
     def sign_in(self, username, password):
@@ -207,6 +214,37 @@ class Backend:
 
         return json_obj
 
+    def get_seen_pokemon(self, username): 
+        """
+        Gets a json object that stores the pokemon that the user has seen so far
+        """
+        game_users_bucket = self.client.get_bucket('wiki-content-techx')
+        path = f'user_game_ranking/seen/{username}'
+        blob = game_users_bucket.get_blob(path)
+        # turn data into json
+        json_str = blob.download_as_string()
+        json_obj = self.json.loads(json_str)
+
+        return json_obj
+
+    
+    def update_seen_pokemon(self,username,new_list):
+        """
+        takes a json object to overwrite the old blob
+        """
+        bucket = self.client.get_bucket("wiki-content-techx")
+        seen_path = f"user_game_ranking/seen/{username}"
+        blob = bucket.blob(seen_path)
+        new_seen = self.json.dumps(new_list)
+
+        # if the lenght of the json object is greater than the number of pokemon,
+        # then we set the json object to an empty state
+        if len(new_seen) > 810:
+            new_seen = json.dumps({})
+        # upload blob
+        blob.upload_from_string(data=new_seen, content_type="application/json")
+
+
     def get_pages_using_filter_and_search(self, name, type, region, nature):
         bucket = self.client.get_bucket('wiki-content-techx')
         blobs = bucket.list_blobs(prefix='pages/')
@@ -270,28 +308,37 @@ class Backend:
 
 
     def get_pokemon_image(self,id):
-        
+        """
+        Gets a pokemon image using the pokemon's unique id
+        """
         image_id = "{:03d}".format(id)
         bucket = self.client.get_bucket("wiki-content-techx")
         image_path = "master_pokedex/images/" + image_id + ".png"
+        # Get from bucket
         pokemon_image_blob = bucket.get_blob(image_path)
-
+        # Read contents into base64
         with pokemon_image_blob.open('rb') as f:
             content = f.read()
         pokemon_image = self.base64func.b64encode(content).decode("utf-8")
         return pokemon_image
 
     def get_pokeball(self):
+        """
+        Returns the pokeball image
+        """
         bucket = self.client.get_bucket("wiki-content-techx")
         image_path = "master_pokedex/images/pokeball.png"
         pokeball_blob = bucket.get_blob(image_path)
-
+        # Read contents into base64
         with pokeball_blob.open('rb') as f:
             content = f.read()
         pokeball_image = self.base64func.b64encode(content).decode("utf-8")
         return pokeball_image
 
     def get_pokemon_data(self,id):
+        """
+        Returns a json obj with the pokemon data for that particular id
+        """
         bucket = self.client.get_bucket("wiki-content-techx")
         data_path = "master_pokedex/pokedex.json"
         pokedex_blob = bucket.get_blob(data_path)
@@ -300,6 +347,9 @@ class Backend:
         return pokemon_json
 
     def update_points(self, username, new_score):
+        """
+        Update the current user's points and rank, leaderboard is updated as well
+        """
         user = self.get_game_user(username)
         user["points"] = new_score
         new_user = self.update_leaderboard(user)
@@ -308,6 +358,7 @@ class Backend:
         path = "user_game_ranking/game_users/" + username
         blob = bucket.blob(path)
         json_data = self.json.dumps(new_user)
+        # upload new data
         blob.upload_from_string(data=json_data,content_type="application/json")
 
     def get_leaderboard(self):
