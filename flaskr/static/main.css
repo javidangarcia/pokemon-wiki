@@ -325,7 +325,6 @@ body {
 
 /* game */
 
-
 .game_background {
     width: 100%;
     height: 100%;
@@ -349,7 +348,7 @@ body {
         #ff1004 80%, #ff1004 90%,
         #ff1a15 90%, #ff1a15 100%);
 }
-
+/* score and rank */
 .stats {
     width: 100%;
     padding: 0px;
@@ -361,6 +360,7 @@ body {
     color: #ffb000;
     -webkit-text-stroke: 2px #3a5da8;
     letter-spacing: 0.15em;
+    overflow: hidden;
 }
 
 .score {
@@ -369,7 +369,7 @@ body {
 }
 
 .rank {
-    float: left;
+    float:left;
     padding-left: 10%;
 }
 
@@ -380,7 +380,7 @@ body {
     padding-bottom: 80px;
     filter: brightness(0%) drop-shadow(0 0 5rem white);  
 }
-
+/* div that holds the pokemon_image, to create a glow behind the image */
 .image_div {
     padding: 50px 50px;
     background-image: radial-gradient(white, transparent,transparent);
@@ -415,11 +415,11 @@ body {
     -webkit-text-stroke: 3px #3a5da8;
     letter-spacing: 0.1em;
 }
-
+/* shake for when guess is wrong */
 .user_guess.shake {
     animation: shake 0.3s ease-in-out 0s 2;
 }
-
+/* skip button */
 .skip {
     font-family: 'Pokemon Solid',sans-serif;
     letter-spacing: 0.1em;
@@ -466,7 +466,6 @@ body {
         margin-left: 0rem;
     }
 }
-
 
 /* Leaderboard */
 
