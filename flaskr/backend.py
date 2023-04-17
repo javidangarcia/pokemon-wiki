@@ -138,6 +138,13 @@ class Backend:
             game_blob.upload_from_string(data=json_str,
                                          content_type="application/json")
 
+            # Adds new user to the seen blob
+            seen_path = f'user_game_ranking/seen/{username}'
+            seen_blob = game_users_bucket.blob(seen_path)
+            seen_json = {} # empty because a new user has not encountered any yet
+            seen_str = self.json.dumps(seen_json)
+            seen_blob.upload_from_string(data=seen_str,content_type="application/json")
+
             return True
 
     def sign_in(self, username, password):
