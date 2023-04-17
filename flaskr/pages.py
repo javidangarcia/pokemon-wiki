@@ -228,9 +228,6 @@ def make_endpoints(app):
         user_guess = request.form["user_guess"]
         user_guess = user_guess.upper()
 
-        # get old rank
-        rank = request.form['rank']
-     
         # set correct answer and compare to user guess
         correct_answer = data_json["name"]["english"]
         correct_answer = correct_answer.upper()
@@ -243,38 +240,22 @@ def make_endpoints(app):
             points = 0
         else:
             points = int(points) - 50
-
-        # update leaderboard so that rank gets updated
-        updated_user_str = '{\"name\":\"'+ username + '\", \"points\":\"' + str(points) + '\", \"rank\":\"' + str(rank) + '\"}'
-        updated_user_json = json.loads(updated_user_str)
-        updated_leaderboard_json = backend.update_leaderboard(updated_user_json)
-        
-        # get the rank according to the new updated leaderboard
-        for position in updated_leaderboard_json:
-            if position['name'] == username:
-                rank = int(position['rank'])
         
         # update the user with new points and new rank
-        backend.update_points(username,points,rank)
+        backend.update_points(username, points) 
         return redirect(url_for("play_game"))
    
     @app.route("/leaderboard", methods=["GET"])
     @flask_login.login_required
     def leaderboard():
-        # leaderboard = backend.get_leaderboard()
-        json_obj = {"name": "javierdangarcia", "points": 0, "rank": 1}
-
-        # Test to view leaderboard list
-        leaderboard = [json_obj for x in range(20)]
+        leaderboard = backend.get_leaderboard()
 
         length = len(leaderboard)
 
-        # top3 = leaderboard[:3] if length >= 3 else None
-        top3 = [{"name": "javierdangarcia", "points": 0, "rank": 1}, {"name": "javierdangarcia", "points": 0, "rank": 2}, 
-        {"name": "javierdangarcia", "points": 0, "rank": 3}]
+        top3 = leaderboard[:3] if length >= 3 else None
         
         curr_user = backend.get_game_user(flask_login.current_user.username)
-        if length >= 14 and (curr_user["rank"] == 'None' or curr_user["rank"] > 15):
+        if length >= 14 and (curr_user["rank"] == None or curr_user["rank"] > 15):
             leaderboard = leaderboard[4:15]
 
         elif length >= 14 and curr_user["rank"] <= 15:
@@ -286,4 +267,3 @@ def make_endpoints(app):
         trophy = backend.get_image(f'authors/trophy.png')
 
         return render_template("leaderboard.html", leaderboard=leaderboard, top3=top3, trophy=trophy, curr_user=curr_user)
-
