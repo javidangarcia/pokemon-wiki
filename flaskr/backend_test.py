@@ -221,3 +221,62 @@ def test_update_seen_pokemon(client,bucket,blob,mockjson):
     blob.upload_from_string.assert_called_once
 
 
+def test_get_game_user(client, bucket, blob, mockjson):
+    client.get_bucket.return_value = bucket
+    bucket.get_blob.return_value = blob
+    blob.download_as_string.return_value = ""
+    data = {"name": "name", "points": 0, "rank": None}
+    mockjson.loads.return_value = data
+    backend = Backend(client, json=mockjson)
+    assert backend.get_game_user("name") == data
+
+@patch("flaskr.backend.Backend.get_leaderboard", return_value=[])
+def test_update_leaderboard_unranked_user(client, bucket, blob, mockjson):
+    client.get_bucket.return_value = bucket
+    bucket.blob.return_value = blob
+    mockjson.dumps.return_value = ""
+    data = {"name": "name", "points": 0, "rank": None}
+    backend = Backend(client, json=mockjson)
+    assert backend.update_leaderboard(data) == {"name": "name", "points": 0, "rank": 1}
+
+@patch("flaskr.backend.Backend.get_leaderboard", return_value=[{"name": "name", "points": 0, "rank": 1}])
+def test_update_leaderboard_only_user(client, bucket, blob, mockjson):
+    client.get_bucket.return_value = bucket
+    bucket.blob.return_value = blob
+    mockjson.dumps.return_value = ""
+    data = {"name": "name", "points": 100, "rank": 1}
+    backend = Backend(client, json=mockjson)
+    assert backend.update_leaderboard(data) == {"name": "name", "points": 100, "rank": 1}
+
+@patch("flaskr.backend.Backend.get_leaderboard", 
+    return_value=[{"name": "name", "points": 100, "rank": 1}, {"name": "name2", "points": 0, "rank": 2}])
+@patch("flaskr.backend.Backend.sort_leaderboard",
+    return_value=([{"name": "name2", "points": 200, "rank": 1}, {"name": "name", "points": 100, "rank": 2}], {"name": "name2", "points": 200, "rank": 1}))
+def test_update_leaderboard(client, bucket, blob, mockjson):
+    client.get_bucket.return_value = bucket
+    bucket.blob.return_value = blob
+    mockjson.dumps.return_value = ""
+    data = {"name": "name2", "points": 200, "rank": 2}
+    backend = Backend(client, json=mockjson)
+    assert backend.update_leaderboard(data) == {"name": "name2", "points": 200, "rank": 1}
+
+def test_sort_up_leaderboard(client):
+    backend = Backend(client)
+    data = [{"name": "name", "points": 100, "rank": 1}, {"name": "name2", "points": 0, "rank": 2}]
+    user_data = {"name": "name2", "points": 200, "rank": 2}
+    assert backend.sort_leaderboard(data, user_data) == ([{"name": "name2", "points": 200, "rank": 1}, {"name": "name", "points": 100, "rank": 2}], 
+                                                        {"name": "name2", "points": 200, "rank": 1})
+
+def test_sort_down_leaderboard(client):
+    backend = Backend(client)
+    data = [{"name": "name", "points": 100, "rank": 1}, {"name": "name2", "points": 100, "rank": 2}]
+    user_data = {"name": "name", "points": 50, "rank": 1}
+    assert backend.sort_leaderboard(data, user_data) == ([{"name": "name2", "points": 100, "rank": 1}, {"name": "name", "points": 50, "rank": 2}], 
+                                                        {"name": "name", "points": 50, "rank": 2})
+
+def test_sort_leaderboard_equal_points(client):
+    backend = Backend(client)
+    data = [{"name": "name", "points": 100, "rank": 1}, {"name": "name2", "points": 0, "rank": 2}]
+    user_data = {"name": "name2", "points": 100, "rank": 2}
+    assert backend.sort_leaderboard(data, user_data) == ([{"name": "name", "points": 100, "rank": 1}, {"name": "name2", "points": 100, "rank": 2}],
+                                                        {"name": "name2", "points": 100, "rank": 2})
