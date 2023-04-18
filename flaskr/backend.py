@@ -342,7 +342,8 @@ class Backend:
         bucket = self.client.get_bucket("wiki-content-techx")
         data_path = "master_pokedex/pokedex.json"
         pokedex_blob = bucket.get_blob(data_path)
-        pokedex_json = json.loads(pokedex_blob.download_as_string())
+        poke_str = pokedex_blob.download_as_string()
+        pokedex_json = self.json.loads(poke_str)
         pokemon_json = pokedex_json[id-1]
         return pokemon_json
 

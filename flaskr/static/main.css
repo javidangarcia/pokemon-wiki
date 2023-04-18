@@ -327,7 +327,8 @@ body {
 
 .game_background {
     width: 100%;
-    height: 100%;
+    height: 100vh;
+    min-height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -351,8 +352,7 @@ body {
 /* score and rank */
 .stats {
     width: 100%;
-    padding: 0px;
-    padding-top: 40px;
+    flex-direction: row;
     margin: 0px;
     background-color: transparent;
     font-family: 'Pokemon solid', sans-serif;
@@ -361,7 +361,7 @@ body {
     color: #ffb000;
     -webkit-text-stroke: 2px #3a5da8;
     letter-spacing: 0.15em;
-    overflow: hidden;
+
 }
 
 .score {
@@ -403,11 +403,11 @@ body {
 }
 
 .user_guess {
-    width: 90%;
+    width: 100%;
     background: transparent;
     outline: none;
     border: none;
-    font-size: 4em;
+    font-size: 3em;
     text-align: center;
     padding-bottom: 15px;
     padding-top: 15px;

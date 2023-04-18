@@ -1,6 +1,6 @@
 from flaskr.backend import Backend
 import pytest
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 
 
 @pytest.fixture
@@ -159,3 +159,65 @@ def test_get_leaderboard(client, bucket, blob, mockjson):
     mockjson.loads.return_value = {"ranks_list": data}
     backend = Backend(client, json=mockjson)
     assert backend.get_leaderboard() == data 
+
+def test_get_pokemon_image(client,bucket,blob,base64func,imagefile):
+    client.get_bucket.return_value = bucket
+    bucket.get_blob.return_value = blob
+    pokemon_image_blob = bucket.get_blob()
+    pokemon_image_blob.open.return_value.__enter__.return_value = imagefile
+    imagefile.read.return_value = "\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09"
+    base64func.b64encode.return_value.decode.return_value = "DlqDRdKbrjQdWsQEjhVV"
+    backend = Backend(client,base64func=base64func)
+    assert backend.get_pokemon_image(3) == "DlqDRdKbrjQdWsQEjhVV"
+
+def test_get_pokeball(client,bucket,blob,base64func,imagefile):
+    client.get_bucket.return_value = bucket
+    bucket.get_blob.return_value = blob
+    pokeball_blob = bucket.get_blob()
+    pokeball_blob.open.return_value.__enter__.return_value = imagefile
+    imagefile.read.return_value = "\x11\x12\x13\x14\x15\x16\x17\x18\x19\x20"
+    base64func.b64encode.return_value.decode.return_value = "xpMlfYxxbIZKvEPCNVZx"
+    backend = Backend(client,base64func=base64func)
+    assert backend.get_pokeball() == "xpMlfYxxbIZKvEPCNVZx"
+
+
+@patch("flaskr.backend.Backend.get_game_user",
+       return_value={"User": 1})
+@patch("flaskr.backend.Backend.update_leaderboard",
+       return_value=b"new leaderboard")
+def test_update_points(game_user,leaderboard,client,bucket,blob,mockjson):
+    client.get_bucket.return_value = bucket
+    bucket.blob.return_value = blob
+    mockjson.dumps.return_value = {"edgar":1}
+    backend = Backend(client,json=mockjson)
+    backend.update_points("username",{"edgar":1})
+    game_user.assert_called_once()
+    leaderboard.assert_called_once()
+    blob.upload_from_string.assert_called_once_with(data={"edgar":1},content_type="application/json")
+
+def test_get_pokemon_data(client,bucket,blob,mockjson):
+    client.get_bucket.return_value = bucket
+    bucket.get_blob.return_value = blob
+    blob.download_as_string.return_value = "downloaded string"
+    mockjson.loads.return_value = {1:"abra"}
+    backend = Backend(client,json=mockjson)
+    assert backend.get_pokemon_data(2) == "abra"
+
+def test_get_seen_pokemon(client,bucket,blob,mockjson):
+    client.get_bucket.return_value = bucket
+    bucket.get_blob.return_value = blob
+    blob.download_as_string.return_value = "A string"
+    mockjson.loads.return_value = {"100":"true","200":"true"}
+    backend = Backend(client,json=mockjson)
+    assert backend.get_seen_pokemon("username") == {"100":"true","200":"true"}
+
+
+def test_update_seen_pokemon(client,bucket,blob,mockjson):
+    client.get_bucket.return_value = bucket
+    bucket.get_blob.return_value = blob
+    mockjson.dumps.return_value = {"new":"pokemon"}
+    backend = Backend(client,json=mockjson)
+    backend.update_seen_pokemon("username",{"new":"list"})
+    blob.upload_from_string.assert_called_once
+
+
