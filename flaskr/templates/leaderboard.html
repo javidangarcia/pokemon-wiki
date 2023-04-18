@@ -12,30 +12,23 @@ Leaderboard
         <h1>Leaderboard</h1>
         <img src="data:image/png;base64,{{trophy}}">
     </div>
-    <div class="standings">
-        {% if top3 %}
-            {% for top_users in top3 %}
-            <div class="players">
-                {% if top_users["rank"] == 1 %}
-                    <p style="color: gold">{{top_users["rank"]}}</p>
-                    <p>{{top_users["name"]}}</p>
-                    <p>{{top_users["points"]}}</p>
-                {% elif top_users["rank"] == 2 %}
-                    <p style="color: silver">{{top_users["rank"]}}</p>
-                    <p>{{top_users["name"]}}</p>
-                    <p>{{top_users["points"]}}</p>
-                {% else %}
-                    <p style="color: rgb(205, 127, 50)">{{top_users["rank"]}}</p>
-                    <p>{{top_users["name"]}}</p>
-                    <p>{{top_users["points"]}}</p>
-                {% endif %}
-            </div>
-            {% endfor %}
-        {% endif %}
 
+    <div class="standings">
         {% for user in leaderboard %}
-            <div class="players">
-            {% if user["rank"] %}
+        <div class="players {% if user['name'] == curr_user['name']%}current_user{% endif %}">
+            {% if user["rank"] == 1 %}
+                <p style="color: gold">{{user["rank"]}}</p>
+                <p>{{user["name"]}}</p>
+                <p>{{user["points"]}}</p>
+            {% elif user["rank"] == 2 %}
+                <p style="color: silver">{{user["rank"]}}</p>
+                <p>{{user["name"]}}</p>
+                <p>{{user["points"]}}</p>
+            {% elif user["rank"] == 3 %}
+                <p style="color: rgb(205, 127, 50)">{{user["rank"]}}</p>
+                <p>{{user["name"]}}</p>
+                <p>{{user["points"]}}</p>
+            {% elif user["rank"] > 3%}
                 <p style="color: white">{{user["rank"]}}</p>
                 <p>{{user["name"]}}</p>
                 <p>{{user["points"]}}</p>
@@ -44,9 +37,10 @@ Leaderboard
                 <p>{{user["name"]}}</p>
                 <p>{{user["points"]}}</p>
             {% endif %}
-            </div>
+        </div> 
         {% endfor %}
         
+        {% if not user_in_top15 %}
         <div class="players" id="current_user">
             {% if curr_user["rank"] %}
             <p style="color: white">{{curr_user["rank"]}}</p>
@@ -58,6 +52,7 @@ Leaderboard
                 <p>{{curr_user["points"]}}</p>
             {% endif %}
         </div>
+        {% endif %}
     </div>
 </div>
 

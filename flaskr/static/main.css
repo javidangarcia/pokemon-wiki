@@ -586,6 +586,10 @@ input[type=checkbox]:checked:disabled + label:before {
     background-color: #4a7c59;
 }
 
+.current_user {
+    background-color: #79DE70;
+}
+
 #current_user {
     background-color: #79DE70;
 }
