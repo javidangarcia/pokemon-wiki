@@ -69,7 +69,7 @@ def make_endpoints(app):
             backend.get_image('authors/mark.png')
         ]
         return render_template('about.html', images=images)
-
+"""
     @app.route("/pages", methods=['GET', 'POST'])
     def pages():
         categories = backend.get_categories()
@@ -91,7 +91,7 @@ def make_endpoints(app):
         else:
             pages = backend.get_all_page_names()
             return render_template('pages.html', pages=pages, categories=categories)
-
+"""
     @app.route("/pages/<pokemon>")
     def wiki(pokemon="abra"):
         poke_string = backend.get_wiki_page(pokemon)
@@ -198,7 +198,7 @@ def make_endpoints(app):
 
         # render pages list
         return redirect(url_for('pages'))
-
+"""
     @app.route("/game")
     @flask_login.login_required
     def play_game(pokemon_id=1):
@@ -260,7 +260,7 @@ def make_endpoints(app):
         # update the user with new points and new rank
         backend.update_points(username, points) 
         return redirect(url_for("play_game"))
-   
+"""
     @app.route("/leaderboard", methods=["GET"])
     @flask_login.login_required
     def leaderboard():

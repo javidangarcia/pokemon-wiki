@@ -68,6 +68,9 @@ def test_about_page(mock_get_image, client):
 
 # should return list of pages
 def test_pages(client):
+    client.get_bucket.return_value = buckets
+    client.get_blob.return_value = blob
+    
     with patch("flaskr.backend.Backend.get_all_page_names",
                return_value=["User Generated Pages"]):
         response = client.get("/pages")
