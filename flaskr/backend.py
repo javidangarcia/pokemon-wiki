@@ -245,9 +245,10 @@ class Backend:
         blob.upload_from_string(data=new_seen, content_type="application/json")
 
 
-    def get_pages_using_filter_and_search(self, name, type, region, nature):
+    def get_pages_using_filter_and_search(self, name, type, region, nature, sorting):
         bucket = self.client.get_bucket('wiki-content-techx')
         blobs = bucket.list_blobs(prefix='pages/')
+        page_content = []
         page_names = []
 
         for index, blob in enumerate(blobs):
@@ -257,7 +258,29 @@ class Backend:
                 content = f.read()
             pokemon_data = json.loads(content)
             if (name == None or name.lower() in pokemon_data["name"].lower()) and (type == None or pokemon_data["type"] == type) and (region == None or pokemon_data["region"] == region) and (nature == None or pokemon_data["nature"] == nature):
-                page_names.append(blob.name)    
+                page_names.append(blob.name)
+                if sorting:
+                    level = int(pokemon_data["level"])
+                    page_content.append([level, blob.name])
+                                        
+        if sorting:
+            return self.get_pages_using_sorting(page_content, sorting)
+
+        return page_names
+
+
+    def get_pages_using_sorting(self, pages_content, sorting):
+        bucket = self.client.get_bucket('wiki-content-techx')
+        
+        if sorting == "LowestToHighest":
+            pages_content.sort()
+        if sorting == "HighestToLowest":
+            pages_content.sort(reverse = True)
+
+        page_names = []
+
+        for level, name in pages_content:
+            page_names.append(name)
 
         return page_names
         
@@ -275,34 +298,6 @@ class Backend:
             content = self.json.loads(content)
             if name in content["name"].lower():
                 page_names.append(blob.name)
-
-        return page_names
-
-
-    def get_pages_using_sorting(self, filter):
-        bucket = self.client.get_bucket('wiki-content-techx')
-        blobs = bucket.list_blobs(prefix='pages/')
-        page_content = []
-
-        for index, blob in enumerate(blobs):
-            if index == 0:
-                continue
-            with blob.open('r') as f:
-                pokemon_data = f.read()
-            pokemon_data = json.loads(pokemon_data)
-            level = int(pokemon_data["level"])
-            page_content.append([level, blob.name])
-        
-        if filter == "LowestToHighest":
-            page_content.sort()
-        if filter == "HighestToLowest":
-            page_content.sort(reverse = True)
-
-        print(page_content)
-        page_names = []
-
-        for level, name in page_content:
-            page_names.append(name)
 
         return page_names
 
