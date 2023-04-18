@@ -73,17 +73,14 @@ def make_endpoints(app):
     @app.route("/pages", methods=['GET', 'POST'])
     def pages():
         categories = backend.get_categories()
-        if request.method == "POST":
-            if request.form["sorting"]:
-                sorting = request.form["sorting"]
-                pages = backend.get_pages_using_sorting(sorting)
-                return render_template('pages.html', pages=pages, categories=categories)       
-            elif request.form["search"] or request.form.get("type") or request.form.get("region") or request.form.get("nature"):
+        if request.method == "POST":     
+            if request.form["search"] or request.form["sorting"] or request.form.get("type") or request.form.get("region") or request.form.get("nature"):
                 name = request.form.get("search")                
                 type = request.form.get("type")
                 region = request.form.get("region")
                 nature = request.form.get("nature")
-                pages = backend.get_pages_using_filter_and_search(name, type, region, nature)
+                sorting = request.form.get("sorting")
+                pages = backend.get_pages_using_filter_and_search(name, type, region, nature, sorting)
                 return render_template('pages.html', pages=pages, categories=categories)   
             else:
                 pages = backend.get_all_page_names()

@@ -142,8 +142,10 @@ body {
 }
 
 .sorting {
+    display: flex;
     padding: 6px;
     font-size: 12px;
+    padding-left: 0px;
 }
 
 .pages {
@@ -205,6 +207,11 @@ body {
     text-align: center;
     margin: 0px;
     padding: 5px;
+}
+
+.sorting input[type=submit] {
+    padding: 6px;
+    font-size: 12px;
 }
 
 
