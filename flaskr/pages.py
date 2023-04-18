@@ -267,19 +267,14 @@ def make_endpoints(app):
         leaderboard = backend.get_leaderboard()
 
         length = len(leaderboard)
-
-        top3 = leaderboard[:3] if length >= 3 else None
         
         curr_user = backend.get_game_user(flask_login.current_user.username)
-        if length >= 14 and (curr_user["rank"] == None or curr_user["rank"] > 15):
-            leaderboard = leaderboard[4:15]
-
-        elif length >= 14 and curr_user["rank"] <= 15:
-            leaderboard = leaderboard[4:16]
         
-        else:
-            leaderboard = leaderboard[:16]
+        if length > 15:
+            leaderboard = leaderboard[:15]
+
+        user_in_top15 = False if (not curr_user["rank"] or curr_user["rank"] > 15) else True
 
         trophy = backend.get_image(f'authors/trophy.png')
 
-        return render_template("leaderboard.html", leaderboard=leaderboard, top3=top3, trophy=trophy, curr_user=curr_user)
+        return render_template("leaderboard.html", leaderboard=leaderboard, trophy=trophy, curr_user=curr_user, user_in_top15=user_in_top15)
