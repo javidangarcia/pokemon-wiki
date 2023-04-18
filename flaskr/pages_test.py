@@ -40,9 +40,10 @@ def base64func():
 def fake_file():
     return MagicMock()
 
+@pytest.fixture
+def mock_rand():
+    return MagicMock()
 
-# TODO(Checkpoint (groups of 4 only) Requirement 4): Change test to
-# match the changes made in the other Checkpoint Requirements.
 @patch("flaskr.backend.Backend.get_image",
        return_value=b"This should have been a real image!")
 def test_home_page(mock_get_wiki_page, client):
@@ -80,10 +81,8 @@ def test_upload_get(client):
     assert response.status_code == 302
     assert "upload" in response.location
 
-
-# should return page for abra
-
 """
+# should return page for abra
 @patch("flaskr.backend.Backend.get_wiki_page", return_value=b"{'name':'diff'}")
 @patch("flask.json.loads",
        return_value={
@@ -100,7 +99,6 @@ def test_get_wiki_page(mock_json, mock_get_page, client):
     assert b"abra" in response.data
     mock_json.assert_called_once_with(b"{'name':'diff'}")
 """
-
 
 # Tests sign up page
 def test_sign_up(client):
@@ -131,7 +129,6 @@ def test_logout(client):
        return_value=b"Uploaded a test pokemon!")
 @patch("flaskr.backend.Backend.get_all_page_names",
        return_value=["name1", "name2", "name3"])
-#@patch("flask.request.files",return_value=fake_file)
 def test_upload_post(mock_get_all_pages, mock_upload, app, client):
     with app.test_request_context("",
                                   query_string={
@@ -143,9 +140,38 @@ def test_upload_post(mock_get_all_pages, mock_upload, app, client):
                                       'image-name': '',
                                       'image-type': ''
                                   }):
-
         response = client.post("/upload")
         #assert response.status_code == 0
         assert request.args.get("name") == "abra"
         assert mock_upload() == b"Uploaded a test pokemon!"
         assert mock_get_all_pages() == ["name1", "name2", "name3"]
+"""
+
+def test_game(client,app):
+    with app.test_request_context("",
+                                query_string={
+                                    'name': 'abra',
+                                    'image': 'asdfEFDDSEDFEE',
+                                }):
+        response = client.get("/game")
+        assert request.args.get("name") == "abra"
+        assert request.args.get("image") == "asdfEFDDSEDFEE"           
+
+
+def test_game_post(app, client):
+    with app.test_request_context("",
+                                  query_string={
+                                      'name': 'abra',
+                                      'rank': '5',
+                                      'user': 'user1',
+                                      'nature': '',
+                                      'level': '',
+                                      'image-name': '',
+                                      'image-type': ''
+                                  }):
+        response = client.post("/game")
+        assert request.args.get("name") == "abra"
+        assert request.args.get("rank") == "5"
+        assert request.args.get("user") == "user1"
+
+"""

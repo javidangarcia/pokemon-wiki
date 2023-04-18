@@ -260,7 +260,7 @@ def make_endpoints(app):
         # update the user with new points and new rank
         backend.update_points(username, points) 
         return redirect(url_for("play_game"))
-   
+
     @app.route("/leaderboard", methods=["GET"])
     @flask_login.login_required
     def leaderboard():
