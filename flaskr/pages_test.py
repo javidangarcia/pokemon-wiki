@@ -41,6 +41,14 @@ def fake_file():
     return MagicMock()
 
 @pytest.fixture
+def bucket():
+    return MagicMock()
+
+@pytest.fixture
+def blob():
+    return MagicMock()
+
+@pytest.fixture
 def mock_rand():
     return MagicMock()
 
@@ -65,15 +73,16 @@ def test_about_page(mock_get_image, client):
     assert b"Javier Garcia" in resp.data
     assert b"This is an image too!" in resp.data
 
-"""
+
 # should return list of pages
-def test_pages(client):
-    with patch("flaskr.backend.Backend.get_all_page_names",
-               return_value=["User Generated Pages"]):
-        response = client.get("/pages")
-        assert response.status_code == 200
-        assert b"User Generated Pages" in response.data
-"""
+@patch("flaskr.backend.Backend.get_categories",return_value=b"categories")
+@patch("flaskr.backend.Backend.get_pages_using_sorting", return_value=b"sorted pages")
+@patch("flaskr.backend.Backend.get_pages_using_filter_and_search", return_value=b"sorted pages with filter and search")
+@patch("flaskr.backend.Backend.get_all_page_names", return_value=["page1","page2","page3"])
+def test_pages(mock_get_all_pages, mock_get_pages_using_filter_and_search, mock_get_pages_using_sorting, mock_get_categories,client):
+    response = client.get("/pages")
+    assert response.status_code == 200
+    assert b"page1" in response.data
 
 # should return back to upload page
 def test_upload_get(client):
@@ -81,8 +90,8 @@ def test_upload_get(client):
     assert response.status_code == 302
     assert "upload" in response.location
 
-"""
-# should return page for abra
+
+@patch("flaskr.backend.Backend.get_image", return_value=b"An image")
 @patch("flaskr.backend.Backend.get_wiki_page", return_value=b"{'name':'diff'}")
 @patch("flask.json.loads",
        return_value={
@@ -94,11 +103,11 @@ def test_upload_get(client):
            'image-name': '',
            'image-type': ''
        })
-def test_get_wiki_page(mock_json, mock_get_page, client):
+def test_get_wiki_page(mockjson,mock_get_wiki_page,mock_get_image,client):
     response = client.get("/pages/abra")
     assert b"abra" in response.data
-    mock_json.assert_called_once_with(b"{'name':'diff'}")
-"""
+    mockjson.assert_called_once_with(b"{'name':'diff'}")
+
 
 # Tests sign up page
 def test_sign_up(client):
@@ -145,7 +154,7 @@ def test_upload_post(mock_get_all_pages, mock_upload, app, client):
         assert request.args.get("name") == "abra"
         assert mock_upload() == b"Uploaded a test pokemon!"
         assert mock_get_all_pages() == ["name1", "name2", "name3"]
-"""
+
 
 def test_game(client,app):
     with app.test_request_context("",
@@ -174,4 +183,3 @@ def test_game_post(app, client):
         assert request.args.get("rank") == "5"
         assert request.args.get("user") == "user1"
 
-"""
