@@ -256,7 +256,7 @@ class Backend:
                 continue
             with blob.open('r') as f:
                 content = f.read()
-            pokemon_data = json.loads(content)
+            pokemon_data = self.json.loads(content)
             if (name == None or name.lower() in pokemon_data["name"].lower()) and (type == None or pokemon_data["type"] == type) and (region == None or pokemon_data["region"] == region) and (nature == None or pokemon_data["nature"] == nature):
                 page_names.append(blob.name)
                 if sorting:
