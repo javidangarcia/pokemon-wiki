@@ -204,47 +204,7 @@ class Backend:
         else:
             return None
 
-    def get_game_user(self, username):
-        game_users_bucket = self.client.get_bucket('wiki-content-techx')
-        path = f'user_game_ranking/game_users/{username}'
-
-        blob = game_users_bucket.get_blob(path)
-        json_str = blob.download_as_string()
-        json_obj = self.json.loads(json_str)
-
-        return json_obj
-
-    def get_seen_pokemon(self, username): 
-        """
-        Gets a json object that stores the pokemon that the user has seen so far
-        """
-        game_users_bucket = self.client.get_bucket('wiki-content-techx')
-        path = f'user_game_ranking/seen/{username}'
-        blob = game_users_bucket.get_blob(path)
-        # turn data into json
-        json_str = blob.download_as_string()
-        json_obj = self.json.loads(json_str)
-
-        return json_obj
-
-    
-    def update_seen_pokemon(self,username,new_list):
-        """
-        takes a json object to overwrite the old blob
-        """
-        bucket = self.client.get_bucket("wiki-content-techx")
-        seen_path = f"user_game_ranking/seen/{username}"
-        blob = bucket.blob(seen_path)
-        new_seen = self.json.dumps(new_list)
-
-        # if the lenght of the json object is greater than the number of pokemon,
-        # then we set the json object to an empty state
-        if len(new_seen) > 810:
-            new_seen = json.dumps({})
-        # upload blob
-        blob.upload_from_string(data=new_seen, content_type="application/json")
-
-
+#------------------------------------ Search Filter ------------------------------------#
     def get_pages_using_filter_and_search(self, name, type, region, nature, sorting):
         """ Retrieves all pages that match filter options selected by the user.
         Args:
@@ -303,6 +263,12 @@ class Backend:
         
 
     def get_pages_using_search(self, name):
+        '''Gets all the pages that match the given name.
+        Args:
+            name: Name or part of the name of a wiki page.
+        Rturns:
+            page_names: The name of the pages that match the given name.
+        '''
         bucket = self.client.get_bucket('wiki-content-techx')
         blobs = bucket.list_blobs(prefix='pages/')
         page_names = []
@@ -318,6 +284,35 @@ class Backend:
 
         return page_names
 
+#------------------------------------ Game ------------------------------------#
+    def get_seen_pokemon(self, username): 
+        """
+        Gets a json object that stores the pokemon that the user has seen so far
+        """
+        game_users_bucket = self.client.get_bucket('wiki-content-techx')
+        path = f'user_game_ranking/seen/{username}'
+        blob = game_users_bucket.get_blob(path)
+        # turn data into json
+        json_str = blob.download_as_string()
+        json_obj = self.json.loads(json_str)
+
+        return json_obj
+    
+    def update_seen_pokemon(self,username,new_list):
+        """
+        takes a json object to overwrite the old blob
+        """
+        bucket = self.client.get_bucket("wiki-content-techx")
+        seen_path = f"user_game_ranking/seen/{username}"
+        blob = bucket.blob(seen_path)
+        new_seen = self.json.dumps(new_list)
+
+        # if the lenght of the json object is greater than the number of pokemon,
+        # then we set the json object to an empty state
+        if len(new_seen) > 810:
+            new_seen = json.dumps({})
+        # upload blob
+        blob.upload_from_string(data=new_seen, content_type="application/json")
 
     def get_pokemon_image(self,id):
         """
@@ -359,9 +354,37 @@ class Backend:
         pokemon_json = pokedex_json[id-1]
         return pokemon_json
 
+#------------------------------------ Leaderboard ------------------------------------#
+    def get_categories(self):
+        bucket = self.client.get_bucket("wiki-content-techx")
+        blob = bucket.get_blob("filtering/categories.json")
+        with blob.open() as f:
+            content = f.read()
+        categories = json.loads(content)
+        return categories
+    
+    def get_game_user(self, username):
+        '''Gets game data for a specific user.
+        Args:
+            username: Username of the current user.
+        Returns:
+            JSON object containing user username, points and rank.
+        '''
+        game_users_bucket = self.client.get_bucket('wiki-content-techx')
+        path = f'user_game_ranking/game_users/{username}'
+
+        blob = game_users_bucket.get_blob(path)
+        json_str = blob.download_as_string()
+        json_obj = self.json.loads(json_str)
+
+        return json_obj
+    
     def update_points(self, username, new_score):
-        """
-        Update the current user's points and rank, leaderboard is updated as well
+        """Updates the game stats of the user.
+        Update the current user's points and rank, leaderboard is updated as well.
+        Args:
+            username: Username of the current user playing.
+            new_score: New amount of points gained or lost by playing the game.
         """
         user = self.get_game_user(username)
         user["points"] = new_score
@@ -373,30 +396,30 @@ class Backend:
         json_data = self.json.dumps(new_user)
         # upload new data
         blob.upload_from_string(data=json_data,content_type="application/json")
-
+    
     def get_leaderboard(self):
+        '''Gets the leaderboard list containing all users that have played the game.
+        Returns:
+            List of JSON objects with each user's game information.
+        '''
         bucket = self.client.get_bucket("wiki-content-techx")
         blob = bucket.get_blob("user_game_ranking/ranks_list.json")
         json_str = blob.download_as_string()
         json_obj = self.json.loads(json_str)
         return json_obj["ranks_list"]
 
-    def get_categories(self):
-        bucket = self.client.get_bucket("wiki-content-techx")
-        blob = bucket.get_blob("filtering/categories.json")
-        with blob.open() as f:
-            content = f.read()
-        categories = json.loads(content)
-        return categories
-
-    # updated_user (type) = json
     def update_leaderboard(self, updated_user):
+        '''Updates the leaderboard by sorting the users by points and ranks.
+        Args:
+            updated_user: Current user with new points gained or lost from playing the game.
+        Returns:
+            Updated user with new rank assigned.
+        '''
         leaderboard = self.get_leaderboard()
 
         # If user is not on the leaderboard
         if not updated_user["rank"]: 
             updated_user["rank"] = len(leaderboard) + 1
-            # print(leaderboard)
             leaderboard.append(updated_user)
 
         # Only user in the leaderboard, update leaderboard with new points
@@ -419,8 +442,16 @@ class Backend:
         # Updated user
         return updated_user
 
-    # Point System: Guess correctly = +100, guess wrond = -50
     def sort_leaderboard(self, leaderboard, user):
+        '''Sorts the leaderboard by points and ranks.
+        If the user lost points it would move down the user to the right position in the leaderboard if necessary.
+        If the user gained points it would move up the user to the right position in the leaderboard if necessary.
+        Args:
+            leaderboard: Leaderboard list with all user game stats.
+            user: Current user being moved up or down on rank.
+        Returns:
+            Tuple with the updated leaderboard and current user with updated rank.
+        '''
         user_index = user["rank"] - 1
         old_user = leaderboard[user_index]
         user_points = user["points"]
@@ -460,20 +491,21 @@ class Backend:
             
             return leaderboard, user
             
-
         def sort_down(user_index, user_points):
-
+            
+            # Checks if the current user is on the last index of the list, if not it assigns another user to be compared
             other_user_index = user_index + 1 if user_index < len(leaderboard) - 1 else None
             other_user = leaderboard[other_user_index] if other_user_index else None
             other_user_points = other_user.get("points") if other_user_index else None
 
+            # Current user is in the last spot or did not rank down
             if other_user_index is None or user_points >= other_user_points:
                 leaderboard[user_index] = user
                 return leaderboard, user
             
             while (other_user_index <= len(leaderboard) - 1) and user_points <= other_user_points:
             
-            # Update ranks and leaderboard with new ranks
+                # Update ranks and leaderboard with new ranks
                 user["rank"] = user['rank'] + 1
                 other_user["rank"] = other_user["rank"] - 1 
                 
