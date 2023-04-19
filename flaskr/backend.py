@@ -204,53 +204,7 @@ class Backend:
         else:
             return None
 
-    def get_game_user(self, username):
-        '''Gets game data for a specific user.
-        Args:
-            username: Username of the current user.
-        Returns:
-            JSON object containing user username, points and rank.
-        '''
-        game_users_bucket = self.client.get_bucket('wiki-content-techx')
-        path = f'user_game_ranking/game_users/{username}'
-
-        blob = game_users_bucket.get_blob(path)
-        json_str = blob.download_as_string()
-        json_obj = self.json.loads(json_str)
-
-        return json_obj
-
-    def get_seen_pokemon(self, username): 
-        """
-        Gets a json object that stores the pokemon that the user has seen so far
-        """
-        game_users_bucket = self.client.get_bucket('wiki-content-techx')
-        path = f'user_game_ranking/seen/{username}'
-        blob = game_users_bucket.get_blob(path)
-        # turn data into json
-        json_str = blob.download_as_string()
-        json_obj = self.json.loads(json_str)
-
-        return json_obj
-
-    
-    def update_seen_pokemon(self,username,new_list):
-        """
-        takes a json object to overwrite the old blob
-        """
-        bucket = self.client.get_bucket("wiki-content-techx")
-        seen_path = f"user_game_ranking/seen/{username}"
-        blob = bucket.blob(seen_path)
-        new_seen = self.json.dumps(new_list)
-
-        # if the lenght of the json object is greater than the number of pokemon,
-        # then we set the json object to an empty state
-        if len(new_seen) > 810:
-            new_seen = json.dumps({})
-        # upload blob
-        blob.upload_from_string(data=new_seen, content_type="application/json")
-
-
+#------------------------------------ Search Filter ------------------------------------#
     def get_pages_using_filter_and_search(self, name, type, region, nature, sorting):
         """ Retrieves all pages that match filter options selected by the user.
         Args:
@@ -330,6 +284,35 @@ class Backend:
 
         return page_names
 
+#------------------------------------ Game ------------------------------------#
+    def get_seen_pokemon(self, username): 
+        """
+        Gets a json object that stores the pokemon that the user has seen so far
+        """
+        game_users_bucket = self.client.get_bucket('wiki-content-techx')
+        path = f'user_game_ranking/seen/{username}'
+        blob = game_users_bucket.get_blob(path)
+        # turn data into json
+        json_str = blob.download_as_string()
+        json_obj = self.json.loads(json_str)
+
+        return json_obj
+    
+    def update_seen_pokemon(self,username,new_list):
+        """
+        takes a json object to overwrite the old blob
+        """
+        bucket = self.client.get_bucket("wiki-content-techx")
+        seen_path = f"user_game_ranking/seen/{username}"
+        blob = bucket.blob(seen_path)
+        new_seen = self.json.dumps(new_list)
+
+        # if the lenght of the json object is greater than the number of pokemon,
+        # then we set the json object to an empty state
+        if len(new_seen) > 810:
+            new_seen = json.dumps({})
+        # upload blob
+        blob.upload_from_string(data=new_seen, content_type="application/json")
 
     def get_pokemon_image(self,id):
         """
@@ -371,6 +354,31 @@ class Backend:
         pokemon_json = pokedex_json[id-1]
         return pokemon_json
 
+#------------------------------------ Leaderboard ------------------------------------#
+    def get_categories(self):
+        bucket = self.client.get_bucket("wiki-content-techx")
+        blob = bucket.get_blob("filtering/categories.json")
+        with blob.open() as f:
+            content = f.read()
+        categories = json.loads(content)
+        return categories
+    
+    def get_game_user(self, username):
+        '''Gets game data for a specific user.
+        Args:
+            username: Username of the current user.
+        Returns:
+            JSON object containing user username, points and rank.
+        '''
+        game_users_bucket = self.client.get_bucket('wiki-content-techx')
+        path = f'user_game_ranking/game_users/{username}'
+
+        blob = game_users_bucket.get_blob(path)
+        json_str = blob.download_as_string()
+        json_obj = self.json.loads(json_str)
+
+        return json_obj
+    
     def update_points(self, username, new_score):
         """Updates the game stats of the user.
         Update the current user's points and rank, leaderboard is updated as well.
@@ -388,7 +396,7 @@ class Backend:
         json_data = self.json.dumps(new_user)
         # upload new data
         blob.upload_from_string(data=json_data,content_type="application/json")
-
+    
     def get_leaderboard(self):
         '''Gets the leaderboard list containing all users that have played the game.
         Returns:
@@ -399,14 +407,6 @@ class Backend:
         json_str = blob.download_as_string()
         json_obj = self.json.loads(json_str)
         return json_obj["ranks_list"]
-
-    def get_categories(self):
-        bucket = self.client.get_bucket("wiki-content-techx")
-        blob = bucket.get_blob("filtering/categories.json")
-        with blob.open() as f:
-            content = f.read()
-        categories = json.loads(content)
-        return categories
 
     def update_leaderboard(self, updated_user):
         '''Updates the leaderboard by sorting the users by points and ranks.
@@ -491,7 +491,6 @@ class Backend:
             
             return leaderboard, user
             
-
         def sort_down(user_index, user_points):
             
             # Checks if the current user is on the last index of the list, if not it assigns another user to be compared
