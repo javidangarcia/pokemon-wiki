@@ -280,3 +280,101 @@ def test_sort_leaderboard_equal_points(client):
     user_data = {"name": "name2", "points": 100, "rank": 2}
     assert backend.sort_leaderboard(data, user_data) == ([{"name": "name", "points": 100, "rank": 1}, {"name": "name2", "points": 100, "rank": 2}],
                                                         {"name": "name2", "points": 100, "rank": 2})
+
+
+"""
+Filter Feature Testing
+"""
+
+class MockJSON:
+    def __init__(self):
+        pass
+
+    def loads(self, content):
+        return content  
+
+
+@pytest.fixture
+def json():
+    return MockJSON()
+
+
+@pytest.fixture
+def page_blobs():
+    blobs = [MagicMock() for i in range(5)]
+    blobs[0].name = "pages/"    
+    blobs[1].name = "pages/charmander"
+    blobs[2].name = "pages/chikorita"
+    blobs[3].name = "pages/mudkip"
+    blobs[4].name = "pages/blaziken"
+
+
+    files = [MagicMock() for i in range(5)]
+    files[1].read.return_value = {"name": "Charmander", "type": "Fire", "region": "Kanto", "nature": "Brave", "level": "15"}
+    files[2].read.return_value = {"name": "Chikorita", "type": "Grass", "region": "Johto", "nature": "Quirky", "level": "8"}
+    files[3].read.return_value = {"name": "Mudkip", "type": "Water", "region": "Hoenn", "nature": "Naive", "level": "12"}
+    files[4].read.return_value = {"name": "Blaziken", "type": "Fire", "region": "Hoenn", "nature": "Bashful", "level": "55"}
+
+
+    blobs[1].open.return_value.__enter__.return_value = files[1]
+    blobs[2].open.return_value.__enter__.return_value = files[2]
+    blobs[3].open.return_value.__enter__.return_value = files[3]
+    blobs[4].open.return_value.__enter__.return_value = files[4]
+
+    return blobs
+
+
+def test_get_pages_using_filter_type(client, bucket, json, page_blobs):
+    client.get_bucket.return_value = bucket
+    bucket.list_blobs.return_value = iter(page_blobs)
+
+    backend = Backend(client, json=json)
+    assert backend.get_pages_using_filter_and_search(None, "Fire", None, None, None) == ["pages/charmander", "pages/blaziken"]
+
+
+def test_get_pages_using_filter_region(client, bucket, json, page_blobs):
+    client.get_bucket.return_value = bucket
+    bucket.list_blobs.return_value = iter(page_blobs)
+
+    backend = Backend(client, json=json)
+    assert backend.get_pages_using_filter_and_search(None, None, "Hoenn", None, None) == ["pages/mudkip", "pages/blaziken"]
+
+
+def test_get_pages_using_filter_nature(client, bucket, json, page_blobs):
+    client.get_bucket.return_value = bucket
+    bucket.list_blobs.return_value = iter(page_blobs)
+
+    backend = Backend(client, json=json)
+    assert backend.get_pages_using_filter_and_search(None, None, None, "Bashful", None) == ["pages/blaziken"]
+
+
+def test_get_pages_using_filter_name(client, bucket, json, page_blobs):
+    client.get_bucket.return_value = bucket
+    bucket.list_blobs.return_value = iter(page_blobs)
+
+    backend = Backend(client, json=json)
+    assert backend.get_pages_using_filter_and_search("ch", None, None, None, None) == ["pages/charmander", "pages/chikorita"]
+
+
+def test_get_pages_using_sorting_lowest_to_highest(client, bucket, json, page_blobs):
+    client.get_bucket.return_value = bucket
+    bucket.list_blobs.return_value = iter(page_blobs)
+
+    backend = Backend(client, json=json)
+    assert backend.get_pages_using_filter_and_search(None, None, None, None, "LowestToHighest") == ["pages/chikorita", "pages/mudkip", "pages/charmander", "pages/blaziken"]
+
+
+def test_get_pages_using_sorting_highest_to_lowest(client, bucket, json, page_blobs):
+    client.get_bucket.return_value = bucket
+    bucket.list_blobs.return_value = iter(page_blobs)
+
+    backend = Backend(client, json=json)
+    assert backend.get_pages_using_filter_and_search(None, None, None, None, "HighestToLowest") == ["pages/blaziken", "pages/charmander", "pages/mudkip", "pages/chikorita"]
+
+
+def test_get_pages_using_filter_type_and_nature(client, bucket, json, page_blobs):
+    client.get_bucket.return_value = bucket
+    bucket.list_blobs.return_value = iter(page_blobs)
+
+    backend = Backend(client, json=json)
+    assert backend.get_pages_using_filter_and_search(None, "Fire", None, "Bashful", None) == ["pages/blaziken"]

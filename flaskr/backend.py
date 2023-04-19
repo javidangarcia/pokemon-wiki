@@ -246,6 +246,16 @@ class Backend:
 
 
     def get_pages_using_filter_and_search(self, name, type, region, nature, sorting):
+        """ Retrieves all pages that match filter options selected by the user.
+        Args:
+            name: The name of the wiki page we are looking for.
+            type: The type of the pokemon we are looking for.
+            region: The region of the pokemon we are looking for.
+            nature: The nature of the pokemon we are looking for.
+            sorting: The sorting metric that the user selected.                         
+        Returns:
+            page_names: The names of all pages that match filter criteria selected by user.
+        """
         bucket = self.client.get_bucket('wiki-content-techx')
         blobs = bucket.list_blobs(prefix='pages/')
         page_content = []
@@ -256,7 +266,7 @@ class Backend:
                 continue
             with blob.open('r') as f:
                 content = f.read()
-            pokemon_data = json.loads(content)
+            pokemon_data = self.json.loads(content)
             if (name == None or name.lower() in pokemon_data["name"].lower()) and (type == None or pokemon_data["type"] == type) and (region == None or pokemon_data["region"] == region) and (nature == None or pokemon_data["nature"] == nature):
                 page_names.append(blob.name)
                 if sorting:
@@ -270,6 +280,13 @@ class Backend:
 
 
     def get_pages_using_sorting(self, pages_content, sorting):
+        """ This function sorts the page names that meet the filter criteria by level.
+        Args:
+            pages_content: List of tuples containing page names and there respective level.
+            sorting: The sorting metric that the user selected.                       
+        Returns:
+            page_names: The names of the pages in the order determined by the sorting metric.
+        """
         bucket = self.client.get_bucket('wiki-content-techx')
         
         if sorting == "LowestToHighest":
