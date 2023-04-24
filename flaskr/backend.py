@@ -19,6 +19,7 @@ from flask import json, render_template, flash, redirect, url_for
 from .user import User
 from secrets import randbelow
 
+MAX_ID = 386
 
 class Backend:
 
@@ -309,7 +310,7 @@ class Backend:
 
         # if the lenght of the json object is greater than the number of pokemon,
         # then we set the json object to an empty state
-        if len(new_seen) > 810:
+        if len(new_seen) > MAX_ID:
             new_seen = json.dumps({})
         # upload blob
         blob.upload_from_string(data=new_seen, content_type="application/json")

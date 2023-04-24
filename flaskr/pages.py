@@ -15,6 +15,7 @@ from secrets import randbelow
    for login and signup. It logsin, signups and logs out users from session. Uploads
    pokemon wiki information to buckets. 
 '''
+MAX_ID = 386
 
 login_manager = LoginManager(
 )  # Lets the app and Flask-Login work together for user loading, login, etc.
@@ -201,9 +202,9 @@ def make_endpoints(app):
     def play_game(pokemon_id=1):
         # make sure pokemon_id has not been guessed before
         seen = backend.get_seen_pokemon(flask_login.current_user.username)
-        pokemon_id = randbelow(386)
+        pokemon_id = randbelow(MAX_ID)
         while str(pokemon_id) in seen:
-            pokemon_id = randbelow(386)
+            pokemon_id = randbelow(MAX_ID)
 
         # check that image is not a None type
         pokemon_img = None
