@@ -201,9 +201,9 @@ def make_endpoints(app):
     def play_game(pokemon_id=1):
         # make sure pokemon_id has not been guessed before
         seen = backend.get_seen_pokemon(flask_login.current_user.username)
-        pokemon_id = randbelow(810)
+        pokemon_id = randbelow(386)
         while str(pokemon_id) in seen:
-            pokemon_id = randbelow(810)
+            pokemon_id = randbelow(386)
 
         # check that image is not a None type
         pokemon_img = None
