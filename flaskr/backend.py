@@ -421,6 +421,9 @@ class Backend:
         if not updated_user["rank"]: 
             updated_user["rank"] = len(leaderboard) + 1
             leaderboard.append(updated_user)
+            new_info = self.sort_leaderboard(leaderboard, updated_user, True)
+            leaderboard = new_info[0]
+            updated_user = new_info[1]
 
         # Only user in the leaderboard, update leaderboard with new points
         elif (len(leaderboard) == 1 and updated_user["name"] == leaderboard[0].get("name")):
@@ -428,7 +431,7 @@ class Backend:
 
         # User is in the leaderboard
         else:
-            new_info = self.sort_leaderboard(leaderboard, updated_user)
+            new_info = self.sort_leaderboard(leaderboard, updated_user, False)
             leaderboard = new_info[0]
             updated_user = new_info[1]
 
@@ -442,7 +445,7 @@ class Backend:
         # Updated user
         return updated_user
 
-    def sort_leaderboard(self, leaderboard, user):
+    def sort_leaderboard(self, leaderboard, user, is_new_user):
         '''Sorts the leaderboard by points and ranks.
         If the user lost points it would move down the user to the right position in the leaderboard if necessary.
         If the user gained points it would move up the user to the right position in the leaderboard if necessary.
@@ -474,6 +477,9 @@ class Backend:
                 user["rank"] = user['rank'] - 1
                 other_user["rank"] = other_user["rank"] + 1 
                 
+                # Update other user rank to game_users bucket
+                self.update_user_rank(other_user)
+
                 leaderboard[other_user_index] = other_user
                 leaderboard[user_index] = user
 
@@ -508,6 +514,9 @@ class Backend:
                 # Update ranks and leaderboard with new ranks
                 user["rank"] = user['rank'] + 1
                 other_user["rank"] = other_user["rank"] - 1 
+
+                # Update other user rank to game_users bucket
+                self.update_user_rank(other_user)
                 
                 leaderboard[other_user_index] = other_user
                 leaderboard[user_index] = user
@@ -526,7 +535,22 @@ class Backend:
             
             return leaderboard, user
 
+        if is_new_user:
+            return sort_up(user_index, user_points)
+
         if old_user["points"] < user_points:
             return sort_up(user_index, user_points)
         
         return sort_down(user_index, user_points)
+
+    def update_user_rank(self, updated_user):
+        '''Updates game_users/user bucket with new rank.
+        Args:
+            updated_user: User with new rank assigned
+        '''
+        bucket = self.client.get_bucket("wiki-content-techx")
+        path = "user_game_ranking/game_users/" + updated_user["name"]
+        blob = bucket.blob(path)
+        json_data = self.json.dumps(updated_user)
+
+        blob.upload_from_string(data=json_data,content_type="application/json")

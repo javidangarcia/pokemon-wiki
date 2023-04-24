@@ -264,22 +264,31 @@ def test_sort_up_leaderboard(client):
     backend = Backend(client)
     data = [{"name": "name", "points": 100, "rank": 1}, {"name": "name2", "points": 0, "rank": 2}]
     user_data = {"name": "name2", "points": 200, "rank": 2}
-    assert backend.sort_leaderboard(data, user_data) == ([{"name": "name2", "points": 200, "rank": 1}, {"name": "name", "points": 100, "rank": 2}], 
+    assert backend.sort_leaderboard(data, user_data, False) == ([{"name": "name2", "points": 200, "rank": 1}, {"name": "name", "points": 100, "rank": 2}], 
                                                         {"name": "name2", "points": 200, "rank": 1})
 
 def test_sort_down_leaderboard(client):
     backend = Backend(client)
     data = [{"name": "name", "points": 100, "rank": 1}, {"name": "name2", "points": 100, "rank": 2}]
     user_data = {"name": "name", "points": 50, "rank": 1}
-    assert backend.sort_leaderboard(data, user_data) == ([{"name": "name2", "points": 100, "rank": 1}, {"name": "name", "points": 50, "rank": 2}], 
+    assert backend.sort_leaderboard(data, user_data, False) == ([{"name": "name2", "points": 100, "rank": 1}, {"name": "name", "points": 50, "rank": 2}], 
                                                         {"name": "name", "points": 50, "rank": 2})
 
 def test_sort_leaderboard_equal_points(client):
     backend = Backend(client)
     data = [{"name": "name", "points": 100, "rank": 1}, {"name": "name2", "points": 0, "rank": 2}]
     user_data = {"name": "name2", "points": 100, "rank": 2}
-    assert backend.sort_leaderboard(data, user_data) == ([{"name": "name", "points": 100, "rank": 1}, {"name": "name2", "points": 100, "rank": 2}],
+    assert backend.sort_leaderboard(data, user_data, False) == ([{"name": "name", "points": 100, "rank": 1}, {"name": "name2", "points": 100, "rank": 2}],
                                                         {"name": "name2", "points": 100, "rank": 2})
+
+def test_update_user_rank(client, bucket, blob, mockjson):
+    client.get_bucket.return_value = bucket
+    bucket.blob.return_value = blob
+    data = {"name": "name", "points": 100, "rank": 10}
+    mockjson.dumps.return_value = data
+    backend = Backend(client, mockjson)
+    backend.update_user_rank(data)
+    blob.upload_from_string.assert_called_once_with(data='{"name": "name", "points": 100, "rank": 10}',content_type="application/json")
 
 
 """
