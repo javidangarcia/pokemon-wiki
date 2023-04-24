@@ -261,17 +261,22 @@ def make_endpoints(app):
     @app.route("/leaderboard", methods=["GET"])
     @flask_login.login_required
     def leaderboard():
+        '''Displays leaderboard with top 15 users and highlights the current user viewing the leaderboard.'''
+        # Get leaderboard list
         leaderboard = backend.get_leaderboard()
 
-        length = len(leaderboard)
+        length = len(leaderboard) # Length of the list
         
+        # Current user game json data
         curr_user = backend.get_game_user(flask_login.current_user.username)
         
+        # If the length is greater than 15 then cut the list to have the top 15 users
         if length > 15:
             leaderboard = leaderboard[:15]
 
+        # Boolean to check if user is in top 15
         user_in_top15 = False if (not curr_user["rank"] or curr_user["rank"] > 15) else True
 
-        trophy = backend.get_image(f'authors/trophy.png')
+        trophy = backend.get_image(f'authors/trophy.png') # Image decoration
 
         return render_template("leaderboard.html", leaderboard=leaderboard, trophy=trophy, curr_user=curr_user, user_in_top15=user_in_top15)
