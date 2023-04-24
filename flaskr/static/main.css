@@ -219,7 +219,7 @@ body {
 
 .wiki-pages {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between;    
     min-height: 100vh;
     background-color: rgb(51, 85, 197);
     color: white;    

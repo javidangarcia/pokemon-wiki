@@ -12,7 +12,7 @@
     <div class="wiki-text">
         <h1>{{pokemon["name"].capitalize()}}</h1>
         <div class="wiki-desc">
-            <p>Blastoise is a large, bipedal turtle Pokémon. Its body is blue and is mostly hidden by its tough, brown shell. This shell has a cream-colored underside and a white ridge encircling its arms and separating the upper and lower halves. Two powerful water cannons reside at the top of its shell over its shoulders. These cannons can be extended or withdrawn. Blastoise's head has triangular ears that are black on the inside, small brown eyes, and a cream-colored lower jaw. Its arms are thick, and it has three claws on each hand. Its feet have three claws on the front and one on the back. Poking out of the bottom of its shell is a stubby tail.</p>
+            <p>{{ pokemon["desc"] }}</p>
         </div>
     </div>
     <div class="wiki-info">
@@ -22,8 +22,8 @@
         <div class="wiki-categories">
             <p>Type: {{ pokemon["type"] }}</p>
             <p>Region: {{ pokemon["region"] }}</p>
-            <p>Nature: {{ pokemon["nature"] }}</p>   
-            <p>Level: {{ pokemon["level"] }}</p>      
+            <p>Nature: {{ pokemon["nature"] }}</p>
+            <p>Level: {{ pokemon["level"] }}</p>   
         </div>
     </div>
 </div>
