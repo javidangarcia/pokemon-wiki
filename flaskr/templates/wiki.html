@@ -5,18 +5,29 @@
 {% endblock %}
 
 
+
+
 {% block content %}
 <div class="wiki-pages">
-    <div class="statistics">
-        <p>Name: {{ pokemon["name"].capitalize() }}</p>
-        <p>Type: {{ pokemon["type"] }}</p>
-        <p>Region: {{ pokemon["region"] }}</p>
-        <p>Nature: {{ pokemon["nature"] }}</p>   
-        <p>Level: {{ pokemon["level"] }}</p>    
+    <div class="wiki-text">
+        <h1>{{pokemon["name"].capitalize()}}</h1>
+        <div class="wiki-desc">
+            <p>{{ pokemon["desc"] }}</p>
+        </div>
     </div>
-    <div class="user-image">
-        <img src="data:image/{{pokemon['image-type']}};base64,{{image}}" style="height: 400px; width: auto;">
+    <div class="wiki-info">
+        <div class="wiki-image">
+            <img src="data:image/{{pokemon['image-type']}};base64,{{image}}">
+        </div>
+        <div class="wiki-categories">
+            <p>Type: {{ pokemon["type"] }}</p>
+            <p>Region: {{ pokemon["region"] }}</p>
+            <p>Nature: {{ pokemon["nature"] }}</p>
+            <p>Owner: {{ pokemon["owner"] }}</p>
+            <p>Level: {{ pokemon["level"] }}</p>   
+        </div>
     </div>
 </div>
+
 {% endblock %}
 

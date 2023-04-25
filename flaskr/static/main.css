@@ -217,34 +217,87 @@ body {
 
 /* Wiki User Pages */
 
-
 .wiki-pages {
     display: flex;
-    height: 90vh;
-    justify-content: space-evenly;
-    align-items: center;
-    color: white;
+    justify-content: space-between;    
+    min-height: 100vh;
     background-color: rgb(51, 85, 197);
+    color: white;    
 }
 
-.statistics {
+.wiki-text {
+    display: flex;
+    flex-direction: column;
+    width: 65vw;
+    font-family: Arial;
+    padding-left: 40px;
+}
+
+.wiki-text h1 {
+    font-size: 50px;
+    font-weight: 600;
+    margin: 0px;
+    padding-top: 20px;
+}
+
+.wiki-desc {
+    width: 45vw;
+    font-size: 25px;
+}
+
+.wiki-info {
+    display: flex;
+    flex-direction: column;
+    width: 35vw;
+}
+
+.wiki-image {
+    display: flex;
+    justify-content: center;
+    border: 6px solid white;
+    border-bottom: 3px solid white;
+    margin: 10px;
+    margin-bottom: 0px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-image: linear-gradient(12deg,     
+    #ff612b 5%, #ff612b 7.69%,
+    #ff5215 7.69%, #ff5215 15.38%, 
+    #ff4f26 15.38%, #ff4f26 23.08%, 
+    #ff320c 23.08%, #ff320c 33%, 
+    #ff3720 33%, #ff3720 38.46%, 
+    #ff2509 38.46%, #ff2509 42.31%, 
+    #ff2b15 42.31%, #ff2b15 50%, 
+    #ff1a06 50%, #ff1a06 57.69%, 
+    #ff1f15 57.69%, #ff1f15 65.38%, 
+    #ff1004 65.38%, #ff0f0f 73.08%, 
+    #ff1b16 73.08%, #ff1b16 80%, 
+    #ff1004 80%, #ff1004 90%,
+    #ff1a15 90%, #ff1a15 100%);
+}
+
+.wiki-image img {
+    height: 400px;
+    width: 400px;    
+}
+
+.wiki-categories {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px;
+    margin-top: 0px;
     padding: 35px;
-    border: 3px solid white;
+    border: 6px solid white; 
+    border-top: 3px solid white;
     background-color: #2C4047;
 }
 
-.wiki-pages p {
+.wiki-categories p {
     margin: 2px;
     font-size: 30px;
 }
 
-.user-image {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 300px;
-    width: 300px;
-}
 
 
 /* Login & Sign Up Pages */

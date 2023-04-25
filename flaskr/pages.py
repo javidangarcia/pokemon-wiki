@@ -186,7 +186,9 @@ def make_endpoints(app):
             "type": request.form["type"],
             "region": request.form["region"],
             "nature": request.form["nature"],
-            "level": request.form["level"]
+            "level": request.form["level"],
+            "desc": request.form["desc"],
+            "owner": flask_login.current_user.username.capitalize()
         }
         # json object to be uploaded
         file_to_upload = request.files['file']
